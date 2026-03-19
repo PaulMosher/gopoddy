@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Go Poddy – A Smarter, Cleaner Way to Go Poddy</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1a3a2a;
+    --green-mid: #2d6a4f;
+    --green-bright: #52b788;
+    --green-light: #b7e4c7;
+    --cream: #f8f4ec;
+    --warm-white: #fefcf7;
+    --brown-soft: #8b5e3c;
+    --accent-gold: #d4a853;
+    --text-dark: #1a2a1f;
+    --text-mid: #3d5a47;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--warm-white);
+    color: var(--text-dark);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--green-deep);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 2rem;
+  }
+
+  .hero-bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.07;
+    background: var(--green-bright);
+  }
+  .hero-bg-circle.c1 { width: 700px; height: 700px; top: -200px; right: -200px; }
+  .hero-bg-circle.c2 { width: 400px; height: 400px; bottom: -100px; left: -100px; }
+  .hero-bg-circle.c3 { width: 200px; height: 200px; top: 40%; left: 10%; opacity: 0.05; }
+
+  .hero-paw {
+    position: absolute;
+    font-size: 8rem;
+    opacity: 0.04;
+    user-select: none;
+  }
+  .hero-paw.p1 { top: 10%; right: 8%; transform: rotate(15deg); }
+  .hero-paw.p2 { bottom: 15%; left: 5%; transform: rotate(-20deg); font-size: 5rem; }
+
+  .hero-badge {
+    background: var(--green-bright);
+    color: var(--green-deep);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.4rem 1.2rem;
+    border-radius: 100px;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+
+  .hero-headline {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 900;
+    color: var(--cream);
+    line-height: 1.0;
+    text-align: center;
+    max-width: 900px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.4s forwards;
+  }
+
+  .hero-headline em {
+    font-style: italic;
+    color: var(--green-bright);
+  }
+
+  .hero-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    font-weight: 300;
+    color: var(--green-light);
+    text-align: center;
+    max-width: 580px;
+    margin-top: 1.5rem;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.6s forwards;
+  }
+
+  .hero-cta-wrap {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.8s forwards;
+    width: 100%;
+    max-width: 440px;
+  }
+
+  .email-form {
+    display: flex;
+    width: 100%;
+    gap: 0;
+    border-radius: 100px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  }
+
+  .email-form input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    background: var(--cream);
+    color: var(--text-dark);
+    outline: none;
+  }
+
+  .email-form input::placeholder { color: #9ab0a0; }
+
+  .email-form button {
+    padding: 1rem 1.8rem;
+    background: var(--green-bright);
+    color: var(--green-deep);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+
+  .email-form button:hover { background: var(--accent-gold); }
+
+  .hero-promise {
+    font-size: 0.78rem;
+    color: #7aaa8a;
+    letter-spacing: 0.04em;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 1.2s forwards;
+  }
+
+  .hero-scroll span {
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #4a7a5a;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, #4a7a5a, transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ── STAT STRIP ── */
+  .stat-strip {
+    background: var(--green-bright);
+    padding: 1.2rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: clamp(1.5rem, 5vw, 5rem);
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .stat-item:nth-child(1) { animation-delay: 0.1s; }
+  .stat-item:nth-child(2) { animation-delay: 0.2s; }
+  .stat-item:nth-child(3) { animation-delay: 0.3s; }
+
+  .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--green-deep);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-deep);
+    opacity: 0.7;
+    margin-top: 0.2rem;
+  }
+
+  /* ── SECTIONS SHARED ── */
+  section { padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem); }
+
+  .section-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--green-deep);
+    max-width: 700px;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--green-mid);
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how {
+    background: var(--cream);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .how { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+
+  .how-text { }
+
+  .how-text p {
+    margin-top: 1.2rem;
+    font-size: 1.05rem;
+    color: var(--text-mid);
+    line-height: 1.75;
+    max-width: 480px;
+  }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .step {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    flex-shrink: 0;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 50%;
+    background: var(--green-deep);
+    color: var(--green-bright);
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.1rem;
+  }
+
+  .step-text strong {
+    display: block;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-bottom: 0.2rem;
+  }
+
+  .step-text p {
+    font-size: 0.95rem;
+    color: var(--text-mid);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Product illustration placeholder */
+  .product-visual {
+    background: var(--green-deep);
+    border-radius: 2rem;
+    aspect-ratio: 4/5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-visual::before {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: var(--green-mid);
+    opacity: 0.3;
+    top: -80px;
+    right: -80px;
+  }
+
+  .product-icon {
+    font-size: 6rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .product-label {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--cream);
+    position: relative;
+    z-index: 1;
+  }
+
+  .product-sublabel {
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--green-bright);
+    position: relative;
+    z-index: 1;
+  }
+
+  .patent-badge {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--accent-gold);
+    color: var(--green-deep);
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.8rem;
+    border-radius: 100px;
+    z-index: 1;
+  }
+
+  /* ── BENEFITS ── */
+  .benefits-section {
+    background: var(--green-deep);
+    max-width: 100%;
+  }
+
+  .benefits-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .benefits-section .section-tag { color: var(--green-bright); }
+  .benefits-section .section-title { color: var(--cream); max-width: 100%; }
+  .benefits-section .section-title em { color: var(--green-bright); }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .benefit-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(82,183,136,0.15);
+    border-radius: 1.2rem;
+    padding: 1.8rem;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .benefit-card:hover {
+    background: rgba(82,183,136,0.08);
+    transform: translateY(-3px);
+  }
+
+  .benefit-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+
+  .benefit-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .benefit-desc {
+    font-size: 0.88rem;
+    color: #7aaa8a;
+    line-height: 1.65;
+  }
+
+  /* ── IMPACT ── */
+  .impact-section {
+    background: var(--warm-white);
+    max-width: 100%;
+  }
+
+  .impact-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .impact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+
+  .impact-text p {
+    margin-top: 1.2rem;
+    font-size: 1.05rem;
+    color: var(--text-mid);
+    line-height: 1.75;
+  }
+
+  .impact-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .impact-stat-card {
+    background: var(--cream);
+    border-radius: 1.2rem;
+    padding: 1.5rem 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border-left: 4px solid var(--green-bright);
+  }
+
+  .impact-stat-big {
+    font-family: 'Fraunces', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--green-deep);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .impact-stat-desc {
+    font-size: 0.88rem;
+    color: var(--text-mid);
+    line-height: 1.5;
+  }
+
+  /* ── STORY ── */
+  .story-section {
+    background: var(--cream);
+    max-width: 100%;
+  }
+
+  .story-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .story-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+
+  .story-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 1.2rem;
+    position: relative;
+    padding-bottom: 2rem;
+  }
+
+  .timeline-item:last-child { padding-bottom: 0; }
+
+  .timeline-item:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 0.6rem;
+    top: 1.5rem;
+    bottom: 0;
+    width: 2px;
+    background: var(--green-light);
+  }
+
+  .timeline-dot {
+    flex-shrink: 0;
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: 50%;
+    background: var(--green-bright);
+    margin-top: 0.15rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .timeline-content {}
+
+  .timeline-date {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    font-weight: 500;
+  }
+
+  .timeline-desc {
+    font-size: 0.92rem;
+    color: var(--text-mid);
+    line-height: 1.6;
+    margin-top: 0.2rem;
+  }
+
+  .story-text p {
+    font-size: 1.05rem;
+    color: var(--text-mid);
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+  }
+
+  .story-text p:last-child { margin-bottom: 0; }
+
+  .patent-callout {
+    margin-top: 2rem;
+    background: var(--green-deep);
+    color: var(--cream);
+    border-radius: 1rem;
+    padding: 1.4rem 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .patent-callout span:first-child { font-size: 1.8rem; }
+
+  .patent-callout-text strong {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-bright);
+    margin-bottom: 0.2rem;
+  }
+
+  .patent-callout-text p {
+    font-size: 0.88rem;
+    color: var(--green-light);
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  /* ── FINAL CTA ── */
+  .cta-section {
+    background: var(--green-mid);
+    text-align: center;
+    padding: clamp(5rem, 10vw, 8rem) clamp(1.5rem, 5vw, 4rem);
+  }
+
+  .cta-section .section-title {
+    color: var(--cream);
+    margin: 0 auto 1rem;
+    text-align: center;
+    max-width: 700px;
+  }
+
+  .cta-section .section-title em { color: var(--green-light); }
+
+  .cta-section p {
+    color: var(--green-light);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .cta-email-wrap {
+    max-width: 440px;
+    margin: 0 auto;
+  }
+
+  .cta-email-wrap .email-form {
+    box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+  }
+
+  .cta-promise {
+    margin-top: 1rem;
+    font-size: 0.78rem;
+    color: var(--green-light);
+    opacity: 0.7;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--green-deep);
+    padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .footer-brand {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--cream);
+  }
+
+  .footer-brand span { color: var(--green-bright); }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    font-size: 0.82rem;
+    color: #7aaa8a;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--green-bright); }
+
+  .footer-copy {
+    font-size: 0.75rem;
+    color: #4a6a54;
+    width: 100%;
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── SUCCESS STATE ── */
+  .success-msg {
+    display: none;
+    color: var(--green-bright);
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 0.8rem;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-circle c1"></div>
+  <div class="hero-bg-circle c2"></div>
+  <div class="hero-bg-circle c3"></div>
+  <div class="hero-paw p1">🐾</div>
+  <div class="hero-paw p2">🐾</div>
+
+  <div class="hero-badge">Coming Soon &nbsp;·&nbsp; Join the Waitlist</div>
+
+  <h1 class="hero-headline">
+    Every Puppy<br>Needs a <em>Poddy.</em>
+  </h1>
+
+  <p class="hero-sub">
+    A reusable, odor-proof, and eco-friendly way to pick up after your dog — just as easy as a bag, only better. No more plastic. No more waste.
+  </p>
+
+  <div class="hero-cta-wrap">
+    <form action="https://moshergroupllc.us10.list-manage.com/subscribe/post?u=5a11aadc0e9f8998b861f2483&amp;id=732248216d&amp;f_id=00cc4ae4f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate email-form" target="_blank">
+      <input type="email" name="EMAIL" placeholder="Your email address" required />
+      <div aria-hidden="true" style="position: absolute; left: -5000px;">
+        <input type="text" name="b_5a11aadc0e9f8998b861f2483_732248216d" tabindex="-1" value="">
+      </div>
+      <button type="submit" name="subscribe" id="mc-embedded-subscribe-hero">Notify Me</button>
+    </form>
+    <p class="hero-promise">🔒 No spam, ever. Be first to know when we launch.</p>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- STAT STRIP -->
+<div class="stat-strip">
+  <div class="stat-item">
+    <div class="stat-num">23B</div>
+    <div class="stat-label">Plastic bags used yearly in the US</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">5,440</div>
+    <div class="stat-label">Olympic pools of plastic waste annually</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">3,650</div>
+    <div class="stat-label">Bags one Poddy replaces in a dog's lifetime</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div style="background: var(--cream); padding: clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,4rem);">
+  <div class="how reveal">
+    <div class="how-text">
+      <span class="section-tag">Simple by Design</span>
+      <h2 class="section-title">Three steps.<br><em>Zero bags.</em></h2>
+      <p>The Poddy replaces single-use plastic bags for good — with a smarter, cleaner, more comfortable solution you'll use on every walk.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <strong>Scoop</strong>
+            <p>Remove the lid and collect waste with the built-in claw/scooper — no contact, no fumbling.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <strong>Seal &amp; Walk</strong>
+            <p>Load the waste into the Poddy, reattach the lid, and keep walking. The odor-proof seal keeps smells completely contained.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <strong>Dispose &amp; Rinse</strong>
+            <p>Empty into a toilet, compost, or designated trash area. Close the lid. Ready for the next adventure.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-visual">
+      <div class="product-icon">🐕</div>
+      <div class="product-label">The Poddy</div>
+      <div class="product-sublabel">Reusable · Odor-Proof · Patented</div>
+      <div class="patent-badge">US Patent #12297613</div>
+    </div>
+  </div>
+</div>
+
+<!-- BENEFITS -->
+<div class="benefits-section" style="padding: clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,4rem);">
+  <div class="benefits-inner reveal">
+    <span class="section-tag">Why Go Poddy</span>
+    <h2 class="section-title">Not just a product.<br><em>A lifestyle upgrade.</em></h2>
+
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <span class="benefit-icon">♻️</span>
+        <div class="benefit-title">Eco-Friendly Impact</div>
+        <p class="benefit-desc">Eliminates hundreds of single-use plastic bags every year, keeping them out of landfills and oceans for good.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-icon">🔒</span>
+        <div class="benefit-title">Odor-Proof Seal</div>
+        <p class="benefit-desc">Keeps smells completely locked inside — no matter how long your walk, no matter how many pickups.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-icon">💰</span>
+        <div class="benefit-title">Saves You Money</div>
+        <p class="benefit-desc">One Poddy replaces bags for your dog's entire lifetime. Save hundreds of dollars while helping the planet.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-icon">🦾</span>
+        <div class="benefit-title">Hygienic Claw Mechanism</div>
+        <p class="benefit-desc">The built-in scooper picks up from underneath — no hand contact, no awkward bag fumbling in wind or rain.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-icon">❄️</span>
+        <div class="benefit-title">Works in All Weather</div>
+        <p class="benefit-desc">Glove-friendly and easy to operate in cold weather. The claw works exceptionally well in snow.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-icon">🎒</span>
+        <div class="benefit-title">Hands-Free Carry</div>
+        <p class="benefit-desc">Clip it to your belt, leash, or bag. Walk naturally without holding anything unpleasant.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-icon">🐶</span>
+        <div class="benefit-title">Multiple Uses Per Walk</div>
+        <p class="benefit-desc">Handle several pickups on a single walk without juggling multiple bags. Perfect for multi-dog households.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-icon">🏗️</span>
+        <div class="benefit-title">Built to Last</div>
+        <p class="benefit-desc">Durable recycled resin with antimicrobial and non-stick additives for years of reliable, easy-to-clean use.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IMPACT -->
+<div class="impact-section" style="padding: clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,4rem);">
+  <div class="impact-inner reveal">
+    <div class="impact-text">
+      <span class="section-tag">The Problem We're Solving</span>
+      <h2 class="section-title">The numbers are<br><em>staggering.</em></h2>
+      <p>Every year, U.S. dog owners use 23 billion plastic waste bags. These bags sit in landfills for hundreds of years, releasing microplastics and methane as they slowly degrade.</p>
+      <p>Even "biodegradable" bags mostly end up in landfills where conditions prevent proper decomposition. Well-meaning pet owners are paying extra for a product that still harms the planet.</p>
+      <p>The Poddy changes that — one walk at a time.</p>
+    </div>
+    <div class="impact-stats">
+      <div class="impact-stat-card">
+        <div class="impact-stat-big">23B</div>
+        <div class="impact-stat-desc">plastic waste bags used by U.S. dog owners every single year</div>
+      </div>
+      <div class="impact-stat-card">
+        <div class="impact-stat-big">5,440</div>
+        <div class="impact-stat-desc">Olympic-sized swimming pools that waste would fill with plastic</div>
+      </div>
+      <div class="impact-stat-card">
+        <div class="impact-stat-big">230M</div>
+        <div class="impact-stat-desc">bags eliminated annually if just 1% of dog owners switched to the Poddy</div>
+      </div>
+      <div class="impact-stat-card">
+        <div class="impact-stat-big">9–12</div>
+        <div class="impact-stat-desc">months for dog waste to decompose when left on the ground, leaching pathogens the whole time</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STORY -->
+<div class="story-section" style="padding: clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,4rem);">
+  <div class="story-inner reveal">
+    <div>
+      <span class="section-tag">Our Story</span>
+      <h2 class="section-title">8 years in<br><em>the making.</em></h2>
+
+      <div class="story-timeline" style="margin-top: 2.5rem;">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">December 2019</div>
+            <div class="timeline-desc">First hand-drawn concept sketch for a reusable, odor-proof dog waste tool.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">May 2020</div>
+            <div class="timeline-desc">Founded Mosher Group, LLC. Taught ourselves 3D design with iPad Pros and Apple Pencils. Purchased a 3D printer and built our first prototype.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">2020–2024</div>
+            <div class="timeline-desc">Multiple prototype iterations. Every feature tested in real-world walks with Teddy, our loyal test dog.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">2024</div>
+            <div class="timeline-desc">Awarded U.S. Utility Patent #12297613 — protecting the unique functionality of the Poddy, achievable only through its distinctive design features.</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">Now</div>
+            <div class="timeline-desc">Preparing for our prototype launch. Join the waitlist to be first in line.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="story-text">
+      <p>At Go Poddy, we believe responsible pet ownership should be simple, enjoyable, and kind to the planet. What started as a sketch on December 27, 2019 grew into years of research, design, prototyping, and real-world testing.</p>
+      <p>After confirming what we already suspected — that the dog waste bag industry produces enough plastic to fill 5,440 Olympic swimming pools every year — we knew there had to be a better way.</p>
+      <p>We taught ourselves 3D design from scratch, invested in a 3D printer, and tested every prototype with our loyal test dog, Teddy. Key innovations like the built-in scooping claw, flared container opening, and odor-proof seal set the Poddy apart from anything else on the market.</p>
+      <p>Today, Go Poddy is more than an invention — it's a call to action for dog owners who want to do right by their pets, their neighbors, and the planet.</p>
+
+      <div class="patent-callout">
+        <span>🏅</span>
+        <div class="patent-callout-text">
+          <strong>Fully Patented</strong>
+          <p>U.S. Utility Patent #12297613 — the Poddy's functionality is patented, made possible only through its unique design features.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<div class="cta-section">
+  <div class="reveal">
+    <span class="section-tag" style="color: var(--green-light);">Limited Prototype Run</span>
+    <h2 class="section-title">Be first.<br><em>Lead the change.</em></h2>
+    <p>Our prototype run is limited to 25,000 units. Once they're gone, the next opportunity is the full product launch. Get on the list now and be one of the first to ditch plastic bags for good.</p>
+
+    <div class="cta-email-wrap">
+      <form action="https://moshergroupllc.us10.list-manage.com/subscribe/post?u=5a11aadc0e9f8998b861f2483&amp;id=732248216d&amp;f_id=00cc4ae4f0" method="post" id="mc-embedded-subscribe-form-2" name="mc-embedded-subscribe-form-2" class="validate email-form" target="_blank">
+        <input type="email" name="EMAIL" placeholder="Your email address" required />
+        <div aria-hidden="true" style="position: absolute; left: -5000px;">
+          <input type="text" name="b_5a11aadc0e9f8998b861f2483_732248216d" tabindex="-1" value="">
+        </div>
+        <button type="submit" name="subscribe" id="mc-embedded-subscribe-cta">Join the Waitlist</button>
+      </form>
+      <p class="cta-promise">🔒 No spam, ever. Unsubscribe anytime.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Go <span>Poddy</span></div>
+  <div class="footer-links">
+    <a href="/cdn-cgi/l/email-protection#95fcfbf3fad5f2fae5faf1f1ecbbf6faf8"><span class="__cf_email__" data-cfemail="40292e262f00272f302f2424396e232f2d">[email&#160;protected]</span></a>
+    <a href="tel:8334676339">(833) GOPODDY</a>
+    <a href="https://www.tiktok.com/@go.poddy" target="_blank">TikTok</a>
+    <a href="https://www.instagram.com/go.poddy" target="_blank">Instagram</a>
+    <a href="https://bsky.app/profile/gopoddy.bsky.social" target="_blank">Bluesky</a>
+  </div>
+  <div class="footer-copy">
+    © 2025 Mosher Group, LLC · Go Poddy · U.S. Patent #12297613 · All rights reserved.
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+<script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';}(jQuery));var $mcj = jQuery.noConflict(true);</script>
+<script>function
