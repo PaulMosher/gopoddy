@@ -9,12 +9,12 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: Georgia, serif;
-      background: #f5f0e8;
+      background: #FFFFFF;
       color: #222;
       min-height: 100vh;
     }
     header {
-      background: #1a3a2a;
+      background: #273A18;
       padding: 20px 24px;
       display: flex;
       align-items: center;
@@ -22,14 +22,14 @@
     }
     header a { text-decoration: none; }
     .logo-text { color: #f5f0e8; font-family: Georgia, serif; font-size: 1.4em; font-weight: bold; letter-spacing: 1px; }
-    .logo-text span { color: #8fbc6a; }
+    .logo-text span { color: #A3B18A; }
     nav a { color: #b7e4c7; font-family: Arial, sans-serif; font-size: 0.9em; text-decoration: none; margin-left: 24px; }
-    nav a:hover { color: #8fbc6a; }
+    nav a:hover { color: #A3B18A; }
     .hero {
-      background: #1a3a2a;
+      background: #273A18;
       padding: 60px 24px 48px;
       text-align: center;
-      border-bottom: 4px solid #8fbc6a;
+      border-bottom: 4px solid #A3B18A;
     }
     .hero h1 { color: #f5f0e8; font-size: 2.2em; margin-bottom: 12px; line-height: 1.3; }
     .hero p { color: #b7e4c7; font-family: Arial, sans-serif; font-size: 1em; max-width: 560px; margin: 0 auto; line-height: 1.7; }
@@ -40,7 +40,7 @@
       font-weight: bold;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #4a6b55;
+      color: #2D535C;
       margin-bottom: 24px;
     }
     .article-grid { display: flex; flex-direction: column; gap: 20px; }
@@ -56,10 +56,10 @@
       color: inherit;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
-    .article-card:hover { border-color: #8fbc6a; box-shadow: 0 2px 12px rgba(26,58,42,0.08); }
+    .article-card:hover { border-color: #A3B18A; box-shadow: 0 2px 12px rgba(26,58,42,0.08); }
     .article-number {
-      background: #1a3a2a;
-      color: #8fbc6a;
+      background: #273A18;
+      color: #A3B18A;
       font-family: Arial, sans-serif;
       font-size: 0.85em;
       font-weight: bold;
@@ -72,7 +72,7 @@
     .article-content { flex: 1; }
     .article-content h2 {
       font-size: 1.15em;
-      color: #1a3a2a;
+      color: #273A18;
       margin-bottom: 8px;
       line-height: 1.4;
     }
@@ -86,13 +86,13 @@
     .read-link {
       font-family: Arial, sans-serif;
       font-size: 0.85em;
-      color: #2c5c3f;
+      color: #2D535C;
       font-weight: bold;
       text-decoration: none;
     }
-    .article-card:hover .read-link { color: #8fbc6a; }
+    .article-card:hover .read-link { color: #A3B18A; }
     .tagline-section {
-      background: #1a3a2a;
+      background: #273A18;
       border-radius: 8px;
       padding: 36px 32px;
       text-align: center;
@@ -102,8 +102,8 @@
     .tagline-section p { color: #b7e4c7; font-family: Arial, sans-serif; font-size: 0.9em; margin-bottom: 20px; }
     .tagline-section a {
       display: inline-block;
-      background: #8fbc6a;
-      color: #1a3a2a;
+      background: #A3B18A;
+      color: #273A18;
       font-family: Arial, sans-serif;
       font-size: 0.9em;
       font-weight: bold;
@@ -121,7 +121,7 @@
       border-top: 1px solid #ddd;
       margin-top: 48px;
     }
-    footer a { color: #4a6b55; text-decoration: none; }
+    footer a { color: #2D535C; text-decoration: none; }
     @media (max-width: 560px) {
       .article-card { flex-direction: column; gap: 12px; }
       .hero h1 { font-size: 1.6em; }
@@ -131,10 +131,11 @@
 <body>
 
 <header>
-  <a href="https://gopoddy.com" class="logo-text">GO <span>Poddy</span></a>
+  <a href="/" class="logo-link" aria-label="Go Poddy Home"><img src="/Asset_3.svg" alt="Go Poddy" style="height:38px;width:auto;display:block;filter:brightness(0) invert(1);"></a>
   <nav>
-    <a href="https://gopoddy.com">Home</a>
-    <a href="https://gopoddy.com/blog/">Learn</a>
+    <a href="/">Home</a>
+    <a href="/blog/">Learn</a>
+    <a href="/how-it-works.html">How It Works</a>
   </nav>
 </header>
 
