@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="facebook-domain-verification" content="w770yc24vq8vg8lenbvql4gr8gv2x2" />
-  <meta name="google-site-verification" content="4fqBEz8RwL_Iq0TvvOHBkuqMd80zXH5pUt5MeTK6vQ" />
+<meta name="google-site-verification" content="4fqBEz8RwL_Iq0TvvOHBkuqMd80zXH5pUt5MeTK6vQ" />
 <title>Go Poddy — The Most Sustainable Bag Is the One You Never Use</title>
 <meta name="description" content="The Poddy is a reusable, patented dog waste retrieval and disposal system. No more plastic bags. No more waste. Every pup needs a Poddy.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,233 +12,211 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --green-deep:   #273A18;
-    --green-mid:    #A3B18A;
-    --green-bright: #A3B18A;
-    --terracotta:   #C15C52;
-    --teal:         #2D535C;
-    --cream:        #FFFFFF;
-    --warm-white:   #F8F8F8;
-    --text:         #1e2a10;
-    --text-mid:     #3d5a47;
+    --green-deep:  #273A18;
+    --green-sage:  #A3B18A;
+    --terracotta:  #C15C52;
+    --text:        #1e2a10;
+    --text-mid:    #4a5e38;
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--text);
-    font-size: 17px;
-    line-height: 1.7;
-  }
-
-  .site-nav{display:flex;justify-content:space-between;align-items:center;padding:14px 36px;background:#273A18;gap:16px;box-sizing:border-box;}
-  .nav-logo{flex-shrink:0;display:flex;align-items:center;text-decoration:none;}
-  .nav-logo img{height:52px;width:auto;display:block;}
-  .nav-right{display:flex;align-items:center;gap:0;flex-shrink:0;}
-  .nav-socials{display:flex;align-items:center;gap:14px;padding-right:20px;margin-right:20px;border-right:1px solid rgba(255,249,229,0.2);}
-  .nav-pages{display:flex;align-items:center;gap:20px;}
-  .nav-pages a{color:#FFF9E5;text-decoration:none;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.8;transition:opacity 0.2s;white-space:nowrap;}
-  .nav-pages a:hover{opacity:1;}
-  .nav-cta{background:#C15C52!important;padding:7px 14px!important;border-radius:3px;opacity:1!important;font-weight:500!important;}
-  .nav-cta:hover{background:#a84a41!important;}
-  .site-footer{background:#1a2610;padding:36px 36px 24px;}
-  .footer-inner{max-width:960px;margin:0 auto;}
-  .footer-top{display:flex;justify-content:space-between;align-items:center;gap:24px;padding-bottom:24px;border-bottom:1px solid rgba(255,249,229,0.1);flex-wrap:wrap;}
-  .footer-logo a{text-decoration:none;display:inline-flex;}
-  .footer-logo img{height:38px;width:auto;display:block;}
-  .footer-links{display:flex;gap:20px;flex-wrap:wrap;align-items:center;}
-  .footer-links a{color:rgba(255,249,229,0.55);text-decoration:none;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s;}
-  .footer-links a:hover{color:#A3B18A;}
-  .footer-socials{display:flex;align-items:center;gap:14px;}
-  .footer-bottom{padding-top:16px;text-align:center;color:rgba(255,249,229,0.28);font-family:'DM Sans',sans-serif;font-size:11px;line-height:1.8;}
-  .footer-bottom a{color:rgba(255,249,229,0.38);text-decoration:none;}
-  .footer-bottom a:hover{color:#A3B18A;}
-
-  .hero{background:var(--green-deep);min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:64px 24px;position:relative;overflow:hidden;}
-  .hero::before,.hero::after{content:'';position:absolute;border-radius:50%;background:rgba(163,177,138,0.07);}
-  .hero::before{width:600px;height:600px;top:-200px;right:-200px;}
-  .hero::after{width:400px;height:400px;bottom:-150px;left:-100px;}
-  .hero-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(255,249,229,0.08);border:1px solid rgba(255,249,229,0.15);border-radius:100px;padding:8px 20px;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,249,229,0.7);margin-bottom:36px;}
-  .hero-badge a{color:var(--green-bright);text-decoration:none;font-weight:500;}
-  .hero-headline{font-family:'Fraunces',serif;font-size:clamp(3.2rem,8vw,6.5rem);font-weight:700;line-height:1.08;color:#FFF9E5;margin-bottom:28px;max-width:800px;}
-  .hero-headline em{font-style:italic;color:var(--green-bright);}
-  .hero-sub{font-size:clamp(1rem,2vw,1.2rem);color:rgba(255,249,229,0.68);max-width:540px;margin-bottom:48px;line-height:1.65;}
-  .waitlist-form{display:flex;gap:0;max-width:480px;width:100%;border-radius:6px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.25);margin-bottom:16px;}
-  .waitlist-form input[type="email"]{flex:1;padding:16px 20px;border:none;font-family:'DM Sans',sans-serif;font-size:15px;background:#fff;color:var(--text);outline:none;}
-  .waitlist-form input[type="email"]::placeholder{color:#aaa;}
-  .waitlist-form button{padding:16px 24px;background:var(--terracotta);color:#FFF9E5;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.04em;cursor:pointer;white-space:nowrap;transition:background 0.2s;}
-  .waitlist-form button:hover{background:#a84a41;}
-  .form-note{font-size:12px;color:rgba(255,249,229,0.75);letter-spacing:0.03em;}
-  .scroll-hint{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,249,229,0.3);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;}
-  .scroll-hint::after{content:'';width:1px;height:40px;background:rgba(255,249,229,0.2);}
-  .stat-strip{background:var(--warm-white);padding:48px 24px;border-bottom:1px solid rgba(39,58,24,0.08);}
-  .stat-strip-inner{max-width:960px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;text-align:center;}
-  .stat-num{font-family:'Fraunces',serif;font-size:clamp(2.4rem,5vw,3.8rem);font-weight:700;color:var(--green-deep);line-height:1;margin-bottom:8px;}
-  .stat-label{font-size:13px;color:var(--text-mid);letter-spacing:0.04em;line-height:1.5;max-width:180px;margin:0 auto;}
-  .problem-section{padding:96px 24px;max-width:760px;margin:0 auto;text-align:center;}
-  .section-eyebrow{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:16px;font-weight:500;}
-  .section-title{font-family:'Fraunces',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;color:var(--green-deep);line-height:1.2;margin-bottom:24px;}
-  .section-title em{font-style:italic;color:var(--terracotta);}
-  .section-body{color:var(--text-mid);font-size:17px;line-height:1.75;max-width:620px;margin:0 auto;}
-  .how-strip{background:var(--green-deep);padding:80px 24px;}
-  .how-strip-inner{max-width:960px;margin:0 auto;}
-  .how-strip .section-eyebrow{color:var(--green-bright);}
-  .how-strip .section-title{color:#FFF9E5;margin-bottom:56px;}
-  .how-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:40px;}
-  .how-step-num{font-family:'Fraunces',serif;font-size:3rem;font-weight:700;color:var(--green-bright);opacity:0.4;line-height:1;margin-bottom:12px;}
-  .how-step h3{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:600;color:#FFF9E5;margin-bottom:8px;}
-  .how-step p{font-size:15px;color:rgba(255,249,229,0.65);line-height:1.65;}
-  .how-strip-cta{text-align:center;margin-top:56px;}
-  .how-strip-cta a{display:inline-block;color:var(--green-bright);text-decoration:none;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;border-bottom:1px solid rgba(163,177,138,0.4);padding-bottom:2px;transition:border-color 0.2s;}
-  .how-strip-cta a:hover{border-color:var(--green-bright);}
-  .impact-section{padding:96px 24px;background:var(--warm-white);}
-  .impact-inner{max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
-  .impact-text .section-title{text-align:left;}
-  .impact-text .section-body{text-align:left;margin:0 0 32px;}
-  .impact-stats{display:flex;flex-direction:column;gap:24px;}
-  .impact-stat{background:#fff;border-radius:10px;padding:24px 28px;border-left:4px solid var(--green-bright);}
-  .impact-stat-num{font-family:'Fraunces',serif;font-size:2rem;font-weight:700;color:var(--green-deep);line-height:1;margin-bottom:6px;}
-  .impact-stat-label{font-size:14px;color:var(--text-mid);line-height:1.5;}
-  .patent-section{background:var(--green-deep);padding:64px 24px;text-align:center;}
-  .patent-badge{display:inline-flex;align-items:center;gap:16px;background:rgba(255,249,229,0.06);border:1px solid rgba(255,249,229,0.12);border-radius:8px;padding:20px 36px;margin-bottom:20px;}
-  .patent-badge-icon{font-size:2rem;line-height:1;}
-  .patent-badge-title{font-family:'Fraunces',serif;font-size:1rem;color:#FFF9E5;font-weight:600;margin-bottom:2px;}
-  .patent-badge-num{font-size:12px;color:rgba(255,249,229,0.5);letter-spacing:0.06em;}
-  .patent-sub{color:rgba(255,249,229,0.55);font-size:13px;max-width:480px;margin:0 auto;}
-  .bottom-waitlist{padding:96px 24px;text-align:center;background:var(--warm-white);}
-  .bottom-waitlist .section-title{margin-bottom:16px;}
-  .bottom-waitlist .section-body{margin-bottom:40px;}
-  .bottom-waitlist .waitlist-form{margin:0 auto 16px;}
-  @media(max-width:700px){
-    .site-nav{padding:12px 16px;flex-wrap:wrap;}
-    .nav-logo img{height:40px;}
-    .nav-socials{display:none;}
-    .nav-pages{gap:12px;}
-    .site-footer{padding:28px 16px 20px;}
-    .impact-inner{grid-template-columns:1fr;}
-    .waitlist-form{flex-direction:column;border-radius:6px;}
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:#fff; color:var(--text); font-size:17px; line-height:1.7; }
+  .site-nav { display:flex; justify-content:flex-end; align-items:center; padding:16px 40px; background:#fff; border-bottom:1px solid rgba(39,58,24,0.08); gap:20px; position:sticky; top:0; z-index:100; }
+  .nav-socials { display:flex; align-items:center; gap:14px; padding-right:20px; margin-right:4px; border-right:1px solid rgba(39,58,24,0.15); }
+  .nav-pages { display:flex; align-items:center; gap:20px; }
+  .nav-pages a { color:var(--green-deep); text-decoration:none; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; opacity:0.7; transition:opacity 0.2s; }
+  .nav-pages a:hover { opacity:1; }
+  .nav-cta { background:var(--terracotta)!important; color:#fff!important; padding:8px 16px!important; border-radius:3px; opacity:1!important; font-weight:500!important; }
+  .nav-cta:hover { background:#a84a41!important; }
+  .hero { background:#fff; padding:72px 24px 64px; display:flex; flex-direction:column; align-items:center; text-align:center; }
+  .hero-logo { width:min(480px,80vw); margin-bottom:40px; }
+  .hero-logo svg { width:100%; height:auto; display:block; }
+  .hero-badge { display:inline-flex; align-items:center; gap:10px; background:rgba(39,58,24,0.05); border:1px solid rgba(39,58,24,0.12); border-radius:100px; padding:7px 20px; font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--text-mid); margin-bottom:28px; }
+  .hero-badge a { color:var(--terracotta); text-decoration:none; font-weight:500; }
+  .hero-sub { font-size:clamp(1rem,2vw,1.15rem); color:var(--text-mid); max-width:520px; margin-bottom:40px; line-height:1.7; }
+  .waitlist-form { display:flex; max-width:480px; width:100%; border-radius:6px; overflow:hidden; box-shadow:0 4px 24px rgba(39,58,24,0.12); margin-bottom:14px; border:1px solid rgba(39,58,24,0.1); }
+  .waitlist-form input[type="email"] { flex:1; padding:15px 20px; border:none; font-family:'DM Sans',sans-serif; font-size:15px; color:var(--text); outline:none; background:#fff; }
+  .waitlist-form input::placeholder { color:#9aaa90; }
+  .waitlist-form button { padding:15px 24px; background:var(--terracotta); color:#fff; border:none; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; white-space:nowrap; transition:background 0.2s; }
+  .waitlist-form button:hover { background:#a84a41; }
+  .form-note { font-size:12px; color:var(--text-mid); opacity:0.65; letter-spacing:0.02em; margin-bottom:28px; }
+  .hero-tagline { font-family:'Fraunces',serif; font-size:clamp(1.1rem,2.5vw,1.5rem); font-weight:400; color:var(--green-deep); font-style:italic; opacity:0.7; }
+  .stat-strip { background:#f5f5f0; padding:56px 24px; }
+  .stat-strip-inner { max-width:960px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:32px; text-align:center; }
+  .stat-num { font-family:'Fraunces',serif; font-size:clamp(2.4rem,5vw,3.6rem); font-weight:700; color:var(--green-deep); line-height:1; margin-bottom:8px; }
+  .stat-label { font-size:13px; color:var(--text-mid); line-height:1.5; max-width:180px; margin:0 auto; }
+  .section-eyebrow { font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--terracotta); margin-bottom:14px; font-weight:500; }
+  .section-title { font-family:'Fraunces',serif; font-size:clamp(1.8rem,4vw,3rem); font-weight:700; color:var(--green-deep); line-height:1.2; margin-bottom:20px; }
+  .section-title em { font-style:italic; color:var(--terracotta); }
+  .section-body { color:var(--text-mid); font-size:17px; line-height:1.75; max-width:620px; margin:0 auto; }
+  .problem-section { padding:88px 24px; max-width:760px; margin:0 auto; text-align:center; }
+  .how-strip { background:var(--green-deep); padding:80px 24px; }
+  .how-strip-inner { max-width:960px; margin:0 auto; }
+  .how-strip .section-eyebrow { color:var(--green-sage); }
+  .how-strip .section-title { color:#FFF9E5; margin-bottom:56px; }
+  .how-steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:40px; }
+  .how-step-num { font-family:'Fraunces',serif; font-size:3rem; font-weight:700; color:var(--green-sage); opacity:0.4; line-height:1; margin-bottom:12px; }
+  .how-step h3 { font-family:'Fraunces',serif; font-size:1.2rem; font-weight:600; color:#FFF9E5; margin-bottom:8px; }
+  .how-step p { font-size:15px; color:rgba(255,249,229,0.65); line-height:1.65; }
+  .how-strip-cta { text-align:center; margin-top:52px; }
+  .how-strip-cta a { color:var(--green-sage); text-decoration:none; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; border-bottom:1px solid rgba(163,177,138,0.4); padding-bottom:2px; }
+  .impact-section { padding:88px 24px; background:#f5f5f0; }
+  .impact-inner { max-width:960px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
+  .impact-text .section-title,.impact-text .section-body { text-align:left; margin-left:0; }
+  .impact-stats { display:flex; flex-direction:column; gap:20px; }
+  .impact-stat { background:#fff; border-radius:10px; padding:22px 26px; border-left:4px solid var(--green-sage); }
+  .impact-stat-num { font-family:'Fraunces',serif; font-size:1.9rem; font-weight:700; color:var(--green-deep); line-height:1; margin-bottom:5px; }
+  .impact-stat-label { font-size:14px; color:var(--text-mid); line-height:1.5; }
+  .patent-section { background:var(--green-deep); padding:60px 24px; text-align:center; }
+  .patent-badge { display:inline-flex; align-items:center; gap:16px; background:rgba(255,249,229,0.06); border:1px solid rgba(255,249,229,0.12); border-radius:8px; padding:18px 32px; margin-bottom:16px; }
+  .patent-badge-title { font-family:'Fraunces',serif; font-size:1rem; color:#FFF9E5; font-weight:600; margin-bottom:3px; }
+  .patent-badge-num { font-size:12px; color:rgba(255,249,229,0.5); letter-spacing:0.06em; }
+  .patent-sub { color:rgba(255,249,229,0.5); font-size:13px; max-width:480px; margin:0 auto; }
+  .bottom-waitlist { padding:88px 24px; text-align:center; background:#fff; }
+  .bottom-waitlist .section-body { margin-bottom:36px; }
+  .bottom-waitlist .waitlist-form { margin:0 auto 12px; }
+  .bottom-waitlist .form-note { color:var(--text-mid); opacity:0.6; }
+  .site-footer { background:#1a2610; padding:36px 40px 24px; }
+  .footer-inner { max-width:960px; margin:0 auto; }
+  .footer-top { display:flex; justify-content:space-between; align-items:center; gap:24px; padding-bottom:22px; border-bottom:1px solid rgba(255,249,229,0.1); flex-wrap:wrap; }
+  .footer-logo svg { height:36px; width:auto; display:block; }
+  .footer-links { display:flex; gap:20px; flex-wrap:wrap; align-items:center; }
+  .footer-links a { color:rgba(255,249,229,0.5); text-decoration:none; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; transition:color 0.2s; }
+  .footer-links a:hover { color:var(--green-sage); }
+  .footer-socials { display:flex; align-items:center; gap:12px; }
+  .footer-socials a { opacity:0.6; transition:opacity 0.2s; }
+  .footer-socials a:hover { opacity:1; }
+  .footer-bottom { padding-top:16px; text-align:center; color:rgba(255,249,229,0.25); font-size:11px; line-height:1.8; }
+  @media(max-width:700px) {
+    .site-nav { padding:12px 20px; }
+    .nav-socials { display:none; }
+    .hero { padding:48px 20px 48px; }
+    .hero-logo { width:min(320px,85vw); }
+    .impact-inner { grid-template-columns:1fr; gap:40px; }
+    .site-footer { padding:28px 20px 20px; }
   }
 </style>
 </head>
 <body>
 
 <nav class="site-nav">
-  <a href="/" class="nav-logo" aria-label="Go Poddy Home">
-    <img src="/Asset_7.svg" alt="the Poddy — Beyond the bag">
-  </a>
-  <div class="nav-right">
-    <div class="nav-socials">
-          <a href="https://www.instagram.com/go.poddy" target="_blank" rel="noopener" aria-label="Instagram" style="display:inline-flex;align-items:center;justify-content:center;opacity:0.75;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-          <a href="https://www.tiktok.com/@go.poddy" target="_blank" rel="noopener" aria-label="TikTok" style="display:inline-flex;align-items:center;justify-content:center;opacity:0.75;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
-          <a href="https://bsky.app/profile/gopoddy.bsky.social" target="_blank" rel="noopener" aria-label="Bluesky" style="display:inline-flex;align-items:center;justify-content:center;opacity:0.75;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg></a>
-          <a href="https://www.youtube.com/@gopoddyscooper" target="_blank" rel="noopener" aria-label="YouTube" style="display:inline-flex;align-items:center;justify-content:center;opacity:0.75;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-          <a href="https://www.linkedin.com/in/paulmosher" target="_blank" rel="noopener" aria-label="LinkedIn" style="display:inline-flex;align-items:center;justify-content:center;opacity:0.75;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
-    </div>
-    <div class="nav-pages">
-      <a href="/blog/">Learn</a>
-      <a href="/how-it-works.html">How It Works</a>
-      <a href="#waitlist" class="nav-cta">Join Waitlist</a>
-    </div>
+  <div class="nav-socials">
+          <a href="https://www.instagram.com/go.poddy" target="_blank" rel="noopener" aria-label="Instagram" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#273A18;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="https://www.tiktok.com/@go.poddy" target="_blank" rel="noopener" aria-label="TikTok" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#273A18;"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
+          <a href="https://bsky.app/profile/gopoddy.bsky.social" target="_blank" rel="noopener" aria-label="Bluesky" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#273A18;"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg></a>
+          <a href="https://www.youtube.com/@gopoddyscooper" target="_blank" rel="noopener" aria-label="YouTube" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#273A18;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="https://www.linkedin.com/in/paulmosher" target="_blank" rel="noopener" aria-label="LinkedIn" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#273A18;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+  </div>
+  <div class="nav-pages">
+    <a href="/blog/">Learn</a>
+    <a href="/how-it-works.html">How It Works</a>
+    <a href="#waitlist" class="nav-cta">Join Waitlist</a>
   </div>
 </nav>
 
-<section class="hero">
-  <div class="hero-badge">
-    Coming Soon &nbsp;·&nbsp; <a href="#waitlist">Join the Waitlist</a>
-  </div>
-  <h1 class="hero-headline">
-    Every pup<br>needs a <em>Poddy.</em>
-  </h1>
-  <p class="hero-sub">A reusable, odor-proof, and eco-friendly way to pick up after your dog — just as easy as a bag, only better. No more plastic. No more waste.</p>
-  <div class="waitlist-form" id="waitlist">
+<!-- HERO: logo large + centered, then all content on white -->
+<section class="hero" id="waitlist">
+  <div class="hero-badge">Coming Soon &nbsp;&middot;&nbsp; <a href="#waitlist">Join the Waitlist</a></div>
+  <div class="hero-logo"><img src="/FinalMasterLogo.svg" alt="the Poddy — Beyond the bag" style="width:100%;height:auto;display:block;"></div>
+  <p class="hero-sub">A reusable, odor-proof, and eco-friendly way to pick up after your dog &mdash; just as easy as a bag, only better. No more plastic. No more waste.</p>
+  <div class="waitlist-form">
     <input type="email" placeholder="Your email address" aria-label="Email address">
     <button type="submit">Notify Me</button>
   </div>
-  <p class="form-note">🔒 No spam, ever. Be first to know when we launch.</p>
-  <div class="scroll-hint">Scroll</div>
+  <p class="form-note">&#128274; No spam, ever. Be first to know when we launch.</p>
+  <p class="hero-tagline">Every pup needs a Poddy.</p>
 </section>
 
+<!-- STAT STRIP -->
 <section class="stat-strip">
   <div class="stat-strip-inner">
-    <div class="stat-item"><div class="stat-num">27B</div><div class="stat-label">plastic bags used by U.S. dog owners every year</div></div>
-    <div class="stat-item"><div class="stat-num">90M</div><div class="stat-label">dogs in the United States</div></div>
-    <div class="stat-item"><div class="stat-num">365</div><div class="stat-label">bags replaced by one Poddy per year</div></div>
-    <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">plastic bags needed with the Poddy</div></div>
+    <div><div class="stat-num">27B</div><div class="stat-label">plastic bags used by U.S. dog owners every year</div></div>
+    <div><div class="stat-num">90M</div><div class="stat-label">dogs in the United States</div></div>
+    <div><div class="stat-num">365</div><div class="stat-label">bags replaced by one Poddy per year</div></div>
+    <div><div class="stat-num">0</div><div class="stat-label">plastic bags needed with the Poddy</div></div>
   </div>
 </section>
 
+<!-- THE PROBLEM -->
 <section class="problem-section">
-  <p class="section-eyebrow">The Problem</p>
   <h2 class="section-title">The most sustainable bag<br>is the one you <em>never use.</em></h2>
-  <p class="section-body">U.S. dog owners use approximately 27 billion plastic bags every year. They end up in landfills, waterways, and oceans — and they don't biodegrade. Biodegradable alternatives don't either, not in the anaerobic conditions of a landfill. The Poddy eliminates the bag entirely.</p>
+  <p class="section-eyebrow" style="margin-bottom:20px;margin-top:4px;">The Problem</p>
+  <p class="section-body">U.S. dog owners use approximately 27 billion plastic bags every year. They end up in landfills, waterways, and oceans &mdash; and they don&rsquo;t biodegrade. Biodegradable alternatives don&rsquo;t either, not in the anaerobic conditions of a landfill. The Poddy eliminates the bag entirely.</p>
 </section>
+
+<!-- HOW IT WORKS -->
 <section class="how-strip">
   <div class="how-strip-inner">
     <p class="section-eyebrow" style="text-align:center;">How It Works</p>
     <h2 class="section-title" style="text-align:center;">Three steps.<br>No plastic. No smell.</h2>
     <div class="how-steps">
-      <div class="how-step"><div class="how-step-num">1</div><h3>Scoop</h3><p>The built-in claw retrieves waste cleanly — no hand contact, no thin bag between you and the problem.</p></div>
-      <div class="how-step"><div class="how-step-num">2</div><h3>Seal</h3><p>The odor-proof lid locks everything inside. Carry it home clipped to your belt, leash, or bag. Nobody knows it’s there.</p></div>
-      <div class="how-step"><div class="how-step-num">3</div><h3>Empty</h3><p>Tip the contents into the toilet — the EPA-recommended disposal method. Rinse. Done. Ready for the next walk.</p></div>
+      <div class="how-step"><div class="how-step-num">1</div><h3>Scoop</h3><p>The built-in claw retrieves waste cleanly &mdash; no hand contact, no thin bag between you and the problem.</p></div>
+      <div class="how-step"><div class="how-step-num">2</div><h3>Seal</h3><p>The odor-proof lid locks everything inside. Carry it home clipped to your belt, leash, or bag. Nobody knows it&rsquo;s there.</p></div>
+      <div class="how-step"><div class="how-step-num">3</div><h3>Empty</h3><p>Tip the contents into the toilet &mdash; the EPA-recommended method. Rinse. Done. Ready for the next walk.</p></div>
     </div>
-    <div class="how-strip-cta"><a href="/how-it-works.html">Full step-by-step guide →</a></div>
+    <div class="how-strip-cta"><a href="/how-it-works.html">Full step-by-step guide &rarr;</a></div>
   </div>
 </section>
 
+<!-- IMPACT -->
 <section class="impact-section">
   <div class="impact-inner">
     <div class="impact-text">
       <p class="section-eyebrow">The Impact</p>
       <h2 class="section-title">Small action.<br>Massive scale.</h2>
-      <p class="section-body">One Poddy replaces 365 bags per year. One dog’s lifetime replaces 3,650 bags. At 1% adoption across U.S. dog owners, 657 million bags are eliminated annually. Dog waste properly routed to treatment plants could generate over $1.4 billion in biogas and fertilizer value — currently going entirely to landfill.</p>
+      <p class="section-body">One Poddy replaces 365 bags per year. At 1% adoption across U.S. dog owners, 657 million bags are eliminated annually. Dog waste properly routed to treatment plants could generate over $1.4 billion in biogas and fertilizer value &mdash; currently going entirely to landfill.</p>
     </div>
     <div class="impact-stats">
-      <div class="impact-stat"><div class="impact-stat-num">3,650</div><div class="impact-stat-label">bags eliminated over one dog’s lifetime with a single Poddy</div></div>
-      <div class="impact-stat"><div class="impact-stat-num">657M</div><div class="impact-stat-label">bags/year eliminated if just 1% of U.S. dog owners switched</div></div>
-      <div class="impact-stat"><div class="impact-stat-num">$1.4B</div><div class="impact-stat-label">in annual biogas &amp; fertilizer value currently going to landfill</div></div>
+      <div class="impact-stat"><div class="impact-stat-num">3,650</div><div class="impact-stat-label">bags eliminated over one dog&rsquo;s lifetime</div></div>
+      <div class="impact-stat"><div class="impact-stat-num">657M</div><div class="impact-stat-label">bags/year eliminated at just 1% adoption</div></div>
+      <div class="impact-stat"><div class="impact-stat-num">$1.4B</div><div class="impact-stat-label">in annual biogas &amp; fertilizer value going to landfill</div></div>
     </div>
   </div>
 </section>
 
+<!-- PATENT -->
 <section class="patent-section">
   <div class="patent-badge">
-    <div class="patent-badge-icon">⚖️</div>
-    <div class="patent-badge-text">
+    <div style="font-size:1.8rem;">&#9878;&#65039;</div>
+    <div>
       <div class="patent-badge-title">U.S. Utility Patent Granted</div>
-      <div class="patent-badge-num">Patent No. 12,297,613 B2 — Granted May 13, 2025</div>
+      <div class="patent-badge-num">Patent No. 12,297,613 B2 &mdash; Granted May 13, 2025</div>
     </div>
   </div>
   <p class="patent-sub">6 years in the making. One patent. One dog. One great idea.</p>
 </section>
 
-<section class="bottom-waitlist" id="waitlist-bottom">
+<!-- BOTTOM WAITLIST -->
+<section class="bottom-waitlist">
   <p class="section-eyebrow">Be First</p>
   <h2 class="section-title">Ready to go beyond the bag?</h2>
-  <p class="section-body">Join the waitlist. We’ll notify you the moment the Kickstarter goes live — with early backer pricing and first access.</p>
+  <p class="section-body">Join the waitlist. We&rsquo;ll notify you the moment the Kickstarter goes live &mdash; with early backer pricing and first access.</p>
   <div class="waitlist-form">
     <input type="email" placeholder="Your email address" aria-label="Email address">
     <button type="submit">Notify Me</button>
   </div>
-  <p class="form-note">🔒 No spam, ever. Be first to know when we launch.</p>
+  <p class="form-note">&#128274; No spam, ever. Be first to know when we launch.</p>
 </section>
 
+<!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-top">
-      <div class="footer-logo"><a href="/" aria-label="Go Poddy Home"><img src="/Asset_7.svg" alt="the Poddy — Beyond the bag"></a></div>
-      <div class="footer-links"><a href="/">Home</a><a href="/blog/">Learn</a><a href="/how-it-works.html">How It Works</a></div>
+      <div class="footer-logo"><img src="/FinalMasterLogo.svg" alt="the Poddy — Beyond the bag" style="width:100%;height:auto;display:block;"></div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/blog/">Learn</a>
+        <a href="/how-it-works.html">How It Works</a>
+      </div>
       <div class="footer-socials">
-          <a href="https://www.instagram.com/go.poddy" target="_blank" rel="noopener" aria-label="Instagram" style="display:inline-flex;align-items:center;justify-content:center;opacity:0.75;transition:opacity 0.2s;text-decoration:none;"><svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
-          <a href="https://www.tiktok.com/@go.poddy" target="_blank" rel="noopener" aria-label="TikTok" style="display:inline-flex;align-items:center;justify-content:center;opacity:0.75;transition:opacity 0.2s;text-decoration:none;"><svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
-          <a href="https://bsky.app/profile/gopoddy.bsky.social" target="_blank" rel="noopener" aria-label="Bluesky" style="display:inline-flex;align-items:center;justify-content:center;opacity:0.75;transition:opacity 0.2s;text-decoration:none;"><svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg></a>
-          <a href="https://www.youtube.com/@gopoddyscooper" target="_blank" rel="noopener" aria-label="YouTube" style="display:inline-flex;align-items:center;justify-content:center;opacity:0.75;transition:opacity 0.2s;text-decoration:none;"><svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
-          <a href="https://www.linkedin.com/in/paulmosher" target="_blank" rel="noopener" aria-label="LinkedIn" style="display:inline-flex;align-items:center;justify-content:center;opacity:0.75;transition:opacity 0.2s;text-decoration:none;"><svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+          <a href="https://www.instagram.com/go.poddy" target="_blank" rel="noopener" aria-label="Instagram" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="19" height="19" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="https://www.tiktok.com/@go.poddy" target="_blank" rel="noopener" aria-label="TikTok" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="19" height="19" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
+          <a href="https://bsky.app/profile/gopoddy.bsky.social" target="_blank" rel="noopener" aria-label="Bluesky" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="19" height="19" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg></a>
+          <a href="https://www.youtube.com/@gopoddyscooper" target="_blank" rel="noopener" aria-label="YouTube" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="19" height="19" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="https://www.linkedin.com/in/paulmosher" target="_blank" rel="noopener" aria-label="LinkedIn" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="19" height="19" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>gopoddy.com &nbsp;&middot;&nbsp; U.S. Patent No. 12,297,613 B2 &nbsp;&middot;&nbsp; &copy; 2026 Mosher Group, LLC &nbsp;&middot;&nbsp; Pups. People. Planet.</p>
+      gopoddy.com &nbsp;&middot;&nbsp; U.S. Patent No. 12,297,613 B2 &nbsp;&middot;&nbsp; &copy; 2026 Mosher Group, LLC &nbsp;&middot;&nbsp; Pups. People. Planet.
     </div>
   </div>
 </footer>
