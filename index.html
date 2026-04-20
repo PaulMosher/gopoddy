@@ -52,12 +52,12 @@
 
   /* HERO — white, centered, logo large. SVG has internal whitespace, so we clip it. */
   .hero {
-    background:#fff; padding:20px 24px 36px;
+    background:#fff; padding:0 24px 20px;
     display:flex; flex-direction:column; align-items:center; text-align:center;
   }
   .hero-logo {
-    width:min(1056px, 95vw);
-    margin-top:-80px; margin-bottom:-80px;
+    width:min(1280px, 98vw);
+    margin-top:-140px; margin-bottom:-140px;
     overflow:hidden;
     pointer-events:none;
   }
@@ -72,7 +72,7 @@
   .hero-badge a { color:var(--terracotta); text-decoration:none; font-weight:500; }
   .hero-sub {
     font-size:clamp(1.15rem,2.2vw,1.4rem); color:var(--text-mid);
-    max-width:600px; margin-bottom:20px; line-height:1.6;
+    max-width:600px; margin-bottom:16px; line-height:1.6;
   }
   .waitlist-form {
     display:flex; max-width:480px; width:100%; border-radius:6px;
@@ -91,7 +91,7 @@
   }
   .waitlist-form button:hover { background:#a84a41; }
   .form-note {
-    font-size:12px; color:var(--text-mid); opacity:0.65; letter-spacing:0.02em; margin-bottom:14px;
+    font-size:12px; color:var(--text-mid); opacity:0.65; letter-spacing:0.02em; margin-bottom:10px;
   }
   .hero-tagline {
     font-family:'Fraunces',serif; font-size:clamp(1.6rem,3.5vw,2.2rem);
@@ -184,7 +184,7 @@
     .site-nav { padding:12px 20px; }
     .nav-socials { display:none; }
     .hero { padding:24px 20px 36px; }
-    .hero-logo { width:min(500px,95vw); margin-top:-40px; margin-bottom:-40px; }
+    .hero-logo { width:min(600px,98vw); margin-top:-60px; margin-bottom:-60px; }
     .impact-inner { grid-template-columns:1fr; gap:40px; }
     .site-footer { padding:28px 20px 20px; }
   }
