@@ -76,78 +76,78 @@
 
   /* PARTS */
   .part {
-    padding:72px 24px;
+    padding:40px 24px;
     max-width:860px;
     margin:0 auto;
   }
   .part-alt { background:#f5f5f0; max-width:100%; }
   .part-alt .part-inner { max-width:860px; margin:0 auto; padding:0 24px; }
-  .part-header { text-align:center; margin-bottom:48px; }
+  .part-header { text-align:center; margin-bottom:28px; }
   .part-label {
     font-size:11px; letter-spacing:0.2em; text-transform:uppercase;
-    color:var(--terracotta); margin-bottom:12px; font-weight:500;
+    color:var(--terracotta); margin-bottom:8px; font-weight:500;
   }
   .part-title {
-    font-family:'Fraunces',serif; font-size:clamp(1.9rem,4vw,2.8rem);
-    font-weight:700; color:var(--green-deep); line-height:1.2; margin-bottom:18px;
+    font-family:'Fraunces',serif; font-size:clamp(1.6rem,3.5vw,2.2rem);
+    font-weight:700; color:var(--green-deep); line-height:1.2; margin-bottom:12px;
   }
   .part-title em { font-style:italic; color:var(--terracotta); }
   .part-intro {
-    color:var(--text-mid); font-size:17px; line-height:1.7;
+    color:var(--text-mid); font-size:16px; line-height:1.6;
     max-width:620px; margin:0 auto;
   }
 
   /* STEPS */
   .steps { display:flex; flex-direction:column; gap:0; }
   .step {
-    display:grid; grid-template-columns:80px 1fr; gap:0 32px;
-    padding:32px 0; border-bottom:1px solid rgba(39,58,24,0.1);
+    display:grid; grid-template-columns:64px 1fr; gap:0 24px;
+    padding:20px 0; border-bottom:1px solid rgba(39,58,24,0.1);
   }
   .step:last-child { border-bottom:none; }
   .part-alt .step { border-bottom-color:rgba(39,58,24,0.1); }
   .step-number {
-    font-family:'Fraunces',serif; font-size:3rem; font-weight:700;
+    font-family:'Fraunces',serif; font-size:2.4rem; font-weight:700;
     color:var(--green-sage); line-height:1; opacity:0.75;
   }
   .step-tag {
     display:inline-block; font-size:10px; letter-spacing:0.14em;
     text-transform:uppercase; color:var(--terracotta); font-weight:600;
-    margin-bottom:10px;
+    margin-bottom:6px;
   }
   .step-content h3 {
-    font-family:'Fraunces',serif; font-size:clamp(1.25rem,2.2vw,1.55rem);
-    font-weight:600; color:var(--green-deep); line-height:1.3; margin-bottom:12px;
+    font-family:'Fraunces',serif; font-size:clamp(1.1rem,2vw,1.35rem);
+    font-weight:600; color:var(--green-deep); line-height:1.3; margin-bottom:8px;
   }
   .step-content p {
-    color:var(--text-mid); font-size:16px; line-height:1.7; margin-bottom:8px;
+    color:var(--text-mid); font-size:15px; line-height:1.65; margin-bottom:6px;
   }
   .step-content p:last-child { margin-bottom:0; }
 
   /* CALLOUT (green band) */
   .callout-band {
-    background:var(--green-deep); padding:64px 24px; text-align:center;
+    background:var(--green-deep); padding:36px 24px; text-align:center;
   }
   .callout-inner { max-width:720px; margin:0 auto; }
   .callout-eyebrow {
     font-size:11px; letter-spacing:0.2em; text-transform:uppercase;
-    color:var(--green-sage); margin-bottom:14px; font-weight:500;
+    color:var(--green-sage); margin-bottom:10px; font-weight:500;
   }
   .callout-band h3 {
-    font-family:'Fraunces',serif; font-size:clamp(1.5rem,3vw,2.1rem);
-    font-weight:700; color:#FFF9E5; line-height:1.25; margin-bottom:20px;
+    font-family:'Fraunces',serif; font-size:clamp(1.3rem,2.5vw,1.7rem);
+    font-weight:700; color:#FFF9E5; line-height:1.25; margin-bottom:14px;
   }
   .callout-band p {
-    color:rgba(255,249,229,0.75); font-size:16px; line-height:1.7;
+    color:rgba(255,249,229,0.75); font-size:15px; line-height:1.65;
     max-width:600px; margin:0 auto;
   }
   .callout-highlight {
     border-left:3px solid var(--green-sage);
-    padding:14px 0 14px 24px; margin:28px auto 0;
+    padding:10px 0 10px 20px; margin:20px auto 0;
     max-width:540px; text-align:left;
   }
   .callout-highlight p {
     font-family:'Fraunces',serif; font-style:italic;
-    color:#FFF9E5; font-size:17px; line-height:1.6;
+    color:#FFF9E5; font-size:16px; line-height:1.5;
   }
 
   /* STOOL NOTE */
@@ -207,7 +207,7 @@
     .site-nav { padding:12px 20px; }
     .nav-socials { display:none; }
     .page-hero { padding:40px 20px 32px; }
-    .part { padding:56px 20px; }
+    .part { padding:28px 20px; }
     .part-alt .part-inner { padding:0 20px; }
     .step { grid-template-columns:50px 1fr; gap:0 18px; padding:26px 0; }
     .step-number { font-size:2.2rem; }
@@ -247,34 +247,16 @@
     <p class="part-label">Part One</p>
     <h2 class="part-title">On the Walk</h2>
     <div class="section-divider"></div>
-    <p class="part-intro">Three steps. No bag to remember. One device handles the whole walk.</p>
+    <p class="part-intro">One step. No bag to remember. The whole walk covered.</p>
   </div>
 
   <div class="steps">
     <div class="step">
       <div class="step-number">1</div>
       <div class="step-content">
-        <span class="step-tag">Clip &amp; Go</span>
-        <h3>Grab the Poddy. That's it.</h3>
-        <p>The Poddy clips to your belt, leash, or bag. No bag to remember, no running out, no counting. One device handles the whole walk &mdash; two poops, three poops, whatever the morning brings.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-number">2</div>
-      <div class="step-content">
-        <span class="step-tag">Scoop</span>
-        <h3>Open, scoop, seal.</h3>
-        <p>The built-in claw retrieves the waste &mdash; no hand contact, no thin plastic between you and the problem. The flared opening makes transfer clean. Seal the lid and you're done. The odor-proof seal locks everything inside until you get home.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-number">3</div>
-      <div class="step-content">
-        <span class="step-tag">Keep Walking</span>
-        <h3>No bag to carry. No trash can to find.</h3>
-        <p>The sealed Poddy clips back to your belt. It doesn't swing, smell, or remind you it's there. Go further. Take the trail you usually skip because of the "what if." The Poddy goes wherever you and your dog go.</p>
+        <span class="step-tag">The Walk</span>
+        <h3>Clip it on. Scoop and seal. Keep going.</h3>
+        <p>The Poddy clips to your belt, leash, or bag before you leave. When your dog goes, waste is easy to retrieve using the scooper integrated to the lid &mdash; no hand contact, no thin plastic between you and the problem. The flared opening makes transfer clean. Seal the lid and clip it back on. The odor-proof seal locks everything inside. It's more secure than a flimsy bag and it won't smell. One device handles the whole walk &mdash; two stops, three stops, whatever the morning brings. No bag to remember. No trash can to find. Go further.</p>
       </div>
     </div>
   </div>
@@ -296,35 +278,16 @@
       <p class="part-label">Part Two</p>
       <h2 class="part-title">Getting Home &mdash; The Empty</h2>
       <div class="section-divider"></div>
-      <p class="part-intro">Three steps. Straight to the toilet. Under a minute.</p>
+      <p class="part-intro">One step. Straight to the toilet. Under a minute.</p>
     </div>
 
     <div class="steps">
       <div class="step">
-        <div class="step-number">4</div>
-        <div class="step-content">
-          <span class="step-tag">Setup</span>
-          <h3>Turn on the bathroom light and fan.</h3>
-          <p>Flip on the fan timer before you start. Open the lid and seat. Two seconds of prep that make everything easier.</p>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="step-number">5</div>
-        <div class="step-content">
-          <span class="step-tag">Claw First</span>
-          <h3>Rest the claw on the toilet rim.</h3>
-          <p>Open the Poddy and use the built-in rim rest to set the claw section on the edge of the toilet bowl. A quick rinse in the clean toilet water takes care of any residue on the claw &mdash; no sink needed.</p>
-        </div>
-      </div>
-
-      <div class="step">
-        <div class="step-number">6</div>
+        <div class="step-number">2</div>
         <div class="step-content">
           <span class="step-tag">The Empty</span>
-          <h3>Tilt toward the bowl. Don't aim for the water.</h3>
-          <p>Grab a couple squares of toilet paper in one hand. Slowly tilt the Poddy over the toilet. Aim for the porcelain, not the water &mdash; this avoids splash. You can lay a little toilet paper in the bowl first if you want an extra buffer.</p>
-          <p>While the container is still tilted, use your toilet paper to wipe the rim &mdash; working from the underside upward. Turn the container upright, toss the tissue, flush.</p>
+          <h3>Home. Empty. Done.</h3>
+          <p>Once home, the Poddy can be emptied into a toilet (EPA preferred method for biological waste), a not-for-food composting pile, or the trash (least preferred). Seal the lid after emptying and the Poddy is ready for the next walk.</p>
         </div>
       </div>
     </div>
@@ -349,41 +312,29 @@
     <p class="part-label">Part Three</p>
     <h2 class="part-title">The Rinse &mdash; <em>Only</em> When You Need It</h2>
     <div class="section-divider"></div>
-    <p class="part-intro">Three steps. After a messier walk, here's the full rinse process &mdash; about three minutes of actual effort.</p>
+    <p class="part-intro">Most of the time you won't need this. When you do — it's about three minutes.</p>
   </div>
 
   <div class="steps">
     <div class="step">
-      <div class="step-number">7</div>
+      <div class="step-number">3</div>
       <div class="step-content">
-        <span class="step-tag">Quick Check</span>
-        <h3>If the inside looks decent &mdash; just seal it.</h3>
-        <p>The odor-proof seal means you don't need to clean after every walk. Seal the lid and the Poddy is ready for the next outing. This is the most common outcome after a firm-stool walk.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-number">8</div>
-      <div class="step-content">
-        <span class="step-tag">Sink Rinse</span>
-        <h3>Let the water do the work.</h3>
-        <p>With the claw still resting on the toilet rim, run water from the sink faucet down the walls of the container while you slowly rotate it. Cold water is fine &mdash; and better for the planet. The water rinses the walls as it flows. Leave enough water in the container that when you seal the lid, the claw is submerged too &mdash; that way it soaks clean alongside everything else. Never dump the rinse water in the sink.</p>
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-number">9</div>
-      <div class="step-content">
-        <span class="step-tag">Passive Soak</span>
-        <h3>Seal it. Walk away. Flush later.</h3>
-        <p>Sealing the lid is what traps the smell inside. Set the Poddy behind the toilet and leave it. If you want to conserve water, add the contents to the toilet during your next bathroom visit &mdash; everything will have loosened and settled by then. Otherwise, empty and flush whenever it's convenient. The Poddy cleaned itself while you went about your day.</p>
+        <span class="step-tag">The Rinse — If It's Needed</span>
+        <h3>Most of the time, just seal it and go.</h3>
+        <p>If your dog's waste is optimal, the inside of the Poddy will look fine. Seal the lid and it's ready for the next outing &mdash; the odor-proof seal handles the rest. This is the most common outcome.</p>
+        <p>If your dog's waste is messier, run water from the sink faucet down the walls of the container while you slowly rotate it. Leave enough water inside that when you seal the lid, the claw is submerged &mdash; it soaks clean alongside everything else. Set the Poddy behind the toilet and walk away. Empty it during your next bathroom visit, when everything has loosened and the water does the flushing for you. Never dump the rinse water in the sink. The Poddy cleaned itself while you went about your day.</p>
       </div>
     </div>
   </div>
 
   <div class="stool-note">
+    <h4>A note on emptying into a toilet</h4>
+    <p>Flip on the bathroom fan before you start. Open the Poddy and rest the built-in claw on the toilet rim &mdash; a quick rinse in the clean toilet water takes care of any residue on the claw. Grab a couple squares of toilet paper, slowly tilt the Poddy over the bowl, and aim for the porcelain, not the water, to avoid splash. While the container is still tilted, wipe the rim from the underside upward as you bring it back to level. Toss the tissue. Flush. The outside stays clean.</p>
+  </div>
+
+  <div class="stool-note" style="margin-top:16px">
     <h4>A note on stool quality</h4>
-    <p>Firm waste (Purina Fecal Score 2&ndash;3) leaves little to no residue and rarely requires anything more than a seal and you're done. If your dog consistently has loose stools, the Poddy still works &mdash; but consider your dog's diet. Stool quality directly affects the cleanup experience, and a simple food adjustment often makes a significant difference.</p>
+    <p>Optimal waste (Purina Fecal Score 2&ndash;3) leaves little to no residue and rarely requires anything more than a seal and you're done. If your dog consistently has looser stools, the Poddy still works &mdash; but consider your dog's diet. Stool quality directly affects the cleanup experience, and a simple food adjustment often makes a significant difference.</p>
   </div>
 </section>
 
