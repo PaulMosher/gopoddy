@@ -48,20 +48,21 @@
 
   /* PAGE HERO */
   .lca-hero {
-    background:var(--green-deep); padding:64px 24px 56px; text-align:center;
+    background:#fff; padding:56px 24px 40px;
+    text-align:center; max-width:840px; margin:0 auto;
   }
   .lca-eyebrow {
     font-size:11px; letter-spacing:0.2em; text-transform:uppercase;
-    color:var(--green-sage); margin-bottom:16px; font-weight:500;
+    color:var(--terracotta); margin-bottom:18px; font-weight:500;
   }
   .lca-hero h1 {
-    font-family:'Fraunces',serif; font-size:clamp(2rem,4.5vw,3rem);
-    font-weight:700; color:#FFF9E5; line-height:1.2; margin-bottom:20px;
+    font-family:'Fraunces',serif; font-size:clamp(2.2rem,5vw,3.6rem);
+    font-weight:700; color:var(--green-deep); line-height:1.15; margin-bottom:22px;
   }
   .lca-hero h1 em { font-style:italic; color:var(--terracotta); }
   .lca-hero p {
-    color:rgba(255,249,229,0.7); font-size:clamp(1rem,2vw,1.15rem);
-    max-width:560px; margin:0 auto; line-height:1.65;
+    font-size:clamp(1.05rem,1.8vw,1.25rem); color:var(--text-mid);
+    max-width:640px; margin:0 auto; line-height:1.65;
   }
 
   /* TOOL WRAPPER */
@@ -263,6 +264,7 @@
   @media(max-width:700px) {
     .site-nav { padding:12px 20px; }
     .nav-socials { display:none; }
+    .lca-hero { padding:40px 20px 32px; }
     .controls-grid { grid-template-columns:1fr; }
     .card-grid-4, .card-grid-5 { grid-template-columns:repeat(2,1fr); }
     .card-grid-3 { grid-template-columns:1fr; }
