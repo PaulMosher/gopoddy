@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Walk — How It Works | Go Poddy</title>
+<meta name="description" content="Everything you need to know about using the Poddy on a walk — how it attaches, how the scooper works, multiple stops, all conditions, and odor containment.">
+<link rel="canonical" href="https://gopoddy.com/how-it-works-the-walk.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Walk — How It Works | Go Poddy">
+<meta property="og:description" content="Everything you need to know about using the Poddy on a walk — how it attaches, how the scooper works, multiple stops, all conditions, and odor containment.">
+<meta property="og:url" content="https://gopoddy.com/how-it-works-the-walk.html">
+<meta property="og:site_name" content="Go Poddy">
+<meta property="og:image" content="https://gopoddy.com/FinalMasterLogo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep:  #273A18;
+    --green-sage:  #A3B18A;
+    --terracotta:  #C15C52;
+    --text:        #1e2a10;
+    --text-mid:    #4a5e38;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:#fff; color:var(--text); font-size:17px; line-height:1.7; }
+
+  .site-nav {
+    display:flex; justify-content:flex-end; align-items:center;
+    padding:16px 40px; background:#fff;
+    border-bottom:1px solid rgba(39,58,24,0.08);
+    gap:20px; position:sticky; top:0; z-index:100;
+  }
+  .nav-socials { display:flex; align-items:center; gap:14px; padding-right:20px; margin-right:4px; border-right:1px solid rgba(39,58,24,0.15); }
+  .nav-pages { display:flex; align-items:center; gap:20px; }
+  .nav-pages a { color:var(--green-deep); text-decoration:none; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; opacity:0.7; transition:opacity 0.2s; }
+  .nav-pages a:hover { opacity:1; }
+  .nav-pages a.active { opacity:1; border-bottom:2px solid var(--terracotta); padding-bottom:2px; }
+  .nav-cta { background:var(--terracotta)!important; color:#fff!important; padding:8px 16px!important; border-radius:3px; opacity:1!important; font-weight:500!important; }
+  .nav-cta:hover { background:#a84a41!important; }
+
+  /* BREADCRUMB */
+  .breadcrumb {
+    max-width:780px; margin:0 auto; padding:20px 24px 0;
+    font-size:12px; color:var(--text-mid); letter-spacing:0.06em;
+  }
+  .breadcrumb a { color:var(--text-mid); text-decoration:none; }
+  .breadcrumb a:hover { color:var(--terracotta); }
+  .breadcrumb span { opacity:0.5; margin:0 6px; }
+
+  /* HERO */
+  .page-hero { padding:48px 24px 40px; max-width:780px; margin:0 auto; }
+  .hero-eyebrow {
+    font-size:11px; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--terracotta); font-weight:600; margin-bottom:14px;
+  }
+  .page-hero h1 {
+    font-family:'Fraunces',serif; font-size:clamp(2rem,5vw,3rem);
+    font-weight:700; color:var(--green-deep); line-height:1.15; margin-bottom:20px;
+  }
+  .page-hero h1 em { font-style:italic; color:var(--terracotta); }
+  .page-hero .summary {
+    font-size:1.1rem; color:var(--text-mid); line-height:1.7;
+    max-width:640px; padding-bottom:32px;
+    border-bottom:1px solid rgba(39,58,24,0.1);
+  }
+
+  /* MAIN CONTENT */
+  .content-wrap { max-width:780px; margin:0 auto; padding:0 24px 80px; }
+
+  /* FAQ CATEGORIES */
+  .faq-category { margin-top:48px; }
+  .faq-category-label {
+    font-size:10px; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--terracotta); font-weight:600; margin-bottom:6px;
+  }
+  .faq-category h2 {
+    font-family:'Fraunces',serif; font-size:1.5rem; font-weight:700;
+    color:var(--green-deep); line-height:1.2; margin-bottom:20px;
+    padding-bottom:14px; border-bottom:1px solid rgba(39,58,24,0.1);
+  }
+
+  /* FAQ ITEMS */
+  .faq-item { border-bottom:1px solid rgba(39,58,24,0.08); }
+  .faq-q {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 0; cursor:pointer; gap:16px;
+    font-size:1rem; font-weight:600; color:var(--green-deep);
+    background:none; border:none; width:100%; text-align:left;
+    font-family:'DM Sans',sans-serif;
+  }
+  .faq-q:hover { color:var(--terracotta); }
+  .faq-icon {
+    font-size:1.3rem; color:var(--green-sage); flex-shrink:0;
+    transition:transform 0.25s; line-height:1;
+  }
+  .faq-item.open .faq-icon { transform:rotate(45deg); }
+  .faq-a {
+    display:none; padding:0 0 20px;
+    color:var(--text-mid); font-size:15px; line-height:1.75;
+  }
+  .faq-item.open .faq-a { display:block; }
+  .faq-a p { margin-bottom:12px; }
+  .faq-a p:last-child { margin-bottom:0; }
+
+  /* CALLOUT */
+  .callout {
+    background:var(--green-deep); border-radius:12px;
+    padding:32px 36px; margin:48px 0;
+  }
+  .callout-eye {
+    font-size:10px; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--green-sage); font-weight:600; margin-bottom:10px;
+  }
+  .callout h3 {
+    font-family:'Fraunces',serif; font-size:1.3rem; font-weight:700;
+    color:#FFF9E5; line-height:1.25; margin-bottom:14px;
+  }
+  .callout p { color:rgba(255,249,229,0.78); font-size:15px; line-height:1.7; margin-bottom:0; }
+
+  /* BACK LINK */
+  .back-link-wrap { padding:32px 24px 0; max-width:780px; margin:0 auto; }
+  .back-link {
+    font-size:12px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--text-mid); text-decoration:none; font-weight:600;
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .back-link:hover { color:var(--terracotta); }
+
+  /* WAITLIST */
+  .bottom-waitlist { padding:72px 24px; text-align:center; background:#f5f5f0; }
+  .bottom-waitlist h2 { font-family:'Fraunces',serif; font-size:clamp(1.8rem,4vw,2.4rem); font-weight:700; color:var(--green-deep); line-height:1.2; margin-bottom:14px; }
+  .bottom-waitlist h2 em { font-style:italic; color:var(--terracotta); }
+  .bottom-waitlist p { color:var(--text-mid); font-size:16px; max-width:500px; margin:0 auto 28px; line-height:1.6; }
+  .waitlist-form { display:flex; max-width:460px; width:100%; border-radius:6px; overflow:hidden; box-shadow:0 4px 24px rgba(39,58,24,0.12); margin:0 auto 10px; border:1px solid rgba(39,58,24,0.1); position:relative; }
+  .waitlist-form input[type="email"] { flex:1; padding:14px 18px; border:none; font-family:'DM Sans',sans-serif; font-size:15px; color:var(--text); outline:none; background:#fff; }
+  .waitlist-form input::placeholder { color:#9aaa90; }
+  .waitlist-form button { padding:14px 22px; background:var(--terracotta); color:#fff; border:none; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; white-space:nowrap; transition:background 0.2s; }
+  .waitlist-form button:hover { background:#a84a41; }
+  .form-note { font-size:12px; color:var(--text-mid); opacity:0.6; letter-spacing:0.02em; }
+
+  /* FOOTER */
+  .site-footer { background:#1a2610; padding:36px 40px 24px; }
+  .footer-inner { max-width:960px; margin:0 auto; }
+  .footer-top { display:flex; justify-content:space-between; align-items:center; gap:24px; padding-bottom:22px; border-bottom:1px solid rgba(255,249,229,0.1); flex-wrap:wrap; }
+  .footer-logo svg { height:36px; width:auto; display:block; }
+  .footer-links { display:flex; gap:20px; flex-wrap:wrap; align-items:center; }
+  .footer-links a { color:rgba(255,249,229,0.5); text-decoration:none; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; transition:color 0.2s; }
+  .footer-links a:hover { color:var(--green-sage); }
+  .footer-socials { display:flex; align-items:center; gap:12px; }
+  .footer-bottom { padding-top:16px; text-align:center; color:rgba(255,249,229,0.25); font-size:11px; line-height:1.8; }
+
+  @media(max-width:600px) {
+    .site-nav { padding:12px 20px; }
+    .nav-socials { display:none; }
+    .site-footer { padding:28px 20px 20px; }
+    .faq-q { font-size:0.95rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-socials">
+    <a href="https://www.instagram.com/go.poddy" target="_blank" rel="noopener" aria-label="Instagram" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#273A18;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+    <a href="https://www.tiktok.com/@go.poddy" target="_blank" rel="noopener" aria-label="TikTok" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#273A18;"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
+    <a href="https://bsky.app/profile/gopoddy.bsky.social" target="_blank" rel="noopener" aria-label="Bluesky" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#273A18;"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg></a>
+    <a href="https://www.youtube.com/@gopoddyscooper" target="_blank" rel="noopener" aria-label="YouTube" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#273A18;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+  </div>
+  <div class="nav-pages">
+    <a href="/">Home</a>
+    <a href="/blog/">Learn</a>
+    <a href="/how-it-works.html" class="active">How It Works</a>
+    <a href="/lca.html">Life Cycle Analysis</a>
+  </div>
+</nav>
+
+<div class="back-link-wrap">
+  <a href="/how-it-works.html" class="back-link">&larr; How It Works</a>
+</div>
+
+<div class="page-hero">
+  <p class="hero-eyebrow">The Walk</p>
+  <h1>Clip it on. Scoop and seal. <em>Keep going.</em></h1>
+  <p class="summary">The Poddy is designed to disappear into your walk routine. One device clips on before you leave, handles everything your dog produces, and comes home with you — closed, contained, and ready to empty. Here's everything you might want to know about how it works on the walk itself.</p>
+</div>
+
+<div class="content-wrap">
+
+  <!-- CATEGORY 1 -->
+  <div class="faq-category">
+    <p class="faq-category-label">Setup & Carry</p>
+    <h2>Before you leave the house</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        Where does the Poddy attach? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>The Poddy clips to a belt loop, the handle of a leash, or the strap of a bag. Most people find the belt loop the most natural — it keeps the Poddy close to your body and out of the way. If you prefer hands-free carry through a bag strap, that works too. Experiment on your first few walks to find what feels right for your routine.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        Will it move around while I walk? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Yes — it moves naturally with your stride. It's not rigid. Think of it like a water bottle on a carabiner — there's some movement, but it stays secure and settles quickly. Most people stop noticing it within the first few minutes of the walk. It won't swing out uncontrollably or knock against your leg in a way that's distracting.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        How heavy is it when it's full? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Dog waste is mostly water — a single deposit from a medium-to-large dog weighs roughly half a pound. The Poddy itself is lightweight. A full Poddy after one or two deposits is noticeable but not burdensome — it's similar to carrying a water bottle at about a quarter capacity. The weight sits low and close to your body, which helps.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        Do I need to do anything to prepare the Poddy before a walk? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>No. The Poddy is ready to go when the lid is closed. No bags to load, no parts to assemble, nothing to remember. Clip it on and walk out the door. That's the point.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 2 -->
+  <div class="faq-category">
+    <p class="faq-category-label">The Scoop</p>
+    <h2>When your dog goes</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        How does the scooper work? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>The scooper is integrated into the lid. When you open the Poddy, the lid doubles as your retrieval mechanism — you use it to scoop the waste into the container. The flared opening on the container makes the transfer clean and straightforward. No separate tool, no hand contact, no guesswork. Open, scoop, close.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        What if the deposit is in an awkward spot — grass, gravel, mud? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>The scooper works on most surfaces — grass, dirt, packed gravel, pavement. Loose or very muddy ground can make any pickup more challenging, but the flared opening gives you more room to work with than a flat bag. Firm waste (the ideal) lifts cleanly from most surfaces. Loose waste on soft ground is the most challenging scenario for any pickup method — the Poddy is no exception, but it's no worse than a bag.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        What if some waste is left behind on the ground? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>This happens with bags too — especially on soft or absorbent surfaces. The goal is to retrieve the bulk of the deposit cleanly. A small residue on the ground is the reality of any manual pickup method. If the area has water nearby (a stream, a puddle), a splash rinse from your shoe is a practical solution. Over time you'll develop technique for your dog's specific habits and your most common walking surfaces.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        Is there hand contact at any point? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>No hand contact with the waste. The scooper mechanism handles the retrieval entirely. Your hands touch only the exterior of the Poddy — the same surface you carried on your belt the whole walk. The exterior stays clean by design.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p class="callout-eye">The design intent</p>
+    <h3>The flared opening does two jobs.</h3>
+    <p>On the way in, the wider opening gives you more room to scoop cleanly — less precision required, less chance of missing. On the way out, at home over the toilet, it acts as a chute so waste empties without touching the rim. One design feature, two problems solved.</p>
+  </div>
+
+  <!-- CATEGORY 3 -->
+  <div class="faq-category">
+    <p class="faq-category-label">Multiple Stops</p>
+    <h2>When your dog goes more than once</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        How many times can the Poddy be used on one walk? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>The Poddy is designed to handle the whole walk — multiple stops without any juggling, bag management, or running out. For most dogs, two to three deposits per walk is typical. The Poddy handles all of them. Open, scoop, close, clip back on, keep going. Each stop takes about the same amount of time as tying off a bag — except there's no bag.</p>
+        <p>Go Poddy intends to launch with two sizes — one for small to medium dogs, and one for large dogs or households with two smaller dogs. The right size for your dog means you'll rarely if ever run short on a typical walk.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        What if the scooper has some residoo on it from the first stop? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>It happens. The scooper may have some residue after the first use — especially with looser waste. You're not rinsing anything mid-walk, and you're not carrying extra paper towels. Just be mindful as you go in for the second or third stop. The mechanics still work fine. Any residue on the scooper stays on the inside of the Poddy where it belongs, and everything gets cleaned properly when you get home.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 4 -->
+  <div class="faq-category">
+    <p class="faq-category-label">All Conditions</p>
+    <h2>Rain, cold, gloves, and dark</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        Does it work with winter gloves on? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Yes — and cold weather is actually where the Poddy pulls furthest ahead of a bag. The lid and scooper work with full winter gloves, thick ones included. But the bigger advantage is snow. The integrated claw gets cleanly under waste in the snow in a way a bag-covered hand simply can't — a bag tends to grab a fistful of snow along with the deposit, making it messy and often incomplete. The claw scoops from underneath, lifting waste cleanly off the snow. If you walk your dog through winter, the Poddy is genuinely better — not just comparable.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        What about rain? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>The Poddy is not sensitive to weather. Rain doesn't affect the mechanics. The exterior is solid and easy to dry off when you get home. The lid closing is the same motion regardless of conditions. If anything, the Poddy is more practical in rain than a bag — wet plastic bags are slippery, harder to open, and more likely to tear.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        What about night walks? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>The scooping motion is simple enough to do without seeing clearly — you'll develop the muscle memory quickly. A phone flashlight helps with locating the deposit. An optional illuminating element for night-walk visibility is on the product roadmap for future versions.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        Can I use it on trails, not just sidewalks? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Yes — and this is one of the most compelling use cases. Leave-no-trace hiking ethics require packing out what you bring in. With a bag, carrying waste for miles on a trail is unpleasant at best. The Poddy clips to your pack, seals completely, and makes the responsible choice the practical one. No bag dangling from your hand. No smell. Just the trail.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 5 -->
+  <div class="faq-category">
+    <p class="faq-category-label">Odor & Containment</p>
+    <h2>What you and everyone else will notice</h2>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        Will people around me smell it? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>When the lid is closed, air is trapped inside and odor is effectively contained. In normal outdoor conditions — moving air, open space — no one walking near you should be able to detect anything. The lid doesn't have a gasket seal, but the closure is tight enough that odor stays inside. The same principle that makes the Poddy workable in a car on the way home makes it workable on a crowded trail.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        What about immediately after scooping — before the lid is closed? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>There will be a brief moment of odor during the scoop and transfer, the same as there is when opening any bag. Outdoors, this is negligible — the smell dissipates in seconds. Close the lid and it's done. This is not materially different from using a bag.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        Can I put the Poddy in my car on the way home? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Yes. With the lid closed the Poddy is car-safe. Hang it from the back of a seat, leave it in a footwell, or clip it to a bag in the back — anywhere that keeps it upright and out of the way. Most people report no detectable odor in the car. If you're particularly sensitive, a small zip bag around the Poddy for the ride home is an easy precaution, but most users find it unnecessary.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggle(this)">
+        Will the outside of the Poddy get dirty? <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>Not by design. The exterior is intended to stay clean — that's a core design goal. The scooper mechanism and the way the lid closes are both engineered to keep waste on the inside. In practice, the vast majority of users find the exterior stays clean through normal use. If the exterior does get any contamination, a quick wipe with a damp cloth resolves it immediately.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<section class="bottom-waitlist" id="waitlist">
+  <h2>Every pup needs a <em>Poddy.</em></h2>
+  <p>Join the waitlist. Be first to know when we launch.</p>
+  <form action="https://moshergroupllc.us10.list-manage.com/subscribe/post?u=5a11aadc0e9f8998b861f2483&amp;id=732248216d&amp;f_id=00cc4ae4f0" method="post" target="_blank" novalidate class="waitlist-form">
+    <input type="email" name="EMAIL" placeholder="Your email address" aria-label="Email address" required>
+    <button type="submit" name="subscribe">Notify Me</button>
+    <div aria-hidden="true" style="position:absolute;left:-5000px;"><input type="text" name="b_5a11aadc0e9f8998b861f2483_732248216d" tabindex="-1" value=""></div>
+  </form>
+  <p class="form-note">&#128274; No spam, ever.</p>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-logo"><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="13.5 290.0 568.5 228.0"><defs><style>.st0{fill:#a5b38c;fill-rule:evenodd}.st1{fill:#c25c53}.st2{fill:#283a1e}</style></defs><path class="st2" d="M142.1,373.63c0,21.35-11.56,37.69-54.91,37.69h-7.05v42.48c0,8.97,1.49,11.53,5.77,12.81,2.35.85,3.2,1.28,3.2,2.56,0,1.5-1.28,1.92-3.63,1.92h-43.35c-2.35,0-3.63-.43-3.63-1.92,0-1.28,1.07-1.71,3.42-2.56,2.99-.85,8.83-3.41,8.83-10.88l-2.84-105.04c0-7.47-3-9.62-5.99-10.47-2.35-.64-3.42-1.07-3.42-2.56,0-1.28,1.28-1.71,3.63-1.71h44.2c43.99,0,55.76,15.69,55.76,37.69ZM88.05,403.2c14.73,0,26.48-13.45,26.48-31.81s-11.74-27.33-26.48-27.33h-2.78c-3.84,0-5.12,1.71-5.12,6.62l-.85,52.53h8.75Z"/><path class="st2" d="M280.28,459.3c-5.45,5.03-13.84,9.02-23.69,9.02-19.08,0-31.14-18.63-31.14-45.26,0-29.98,16.88-48.67,44.14-48.67,3.98,0,9.15,1.47,12.3,2.52l-.23-17.87c0-2.52-3.28-4.82-5.8-5.45-1.89-.63-2.94-.42-2.94-1.89,0-1.26,1.26-2.31,2.94-2.94l18.03-6.92c8.81-3.36,13.21-5.24,15.73-5.24,2.1,0,.71,2.64.71,3.89,0,0,.02,107.83.02,108.25,0,7.34,1.8,9.31,4.74,10.15,1.89.63,2.94.84,2.94,2.1-.21,1.26-1.89,1.89-3.56,2.31l-16.35,4.19c-9.23,2.1-13,3.15-15.52,2.94-2.1-.42-2.31-1.26-2.31-3.56v-7.55ZM281.88,382.98c-2.1-.63-6.01-1.68-8.31-1.68-10.27,0-20.15,11.22-20.15,37.01s12.4,37.01,22.88,37.01c1.26,0,4.33.42,5.59,0v-72.34Z"/><path class="st2" d="M217.73,439.81c-9.45,24.9-32.25,37.05-58.13,27.23-26.27-9.97-34.19-35.22-24.74-60.12s31.88-37.87,58.15-27.9c25.88,9.82,34.09,36.09,24.72,60.79ZM189.83,425.81c5.08-25.21,1.93-40.53-5.23-42.36-7.75-2.04-16.59,11.2-22.01,36.72-5.16,25.4-1.93,40.53,5.43,42.43,7.55,1.97,16.31-11.08,21.82-36.8Z"/><path class="st2" d="M485.86,426.61l-20.13,40.47c-10.69,22.02-24.85,40.29-40.99,40.29-12.37,0-18.87-5.87-18.87-13.84,0-7.34,6.08-12.16,13-12.37,5.24,0,7.85.16,12.88,4.98,5.87,5.66,14.95-4.47,25.65-23.13l-29.03-59.5c-6.92-15.73-10.76-18-16-20.3-1.68-.84-3.15-1.68-3.15-2.73,0-1.26,1.47-1.68,3.15-1.68h41.94c1.89,0,3.98.21,3.98,1.47,0,1.05-1.47,1.89-3.56,3.36-2.31,2.1-.84,4.19,1.26,9.23l17.4,38.16,3.77-8.18c20.76-51.37,40.68-78,72.13-78,14.05,0,23.27,8.18,23.27,18.03,0,6.71-1.68,10.69-4.61,10.69-2.73,0-10.27-6.5-26.84-6.5-21.81,0-35.75,19.71-55.25,59.55Z"/><path class="st2" d="M372.58,455.94c-5.45,5.03-13.84,9.02-23.69,9.02-19.08,0-31.14-18.63-31.14-45.26,0-29.98,16.88-48.67,44.14-48.67,3.98,0,9.15,1.47,12.3,2.52l-.23-17.87c0-2.52-3.28-4.82-5.8-5.45-1.89-.63-2.94-.42-2.94-1.89,0-1.26,1.26-2.31,2.94-2.94l18.03-6.92c8.81-3.36,13.21-5.24,15.73-5.24,2.1,0,.71,2.64.71,3.89,0,0,.02,107.83.02,108.25,0,7.34,1.8,9.31,4.74,10.15,1.89.63,2.94.84,2.94,2.1-.21,1.26-1.89,1.89-3.56,2.31l-16.35,4.19c-9.23,2.1-13,3.15-15.52,2.94-2.1-.42-2.31-1.26-2.31-3.56v-7.55ZM374.19,379.62c-2.1-.63-6.01-1.68-8.31-1.68-10.27,0-20.15,11.22-20.15,37.01s12.4,37.01,22.88,37.01c1.26,0,4.33.42,5.59,0v-72.34Z"/><path class="st1" d="M151.74,501.89v-1.88h3.05v-19.73h-3.05v-1.88h4.39c.47,0,.92-.01,1.34-.03.42-.02.87-.04,1.34-.07.47-.02.98-.04,1.53-.07.55-.02,1.16-.03,1.83-.03.98,0,1.99.07,3.02.22,1.03.15,1.96.42,2.78.83.83.41,1.5.97,2.03,1.7.53.73.79,1.68.79,2.85,0,.61-.11,1.2-.32,1.79-.21.58-.53,1.12-.94,1.62-.41.49-.93.93-1.56,1.31s-1.35.66-2.18.84v.13c.74.11,1.48.3,2.21.57.74.27,1.4.63,2,1.08.59.46,1.07,1.02,1.43,1.69s.54,1.47.54,2.41c0,1.2-.3,2.24-.89,3.11-.59.87-1.37,1.58-2.33,2.14-.96.56-2.05.96-3.27,1.22-1.22.26-2.46.38-3.71.38-.87,0-1.85-.03-2.94-.1s-2.13-.1-3.14-.1h-3.96ZM160.36,489.14c.45,0,.94-.02,1.49-.05.55-.03,1.01-.07,1.39-.12,1.14-.36,2.06-.94,2.75-1.74.69-.8,1.04-1.74,1.04-2.82,0-1.49-.47-2.58-1.41-3.28s-2.21-1.05-3.82-1.05c-.76,0-1.4.02-1.93.05s-.97.07-1.33.12v8.89h1.81ZM162.04,500.21c.87,0,1.68-.12,2.43-.35.75-.24,1.39-.57,1.93-.99s.96-.93,1.26-1.53c.3-.59.45-1.25.45-1.96,0-.89-.18-1.64-.55-2.23-.37-.59-.86-1.06-1.48-1.41s-1.34-.59-2.16-.72c-.83-.13-1.7-.2-2.62-.2h-2.75v9.09c.34.09.74.16,1.22.22.48.06,1.24.08,2.26.08Z"/></svg></div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/blog/">Learn</a>
+        <a href="/how-it-works.html">How It Works</a>
+        <a href="/lca.html">Life Cycle Analysis</a>
+      </div>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/go.poddy" target="_blank" rel="noopener" aria-label="Instagram" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="19" height="19" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        <a href="https://www.tiktok.com/@go.poddy" target="_blank" rel="noopener" aria-label="TikTok" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="19" height="19" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/></svg></a>
+        <a href="https://bsky.app/profile/gopoddy.bsky.social" target="_blank" rel="noopener" aria-label="Bluesky" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="19" height="19" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/></svg></a>
+        <a href="https://www.youtube.com/@gopoddyscooper" target="_blank" rel="noopener" aria-label="YouTube" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;"><svg width="19" height="19" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block;flex-shrink:0;fill:#FFF9E5;"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      gopoddy.com &nbsp;&middot;&nbsp; U.S. Patent No. 12,297,613 B2 &nbsp;&middot;&nbsp; &copy; 2026 Mosher Group, LLC &nbsp;&middot;&nbsp; Pups. People. Planet.
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggle(btn){
+  const item = btn.closest('.faq-item');
+  item.classList.toggle('open');
+}
+</script>
+</body>
+</html>
