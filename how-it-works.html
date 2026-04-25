@@ -150,6 +150,105 @@
     color:#FFF9E5; font-size:16px; line-height:1.5;
   }
 
+  /* STEP CARDS */
+  .steps-grid-section { padding:48px 24px; background:#fff; }
+  .steps-grid {
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:28px; max-width:960px; margin:0 auto;
+  }
+  .step-card {
+    background:#fff; border:1px solid rgba(39,58,24,0.12);
+    border-radius:10px; padding:32px 28px;
+    display:flex; flex-direction:column; text-align:left;
+    cursor:pointer; transition:transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    min-height:280px; font-family:inherit;
+  }
+  .step-card:hover {
+    transform:translateY(-3px);
+    box-shadow:0 12px 32px rgba(39,58,24,0.12);
+    border-color:var(--green-sage);
+  }
+  .step-card-num {
+    font-family:'Fraunces',serif; font-size:2rem; font-weight:700;
+    color:var(--green-sage); opacity:0.7; line-height:1; margin-bottom:12px;
+  }
+  .step-card h2 {
+    font-family:'Fraunces',serif; font-size:1.35rem;
+    font-weight:700; color:var(--green-deep); line-height:1.25; margin-bottom:14px;
+  }
+  .step-card p {
+    color:var(--text-mid); font-size:15px; line-height:1.6;
+    flex-grow:1; margin-bottom:20px;
+  }
+
+  /* MODALS */
+  .step-modal {
+    display:none; position:fixed; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    background:#fff; border-radius:14px;
+    max-width:680px; width:calc(100% - 48px);
+    max-height:85vh; overflow-y:auto;
+    z-index:500; padding:48px;
+    box-shadow:0 24px 64px rgba(39,58,24,0.2);
+  }
+  .step-modal.open { display:block; }
+  .modal-close {
+    position:absolute; top:20px; right:24px;
+    background:none; border:none; font-size:1.6rem;
+    color:var(--text-mid); cursor:pointer; line-height:1;
+    font-family:inherit; padding:4px 8px;
+  }
+  .modal-close:hover { color:var(--green-deep); }
+  .step-modal h2 {
+    font-family:'Fraunces',serif; font-size:clamp(1.4rem,3vw,1.9rem);
+    font-weight:700; color:var(--green-deep); line-height:1.2;
+    margin-bottom:20px;
+  }
+  .step-modal p {
+    color:var(--text-mid); font-size:16px; line-height:1.75;
+    margin-bottom:16px;
+  }
+  .step-modal p:last-child { margin-bottom:0; }
+  .modal-callout {
+    background:var(--green-deep); border-radius:10px;
+    padding:28px 32px; margin-top:28px;
+  }
+  .modal-callout-eye {
+    font-size:10px; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--green-sage); font-weight:600; margin-bottom:10px;
+  }
+  .modal-callout h3 {
+    font-family:'Fraunces',serif; font-size:1.3rem; font-weight:700;
+    color:#FFF9E5; line-height:1.25; margin-bottom:14px;
+  }
+  .modal-callout p { color:rgba(255,249,229,0.78); font-size:15px; line-height:1.7; margin-bottom:0; }
+  .modal-highlight {
+    border-left:3px solid var(--green-sage);
+    padding:10px 0 10px 20px; margin-top:20px;
+  }
+  .modal-highlight p {
+    font-family:'Fraunces',serif; font-style:italic;
+    color:#FFF9E5; font-size:16px; line-height:1.5;
+  }
+  .modal-deep-link {
+    display:inline-block; margin-top:24px;
+    font-size:12px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--terracotta); font-weight:600; text-decoration:none;
+    border-bottom:1px solid rgba(193,92,82,0.3); padding-bottom:2px;
+    transition:border-color 0.2s;
+  }
+  .modal-deep-link:hover { border-color:var(--terracotta); }
+  .modal-overlay {
+    display:none; position:fixed; inset:0;
+    background:rgba(39,58,24,0.45); z-index:400;
+  }
+  .modal-overlay.open { display:block; }
+
+  @media(max-width:700px) {
+    .steps-grid { grid-template-columns:1fr; gap:16px; }
+    .step-modal { padding:32px 24px; }
+  }
+
   /* STOOL NOTE */
   .stool-note {
     background:#fff; border:1px solid rgba(39,58,24,0.12); border-radius:10px;
@@ -241,102 +340,96 @@
   <p>Two minutes. No plastic. No smell. Here's exactly what using and cleaning the Poddy looks like &mdash; step by step, walk to toilet and back again.</p>
 </section>
 
-<!-- PART ONE: ON THE WALK -->
-<section class="part">
-  <div class="part-header">
-    <p class="part-label">Part One</p>
-    <h2 class="part-title">On the Walk</h2>
-    <div class="section-divider"></div>
-    <p class="part-intro">One step. No bag to remember. The whole walk covered.</p>
-  </div>
+<!-- STEP CARDS -->
+<section class="steps-grid-section">
+  <div class="steps-grid">
 
-  <div class="steps">
-    <div class="step">
-      <div class="step-number">1</div>
-      <div class="step-content">
-        <span class="step-tag">The Walk</span>
-        <h3>Clip it on. Scoop and seal. Keep going.</h3>
-        <p>The Poddy clips to your belt, leash, or bag before you leave. When your dog goes, waste is easy to retrieve using the scooper integrated to the lid &mdash; no hand contact, no thin plastic between you and the problem. The flared opening makes transfer clean. Seal the lid and clip it back on. The odor-proof seal locks everything inside. It's more secure than a flimsy bag and it won't smell. One device handles the whole walk &mdash; two stops, three stops, whatever the morning brings. No bag to remember. No trash can to find. Go further.</p>
+    <button class="step-card" onclick="openModal('modal-walk')">
+      <span class="step-card-num">1</span>
+      <span class="article-tag">The Walk</span>
+      <h2>Clip it on. Scoop and seal. Keep going.</h2>
+      <p>One device. The whole walk covered. No bag to remember, no trash can to find.</p>
+      <span class="article-read-more">See how</span>
+    </button>
+
+    <button class="step-card" onclick="openModal('modal-after')">
+      <span class="step-card-num">2</span>
+      <span class="article-tag">After the Walk</span>
+      <h2>Home. Empty. Done.</h2>
+      <p>The Poddy empties into the toilet, a compost pile, or the trash. Seal it and it's ready for the next walk.</p>
+      <span class="article-read-more">See how</span>
+    </button>
+
+    <button class="step-card" onclick="openModal('modal-between')">
+      <span class="step-card-num">3</span>
+      <span class="article-tag">The In-Between</span>
+      <h2>The Rinse &mdash; if it's needed.</h2>
+      <p>Most of the time, just seal it. When a rinse is needed, the Poddy cleans itself while you go about your day.</p>
+      <span class="article-read-more">See how</span>
+    </button>
+
+  </div>
+</section>
+
+<!-- MODAL: THE WALK -->
+<div class="step-modal" id="modal-walk" role="dialog" aria-modal="true" aria-label="The Walk">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeModal('modal-walk')" aria-label="Close">&times;</button>
+    <span class="article-tag">The Walk</span>
+    <h2>Clip it on. Scoop and seal. Keep going.</h2>
+    <p>Before you leave, clip the Poddy to your belt loop, leash handle, or bag. It moves naturally with your stride and stays secure and out of the way. There's nothing to stuff into a pocket and nothing to forget on the counter. The routine starts the moment you reach for the leash &mdash; and the Poddy is already part of it.</p>
+    <p>When your dog goes, open the lid and use the integrated scooper to retrieve the waste. The flared opening is designed to make transfer clean and straightforward &mdash; no awkward angles, no hand contact, no thin plastic between you and the problem. Once the waste is inside, screw the lid closed. The lid traps air inside and contains odor effectively. Clip the Poddy back to your belt and keep walking. The whole process takes about the same time as tying off a bag &mdash; except nothing gets knotted, nothing gets carried in your hand, and nothing gets left on the trail.</p>
+    <p>Most dogs go more than once. Most bag users know the quiet dread of that second stop when they're already carrying the first one. The Poddy handles the whole walk &mdash; just open, scoop, close, and go again. It works in gloves, in rain, in the dark. It goes wherever you and your dog go, and it stays closed until you're ready to deal with it at home.</p>
+    <div class="modal-callout">
+      <p class="modal-callout-eye">Why it works</p>
+      <h3>The lid is the whole game.</h3>
+      <p>When the lid is screwed closed, air is trapped inside and odor is effectively contained. You can walk past people on the trail, ride home in your car, hang it on the stroller &mdash; and no one knows it's there. No gasket required. Just close it, clip it, and go.</p>
+    </div>
+    <a href="/how-it-works-the-walk.html" class="modal-deep-link">Want the full detail? Read the complete guide &rarr;</a>
+  </div>
+</div>
+
+<!-- MODAL: AFTER THE WALK -->
+<div class="step-modal" id="modal-after" role="dialog" aria-modal="true" aria-label="After the Walk">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeModal('modal-after')" aria-label="Close">&times;</button>
+    <span class="article-tag">After the Walk</span>
+    <h2>Home. Empty. Done.</h2>
+    <p>Getting home is the moment the Poddy earns its keep. The lid is already closed, the walk is done, and the only thing left is a thirty-second task that's cleaner than anything a bag ever asked you to do. Head to the bathroom, flip on the fan, and open the Poddy over the toilet. The waste empties directly in &mdash; no bag to untie, no knot to fumble with, no moment where things go sideways. Flush, and it's gone into the infrastructure designed to handle it.</p>
+    <p>The EPA recommends flushing dog waste as the preferred disposal method &mdash; the same wastewater treatment system that handles human waste is built for this. If flushing isn't available or preferred, a not-for-food compost pile is a solid alternative. The trash is always an option too, though it's the least preferable from an environmental standpoint. The Poddy works with all three. You choose what makes sense for your situation.</p>
+    <p>Once empty, screw the lid back on. If the inside looks clean &mdash; which it often will after a good walk &mdash; the Poddy is ready to go again. No rinsing required. No sink involved. The whole process from front door to done takes under a minute, and the only thing that touched the waste was the Poddy itself.</p>
+    <div class="modal-callout">
+      <p class="modal-callout-eye">The technique</p>
+      <h3>Come up from the underside.</h3>
+      <p>Grab a couple squares of toilet paper, slowly tilt the Poddy over the bowl, and aim for the porcelain, not the water, to avoid splash. While the container is still tilted, wipe the rim from the underside upward as you bring it back to level. Toss the tissue. Flush. The outside stays clean.</p>
+      <div class="modal-highlight">
+        <p>One motion. Every time. The outside stays clean.</p>
       </div>
     </div>
+    <a href="/how-it-works-after-the-walk.html" class="modal-deep-link">Want the full detail? Read the complete guide &rarr;</a>
   </div>
-</section>
+</div>
 
-<!-- CALLOUT: THE SEAL -->
-<section class="callout-band">
-  <div class="callout-inner">
-    <p class="callout-eyebrow">Why It Works</p>
-    <h3>The odor-proof seal is the whole game.</h3>
-    <p>Most people assume a container with waste in it will smell. It doesn't &mdash; because the Poddy is sealed. You can walk past people on the trail, ride home in your car, hang it on the stroller &mdash; and no one knows it's there. That's the point of the design.</p>
-  </div>
-</section>
-
-<!-- PART TWO: THE EMPTY -->
-<section class="part part-alt">
-  <div class="part-inner">
-    <div class="part-header">
-      <p class="part-label">Part Two</p>
-      <h2 class="part-title">Getting Home &mdash; The Empty</h2>
-      <div class="section-divider"></div>
-      <p class="part-intro">One step. Straight to the toilet. Under a minute.</p>
+<!-- MODAL: THE IN-BETWEEN -->
+<div class="step-modal" id="modal-between" role="dialog" aria-modal="true" aria-label="The In-Between">
+  <div class="modal-inner">
+    <button class="modal-close" onclick="closeModal('modal-between')" aria-label="Close">&times;</button>
+    <span class="article-tag">The In-Between</span>
+    <h2>The Rinse &mdash; if it's needed.</h2>
+    <p>Most of the time, The In-Between doesn't exist. If your dog's waste is firm and well-formed, the inside of the Poddy will look nearly clean after emptying. Screw the lid back on and it's ready for the next walk. No sink, no scrubbing, no extra steps. The Poddy was designed around this reality &mdash; for a dog with a healthy diet, cleanup is genuinely that simple.</p>
+    <p>When a rinse is needed, the process is passive by design. Hold the Poddy under the faucet and run water down the inside walls while slowly rotating the container. Leave enough water inside that when you screw the lid closed, the integrated scooper is submerged. Set it behind the toilet and walk away. The water does the work while you go about your day. When you return for your next bathroom visit, empty the rinse water into the toilet, flush, and the Poddy is clean. Never pour the rinse water down the sink.</p>
+    <p>The deeper point is this &mdash; the Poddy doesn't need to be spotless on the inside between every walk. The lid being closed is what contains odor, not the cleanliness of the interior. A little residue between walks is normal and expected. What matters is the exterior &mdash; and the design keeps it that way. The underside wipe technique, the flared opening, the way the lid closes &mdash; all of it is engineered so that nothing reaches the outside of the container. That's the promise. Every few weeks, a longer soak in a utility sink with a mild cleanser keeps the interior fresh. The rest of the time, close it and go.</p>
+    <div class="modal-callout">
+      <p class="modal-callout-eye">A note on stool quality</p>
+      <h3>What goes in affects what comes out.</h3>
+      <p>Optimal waste (Purina Fecal Score 2&ndash;3) leaves little to no residue and rarely requires anything more than a seal and go. If your dog consistently has looser stools, the Poddy still works &mdash; but consider your dog's diet. Stool quality directly affects the cleanup experience, and a simple food adjustment often makes a significant difference.</p>
     </div>
-
-    <div class="steps">
-      <div class="step">
-        <div class="step-number">2</div>
-        <div class="step-content">
-          <span class="step-tag">The Empty</span>
-          <h3>Home. Empty. Done.</h3>
-          <p>Once home, the Poddy can be emptied into a toilet (EPA preferred method for biological waste), a not-for-food composting pile, or the trash (least preferred). Seal the lid after emptying and the Poddy is ready for the next walk.</p>
-        </div>
-      </div>
-    </div>
+    <a href="/how-it-works-the-in-between.html" class="modal-deep-link">Want the full detail? Read the complete guide &rarr;</a>
   </div>
-</section>
+</div>
 
-<!-- CALLOUT: THE TECHNIQUE -->
-<section class="callout-band">
-  <div class="callout-inner">
-    <p class="callout-eyebrow">The Technique</p>
-    <h3>Come up from the underside.</h3>
-    <p>This is the one thing that keeps the outside of the Poddy clean &mdash; and it's not complicated. When you're emptying and wiping, everything moves from the underside of the container upward. You're wiping the rim as you tilt back to upright. The motion keeps any residue on the inside, where it belongs.</p>
-    <div class="callout-highlight">
-      <p>One motion. Every time. The outside stays clean.</p>
-    </div>
-  </div>
-</section>
-
-<!-- PART THREE: THE RINSE -->
-<section class="part">
-  <div class="part-header">
-    <p class="part-label">Part Three</p>
-    <h2 class="part-title">The Rinse &mdash; <em>Only</em> When You Need It</h2>
-    <div class="section-divider"></div>
-    <p class="part-intro">Most of the time you won't need this. When you do — it's about three minutes.</p>
-  </div>
-
-  <div class="steps">
-    <div class="step">
-      <div class="step-number">3</div>
-      <div class="step-content">
-        <span class="step-tag">The Rinse — If It's Needed</span>
-        <h3>Most of the time, just seal it and go.</h3>
-        <p>If your dog's waste is optimal, the inside of the Poddy will look fine. Seal the lid and it's ready for the next outing &mdash; the odor-proof seal handles the rest. This is the most common outcome.</p>
-        <p>If your dog's waste is messier, run water from the sink faucet down the walls of the container while you slowly rotate it. Leave enough water inside that when you seal the lid, the claw is submerged &mdash; it soaks clean alongside everything else. Set the Poddy behind the toilet and walk away. Empty it during your next bathroom visit, when everything has loosened and the water does the flushing for you. Never dump the rinse water in the sink. The Poddy cleaned itself while you went about your day.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="stool-note">
-    <h4>A note on emptying into a toilet</h4>
-    <p>Flip on the bathroom fan before you start. Open the Poddy and rest the built-in claw on the toilet rim &mdash; a quick rinse in the clean toilet water takes care of any residue on the claw. Grab a couple squares of toilet paper, slowly tilt the Poddy over the bowl, and aim for the porcelain, not the water, to avoid splash. While the container is still tilted, wipe the rim from the underside upward as you bring it back to level. Toss the tissue. Flush. The outside stays clean.</p>
-  </div>
-
-  <div class="stool-note" style="margin-top:16px">
-    <h4>A note on stool quality</h4>
-    <p>Optimal waste (Purina Fecal Score 2&ndash;3) leaves little to no residue and rarely requires anything more than a seal and you're done. If your dog consistently has looser stools, the Poddy still works &mdash; but consider your dog's diet. Stool quality directly affects the cleanup experience, and a simple food adjustment often makes a significant difference.</p>
-  </div>
-</section>
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeAll()"></div>
 
 <!-- BOTTOM WAITLIST -->
 <section class="bottom-waitlist" id="waitlist">
@@ -432,5 +525,23 @@
   </div>
 </footer>
 
+<script>
+function openModal(id){
+  document.getElementById(id).classList.add('open');
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(id){
+  document.getElementById(id).classList.remove('open');
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function closeAll(){
+  document.querySelectorAll('.step-modal').forEach(m=>m.classList.remove('open'));
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeAll(); });
+</script>
 </body>
 </html>
