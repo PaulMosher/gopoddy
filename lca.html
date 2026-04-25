@@ -129,6 +129,12 @@
     padding-left:10px; border-left:3px solid var(--green-sage);
   }
   .chart-eyebrow:first-child { margin-top:0; }
+  .info-note {
+    background:#f5f5f0; border-radius:8px; padding:14px 18px;
+    font-size:13.5px; line-height:1.6; color:var(--text-mid);
+    margin-bottom:24px;
+  }
+  .info-note strong { color:var(--green-deep); font-weight:600; }
 
   /* BAR CHARTS */
   .bar-item { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
@@ -327,17 +333,18 @@
 
   <!-- CARBON TAB -->
   <div class="tab-panel active" id="tab-carbon">
-    <div class="chart-eyebrow">Chart 1 &mdash; Manufacturing CO2e (kg) &mdash; bags grow every year; the Poddy is a one-time fixed cost</div>
+    <div class="info-note"><strong>What is CO2e?</strong> &nbsp;CO2e (carbon dioxide equivalent) is a way to compare the warming impact of different greenhouse gases on a single scale. Methane, for example, traps about 25&times; more heat than carbon dioxide over 100 years &mdash; so 1 lb of methane = 25 lbs of CO2e. Using CO2e lets us add up plastic manufacturing, landfill methane, and treatment-plant emissions in one number.</div>
+    <div class="chart-eyebrow">Chart 1 &mdash; Manufacturing CO2e (lbs) &mdash; bags grow every year; the Poddy is a one-time fixed cost</div>
     <div id="mfg-chart"></div>
-    <div class="chart-eyebrow">Chart 2 &mdash; Waste decomposition CO2e (kg) &mdash; landfill methane vs. biogenic WWTP treatment (all scenarios)</div>
+    <div class="chart-eyebrow">Chart 2 &mdash; Waste decomposition CO2e (lbs) &mdash; landfill methane vs. biogenic WWTP treatment (all scenarios)</div>
     <div id="decomp-chart"></div>
-    <div class="chart-eyebrow">Chart 3 &mdash; Total CO2e combined (kg)</div>
+    <div class="chart-eyebrow">Chart 3 &mdash; Total CO2e combined (lbs)</div>
     <div id="total-chart"></div>
   </div>
 
   <!-- PLASTIC TAB -->
   <div class="tab-panel" id="tab-plastic">
-    <div class="chart-eyebrow">Plastic waste to landfill (kg) &mdash; no pickup excluded (no plastic used)</div>
+    <div class="chart-eyebrow">Plastic waste to landfill (lbs) &mdash; no pickup excluded (no plastic used)</div>
     <div class="card-grid-4" id="plastic-cards"></div>
     <div id="plastic-chart"></div>
   </div>
@@ -420,6 +427,15 @@ const CO2_PMFG=2.1,CO2_PEOL=0.05;
 const COST_NEW=0.04,COST_REUSED=0.08,COST_COMPOST=0.12,COST_PODDY=30;
 const LEACHATE=0.01,RESOURCE_PER_DOG_YR=20.34;
 const DECOMP_LANDFILL=32.6,DECOMP_NONE=46.5;
+const KG_TO_LBS=2.2046;
+
+// Convert kg to lbs and format with appropriate units (oz for tiny, lbs/T for everything else)
+function fmtLbs(kg){
+  const lbs=kg*KG_TO_LBS;
+  if(lbs===0)return'0 lbs';
+  if(lbs<0.1)return(lbs*16).toFixed(1)+' oz';
+  return fmt(lbs)+' lbs';
+}
 
 const SCENARIOS=[
   {id:'none',label:'No pickup',color:'#C15C52',tc:'#fff',
@@ -520,17 +536,17 @@ function render(){
 
   document.getElementById('mfg-chart').innerHTML=mfgData.map(d=>{
     const p=Math.round((d.co2mfg/mxMfg)*100);
-    return bar(p,d.color,d.tc,d.label,fmt(d.co2mfg)+' kg CO2e',d.id==='poddy'?'fixed — made once':null);
+    return bar(p,d.color,d.tc,d.label,fmtLbs(d.co2mfg)+' CO2e',d.id==='poddy'?'fixed — made once':null);
   }).join('');
 
   document.getElementById('decomp-chart').innerHTML=data.map(d=>{
     const p=Math.round((d.co2decomp/mxDecomp)*100);
-    return bar(p,d.color,d.tc,d.label,fmt(d.co2decomp)+' kg CO2e',d.id==='poddy'?'biogenic — ~0':null);
+    return bar(p,d.color,d.tc,d.label,fmtLbs(d.co2decomp)+' CO2e',d.id==='poddy'?'biogenic — ~0':null);
   }).join('');
 
   document.getElementById('total-chart').innerHTML=data.map(d=>{
     const p=Math.round((d.co2total/mxTotal)*100);
-    return bar(p,d.color,d.tc,d.label,fmt(d.co2total)+' kg total',null);
+    return bar(p,d.color,d.tc,d.label,fmtLbs(d.co2total)+' total',null);
   }).join('');
 
   document.getElementById('plastic-cards').innerHTML=plasticData.map(d=>{
@@ -538,14 +554,14 @@ function render(){
     return`<div class="m-card ${isPoddy?'best':isReused?'worst':''}">
       ${isPoddy?'<span class="m-badge badge-green">Best</span>':isReused?'<span class="m-badge badge-red">Most plastic</span>':'<span class="badge-space"></span>'}
       <div class="m-label">${d.label}</div>
-      <div class="m-val" style="color:${d.color}">${fmt(d.plastic)} kg</div>
-      <div class="m-sub">${isPoddy?'zero plastic to landfill':isReused?'grocery bags ~10g vs. poop bags ~6g':'to landfill'}</div>
+      <div class="m-val" style="color:${d.color}">${fmtLbs(d.plastic)}</div>
+      <div class="m-sub">${isPoddy?'zero plastic to landfill':isReused?'grocery bags ~0.35 oz vs. poop bags ~0.21 oz':'to landfill'}</div>
     </div>`;
   }).join('');
 
   document.getElementById('plastic-chart').innerHTML=plasticData.map(d=>{
     const p=Math.round((d.plastic/mxP)*100);
-    return bar(Math.max(p,d.id==='poddy'?1:p),d.color,d.tc,d.label,fmt(d.plastic)+' kg',null);
+    return bar(Math.max(p,d.id==='poddy'?1:p),d.color,d.tc,d.label,fmtLbs(d.plastic),null);
   }).join('');
 
   document.getElementById('score-cards').innerHTML=data.map(d=>{
@@ -616,12 +632,12 @@ function render(){
     </div>
     <div class="scale-card">
       <div class="scale-title">Plastic waste avoided</div>
-      <div class="scale-stat">${fmt(newB.plastic)} kg</div>
+      <div class="scale-stat">${fmtLbs(newB.plastic)}</div>
       <div class="scale-sub">${fmt(newB.bags)} bags by count</div>
     </div>
     <div class="scale-card">
       <div class="scale-title">Total CO2e avoided vs. new bags</div>
-      <div class="scale-stat">${fmt(co2saved)} kg</div>
+      <div class="scale-stat">${fmtLbs(co2saved)}</div>
       <div class="scale-sub">Poddy is ~${ratio}x lower carbon</div>
     </div>
     <div class="scale-card">
@@ -641,10 +657,10 @@ function render(){
     </div>`;
 
   document.getElementById('methodology-text').innerHTML=`
-    <p><strong>Manufacturing CO2e:</strong> New poop bag 6g CO2e (virgin polyethylene, US avg) &middot; Reused grocery bag 1g CO2e (manufacturing sunk from grocery use; if intentionally acquired for dog waste use, full ~6g CO2e applies &mdash; similar to a new poop bag) &middot; Compostable bag 3.5g CO2e &middot; Poddy 2.15kg CO2e one-time (2.1kg mfg + 0.05kg EOL, recycled resin, US-made, recyclable at end of life) &mdash; fixed regardless of years or dogs added. No pickup excluded from Chart 1: no product is manufactured.</p>
-    <p><strong>Waste decomposition CO2e:</strong> Dog waste produces methane as it decomposes. Methane carries 25&times; the warming impact of CO2 over 100 years. Three US landfill gas pathways weighted by prevalence: (1) ~35% of landfills collect gas for energy &mdash; best case; (2) ~25% flare gas &mdash; converts methane to CO2, better than atmospheric release; (3) ~40% have no gas collection &mdash; methane escapes at full 25&times; GWP. Weighted national average: ~32.6 kg CO2e/dog/year for all landfill scenarios. No pickup: ~46.5 kg CO2e/dog/year from surface decomposition methane. The Poddy routes waste to WWTP where aerobic treatment produces biogenic CO2 &mdash; carbon recently part of the living carbon cycle, not fossil carbon. Per standard LCA methodology (EPA, IPCC), biogenic CO2 is treated as carbon neutral. 10% of WWTPs also capture methane as biogas. Poddy decomposition CO2e: ~0.</p>
+    <p><strong>Manufacturing CO2e:</strong> New poop bag 0.013 lbs CO2e (virgin polyethylene, US avg) &middot; Reused grocery bag 0.002 lbs CO2e (manufacturing sunk from grocery use; if intentionally acquired for dog waste use, full ~0.013 lbs CO2e applies &mdash; similar to a new poop bag) &middot; Compostable bag 0.008 lbs CO2e &middot; Poddy 4.7 lbs CO2e one-time (4.6 lbs mfg + 0.11 lbs EOL, recycled resin, US-made, recyclable at end of life) &mdash; fixed regardless of years or dogs added. No pickup excluded from Chart 1: no product is manufactured.</p>
+    <p><strong>Waste decomposition CO2e:</strong> Dog waste produces methane as it decomposes. Methane carries 25&times; the warming impact of CO2 over 100 years. Three US landfill gas pathways weighted by prevalence: (1) ~35% of landfills collect gas for energy &mdash; best case; (2) ~25% flare gas &mdash; converts methane to CO2, better than atmospheric release; (3) ~40% have no gas collection &mdash; methane escapes at full 25&times; GWP. Weighted national average: ~72 lbs CO2e/dog/year for all landfill scenarios. No pickup: ~102 lbs CO2e/dog/year from surface decomposition methane. The Poddy routes waste to WWTP where aerobic treatment produces biogenic CO2 &mdash; carbon recently part of the living carbon cycle, not fossil carbon. Per standard LCA methodology (EPA, IPCC), biogenic CO2 is treated as carbon neutral. 10% of WWTPs also capture methane as biogas. Poddy decomposition CO2e: ~0.</p>
     <p><strong>Addressable market:</strong> Total US dog population ~90M (APPA 2026; AVMA 2025: 87.3M). ~18M rural dogs excluded &mdash; rural owners typically have open land where waste disperses naturally and are unlikely to adopt a collection system. Addressable market: 72M suburban and urban dogs (YouGov 2023).</p>
-    <p><strong>Other assumptions:</strong> 730 walks/year (2/day) &middot; 0.75 lbs waste/dog/day &middot; 23M fecal coliform/gram (EPA) &middot; Reused grocery bag: 10g plastic (heavier than dedicated poop bags), $0.08/bag avg (5&ndash;15&cent; in 12 states + 100+ localities, $0 elsewhere) &middot; Compostable bags landfilled &mdash; anaerobic landfill conditions prevent decomposition &middot; Poddy: $30 one-time lifetime cost, $0 recurring &middot; Landfill leachate: ~1% escape (EPA double-liner study; EPA notes all landfills eventually leak) &middot; WWTP: 90-99% pathogen removal; 70% biosolids land-applied as fertilizer; 10% of plants capture biogas &middot; Resource value: $20.34/dog/yr (biogas $15.56 + biosolids $4.78 &mdash; Go Poddy original analysis; sources: Argonne National Lab, American Biogas Council 2024, EIA Henry Hub 2025, Oklahoma State Extension) &middot; Cost breakeven Poddy vs. new bags: ~${beCost} months.</p>`;
+    <p><strong>Other assumptions:</strong> 730 walks/year (2/day) &middot; 0.75 lbs waste/dog/day &middot; 23M fecal coliform/gram (EPA) &middot; Reused grocery bag: 0.022 lbs plastic (~0.35 oz &mdash; heavier than dedicated poop bags at ~0.21 oz), $0.08/bag avg (5&ndash;15&cent; in 12 states + 100+ localities, $0 elsewhere) &middot; Compostable bags landfilled &mdash; anaerobic landfill conditions prevent decomposition &middot; Poddy: $30 one-time lifetime cost, $0 recurring &middot; Landfill leachate: ~1% escape (EPA double-liner study; EPA notes all landfills eventually leak) &middot; WWTP: 90-99% pathogen removal; 70% biosolids land-applied as fertilizer; 10% of plants capture biogas &middot; Resource value: $20.34/dog/yr (biogas $15.56 + biosolids $4.78 &mdash; Go Poddy original analysis; sources: Argonne National Lab, American Biogas Council 2024, EIA Henry Hub 2025, Oklahoma State Extension) &middot; Cost breakeven Poddy vs. new bags: ~${beCost} months.</p>`;
 }
 
 document.getElementById('dogs').addEventListener('input',render);
