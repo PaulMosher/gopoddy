@@ -93,6 +93,16 @@
     font-family:'Fraunces',serif; font-size:1.3rem; font-weight:700;
     color:var(--green-deep); min-width:80px; text-align:right; line-height:1;
   }
+  .ctrl-val-stack {
+    display:flex; flex-direction:column; align-items:flex-end;
+    min-width:140px; gap:4px;
+  }
+  .ctrl-val-stack .ctrl-val { min-width:0; }
+  .ctrl-compare {
+    font-size:11px; color:var(--text-mid); opacity:0.85;
+    font-style:italic; line-height:1.2; text-align:right;
+    min-height:14px;
+  }
 
   /* MARKET NOTE */
   .market-note {
@@ -309,7 +319,10 @@
       <label>Number of dogs</label>
       <div class="ctrl-row">
         <input type="range" id="dogs" min="0" max="21" value="0" step="1">
-        <div class="ctrl-val" id="dogs-out">1</div>
+        <div class="ctrl-val-stack">
+          <div class="ctrl-val" id="dogs-out">1</div>
+          <div class="ctrl-compare" id="dogs-compare">&nbsp;</div>
+        </div>
       </div>
     </div>
     <div class="ctrl-card">
@@ -570,6 +583,27 @@ function render(){
   const years=parseInt(document.getElementById('years').value);
   document.getElementById('dogs-out').textContent=dogs.toLocaleString();
   document.getElementById('years-out').textContent=years+(years===1?' yr':' yrs');
+
+  // Comparison labels keyed to dog count (assumes ~0.27 dogs per capita)
+  const COMPARE={
+    25:'a single block',
+    50:'a city block',
+    100:'a small neighborhood',
+    500:'a small village',
+    1000:'a small town',
+    5000:'a small suburb',
+    10000:'a typical Chicago suburb',
+    50000:'Naperville, IL',
+    100000:'a city the size of Pittsburgh',
+    500000:'Manhattan',
+    1000000:'Los Angeles',
+    5000000:'New York State',
+    10000000:'California',
+    25000000:'the U.S. Northeast',
+    50000000:'more than half the U.S.',
+    72000000:'U.S. addressable market'
+  };
+  document.getElementById('dogs-compare').innerHTML=COMPARE[dogs]||'&nbsp;';
 
   const pct=Math.min(Math.round((dogs/ADDRESSABLE)*100),100);
   document.getElementById('market-note').innerHTML=
