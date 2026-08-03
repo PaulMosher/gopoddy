@@ -153,6 +153,8 @@
   }
   .scroll-cue .chevron { animation:bob 1.8s ease-in-out infinite; }
   @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+  .scroll-cue.inline { position:static; transform:none; margin-top:32px; align-items:flex-start; }
+  .bg-green .scroll-cue, .bg-harbor .scroll-cue { color:rgba(247,246,240,0.65); }
 
   @media(max-width:900px) {
     .hero-inner { grid-template-columns:1fr; text-align:center; }
@@ -400,6 +402,7 @@
 <div aria-hidden="true" style="position:absolute;left:-5000px;"><input name="b_5a11aadc0e9f8998b861f2483_732248216d" tabindex="-1" type="text" value=""/></div>
 </form>
 <p class="form-note" style="opacity:0.75;margin-top:10px;">🔒 Share your email to stay connected — no spam, ever.</p>
+<div class="scroll-cue inline"><span>Keep scrolling — there's more to the story</span><span class="chevron">⌄</span></div>
 </div>
 </section>
 
