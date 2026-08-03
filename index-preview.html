@@ -155,6 +155,25 @@
   @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
   .scroll-cue.inline { position:static; transform:none; margin-top:32px; align-items:flex-start; }
   .bg-green .scroll-cue, .bg-harbor .scroll-cue { color:rgba(247,246,240,0.65); }
+  @media(min-width:901px) { .scroll-cue.inline { display:none; } }
+
+  .next-hint {
+    position:absolute; right:64px; top:50%; transform:translateY(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:16px;
+  }
+  .next-hint .arrow-chip {
+    width:54px; height:54px; border-radius:50%;
+    background:var(--terracotta); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; box-shadow:0 12px 26px rgba(0,0,0,0.32);
+    animation:bob 1.8s ease-in-out infinite;
+  }
+  .next-hint .label {
+    writing-mode:vertical-rl; transform:rotate(180deg);
+    font-size:11px; letter-spacing:0.22em; text-transform:uppercase; font-weight:700;
+    color:rgba(247,246,240,0.8);
+  }
+  @media(max-width:900px) { .next-hint { display:none; } }
 
   @media(max-width:900px) {
     .hero-inner { grid-template-columns:1fr; text-align:center; }
@@ -404,6 +423,7 @@
 <p class="form-note" style="opacity:0.75;margin-top:10px;">🔒 Share your email to stay connected — no spam, ever.</p>
 <div class="scroll-cue inline"><span>Keep scrolling — there's more to the story</span><span class="chevron">⌄</span></div>
 </div>
+<div class="next-hint"><div class="arrow-chip">↓</div><div class="label">More of the story</div></div>
 </section>
 
 <!-- 8. THREE WAYS IN (final slide, before footer) -->
