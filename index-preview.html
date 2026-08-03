@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="w770yc24vq8vg8lenbvql4gr8gv2x2" name="facebook-domain-verification">
+<meta content="4fqBEz8RwL_Iq0TvvOHBkuqMd80zXH5pUt5MeTK6vQ" name="google-site-verification">
+<title>Go Poddy — Zero Plastic Bags. One Better Way.</title>
+<meta content="The Poddy is a reusable, patented dog waste retrieval and disposal system. No more plastic bags. Better walks. Cleaner waterways." name="description"/>
+<link href="https://gopoddy.com/" rel="canonical"/>
+<!-- Open Graph -->
+<meta content="website" property="og:type"/>
+<meta content="Go Poddy — Zero Plastic Bags. One Better Way." property="og:title"/>
+<meta content="The Poddy is a reusable, patented dog waste retrieval and disposal system. No more plastic bags. Better walks. Cleaner waterways." property="og:description"/>
+<meta content="https://gopoddy.com/" property="og:url"/>
+<meta content="Go Poddy" property="og:site_name"/>
+<meta content="https://gopoddy.com/ThePoddyLogo.svg" property="og:image"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,700&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    /* Revision 1 (NWD) palette */
+    --green-deep:  #445134;  /* hunter */
+    --green-sage:  #c1c7a1;  /* sage */
+    --terracotta:  #c15c53;  /* clay */
+    --blush:       #e9c2ae;  /* peach/tan */
+    --harbor:      #576b7b;  /* slate */
+    --cream:       #f7f6f0;  /* porcelain */
+    --text:        #323c26;  /* darkest green text, derived from hunter */
+    --text-mid:    #5e6a4f;  /* mid green, derived from hunter */
+    --deep-bg:     #2b3421;  /* deepest green, derived from hunter (footer) */
+    --terracotta-hover: #a9463d;
+    --muted-sage:  #b1b59b;
+    --peach-wash:  #fbf4f1;
+    --peach-sand:  #f7e8e0;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { font-family:'DM Sans',sans-serif; background:#fff; color:var(--text); font-size:17px; line-height:1.7; }
+
+  /* reveal-on-scroll (progressive enhancement -- content is visible by default with no JS) */
+  .reveal { opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.is-visible { opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity:1; transform:none; transition:none; } }
+
+  /* NAV */
+  .site-nav {
+    display:flex; justify-content:flex-end; align-items:center;
+    padding:16px 40px; background:#fff;
+    border-bottom:1px solid rgba(50,60,38,0.08);
+    gap:20px; position:sticky; top:0; z-index:100;
+  }
+  .nav-socials { display:flex; align-items:center; gap:14px; padding-right:20px; margin-right:4px; border-right:1px solid rgba(50,60,38,0.15); }
+  .nav-pages { display:flex; align-items:center; gap:20px; }
+  .nav-pages a {
+    color:var(--green-deep); text-decoration:none; font-size:12px;
+    letter-spacing:0.1em; text-transform:uppercase; opacity:0.7; transition:opacity 0.2s;
+  }
+  .nav-pages a:hover { opacity:1; }
+  .nav-cta {
+    background:var(--terracotta)!important; color:#fff!important;
+    padding:8px 16px!important; border-radius:3px; opacity:1!important; font-weight:500!important;
+  }
+  .nav-cta:hover { background:var(--terracotta-hover)!important; }
+
+  /* HERO */
+  .hero {
+    background:radial-gradient(120% 100% at 85% 15%, var(--peach-wash) 0%, #fff 45%);
+    padding:56px 40px 72px;
+  }
+  .hero-inner {
+    max-width:1180px; margin:0 auto;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:56px; align-items:center;
+  }
+  .hero-logo { width:min(260px,60vw); margin-bottom:28px; }
+  .hero-logo img { width:100%; height:auto; display:block; }
+  .hero-badges { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:22px; }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:10px;
+    background:rgba(50,60,38,0.05); border:1px solid rgba(50,60,38,0.12);
+    border-radius:100px; padding:7px 20px; font-size:11px;
+    letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--text-mid);
+  }
+  .hero-badge.is-live { background:var(--terracotta); border-color:var(--terracotta); color:#fff; }
+  .hero-badge a { color:var(--terracotta); text-decoration:none; font-weight:600; }
+  .hero-badge.is-live a { color:#fff; text-decoration:underline; }
+  .hero h1 {
+    font-family:'Fraunces',serif; font-weight:700; letter-spacing:-0.01em;
+    font-size:clamp(2.4rem,5vw,3.6rem); line-height:1.05; color:var(--green-deep);
+    margin-bottom:18px;
+  }
+  .hero h1 em { font-style:italic; color:var(--terracotta); }
+  .hero-sub {
+    font-size:clamp(1.1rem,1.6vw,1.3rem); color:var(--text-mid);
+    max-width:520px; margin-bottom:26px; line-height:1.6;
+  }
+  .waitlist-form {
+    display:flex; max-width:480px; width:100%; border-radius:6px;
+    overflow:hidden; box-shadow:0 4px 24px rgba(50,60,38,0.14); margin-bottom:14px;
+    border:1px solid rgba(50,60,38,0.1);
+  }
+  .waitlist-form input[type="email"] {
+    flex:1; padding:15px 20px; border:none;
+    font-family:'DM Sans',sans-serif; font-size:15px; color:var(--text); outline:none; background:#fff;
+  }
+  .waitlist-form input::placeholder { color:var(--muted-sage); }
+  .waitlist-form button {
+    padding:15px 24px; background:var(--terracotta); color:#fff;
+    border:none; font-family:'DM Sans',sans-serif; font-size:14px;
+    font-weight:600; cursor:pointer; white-space:nowrap; transition:background 0.2s;
+  }
+  .waitlist-form button:hover { background:var(--terracotta-hover); }
+  .form-note {
+    font-size:12px; color:var(--text-mid); opacity:0.75; letter-spacing:0.02em;
+  }
+  .hero-photo {
+    border-radius:14px; overflow:hidden;
+    box-shadow:0 30px 60px rgba(50,60,38,0.22);
+    aspect-ratio:2/3;
+  }
+  .hero-photo img { width:100%; height:100%; object-fit:cover; display:block; }
+
+  @media(max-width:900px) {
+    .hero-inner { grid-template-columns:1fr; text-align:center; }
+    .hero-logo { margin-left:auto; margin-right:auto; }
+    .hero-sub { margin-left:auto; margin-right:auto; }
+    .waitlist-form { margin-left:auto; margin-right:auto; }
+    .hero-badges { justify-content:center; }
+    .hero-photo { max-width:380px; margin:8px auto 0; }
+  }
+
+  /* STAT STRIP */
+  .stat-strip { background:var(--peach-wash); padding:56px 24px; }
+  .stat-strip-inner {
+    max-width:960px; margin:0 auto;
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:32px; text-align:center;
+  }
+  .stat-num {
+    font-family:'Fraunces',serif; font-size:clamp(2.4rem,5vw,3.6rem);
+    font-weight:700; color:var(--green-deep); line-height:1; margin-bottom:8px;
+  }
+  .stat-label { font-size:13px; color:var(--text-mid); line-height:1.5; max-width:200px; margin:0 auto; }
+
+  /* SHARED SECTION STYLES */
+  .section-eyebrow { font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--terracotta); margin-bottom:14px; font-weight:500; }
+  .section-title { font-family:'Fraunces',serif; font-size:clamp(1.8rem,4vw,3rem); font-weight:700; color:var(--green-deep); line-height:1.2; margin-bottom:20px; }
+  .section-title em { font-style:italic; color:var(--terracotta); }
+  .section-body { color:var(--text-mid); font-size:17px; line-height:1.75; max-width:680px; margin:0 auto; }
+
+  /* THESIS / PROBLEM */
+  .thesis-section { padding:88px 24px; max-width:780px; margin:0 auto; text-align:center; }
+  .thesis-section .section-body + .section-body { margin-top:18px; }
+
+  /* HOW IT WORKS — quick steps callout */
+  .steps-strip { background:var(--green-deep); padding:80px 24px; }
+  .steps-inner { max-width:960px; margin:0 auto; }
+  .steps-strip .section-eyebrow { color:var(--green-sage); }
+  .steps-strip .section-title { color:var(--cream); margin-bottom:56px; text-align:center; }
+  .steps-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:40px; }
+  .step-head {
+    display:flex; align-items:baseline; gap:14px;
+    margin-bottom:14px;
+    padding-bottom:12px;
+    border-bottom:1px solid rgba(193,199,161,0.25);
+  }
+  .step-num {
+    font-family:'Fraunces',serif; font-size:1.5rem; font-weight:700;
+    color:var(--green-sage); opacity:0.65; line-height:1;
+  }
+  .step-name {
+    font-family:'Fraunces',serif; font-size:1.5rem; font-weight:700;
+    color:var(--cream); line-height:1;
+  }
+  .step p { font-size:15px; color:rgba(247,246,240,0.72); line-height:1.65; }
+  .steps-cta { text-align:center; margin-top:52px; }
+  .steps-cta a {
+    color:var(--green-sage); text-decoration:none; font-size:13px;
+    letter-spacing:0.1em; text-transform:uppercase;
+    border-bottom:1px solid rgba(193,199,161,0.4); padding-bottom:2px;
+  }
+
+  /* FOUNDER / FIELD NOTES */
+  .founder-section { padding:96px 24px; background:#fff; }
+  .founder-inner {
+    max-width:1000px; margin:0 auto;
+    display:grid; grid-template-columns:0.85fr 1.15fr; gap:56px; align-items:center;
+  }
+  .founder-photo {
+    border-radius:12px; overflow:hidden; aspect-ratio:1/1;
+    box-shadow:0 24px 48px rgba(50,60,38,0.18);
+  }
+  .founder-photo img { width:100%; height:100%; object-fit:cover; display:block; }
+  .founder-text .section-title { text-align:left; margin-bottom:18px; }
+  .founder-text .section-eyebrow { margin-bottom:10px; }
+  .founder-body { color:var(--text-mid); font-size:16.5px; line-height:1.75; margin-bottom:16px; max-width:none; }
+  .founder-sig { font-family:'Fraunces',serif; font-style:italic; color:var(--green-deep); font-size:15px; margin-top:18px; }
+
+  @media(max-width:780px) {
+    .founder-inner { grid-template-columns:1fr; gap:32px; }
+    .founder-photo { max-width:320px; margin:0 auto; }
+    .founder-text .section-title { text-align:center; }
+    .founder-text .section-eyebrow { text-align:center; }
+    .founder-body { text-align:center; }
+  }
+
+  /* THREE WAYS IN (moved lower, secondary explore section) */
+  .doors-section { background:var(--peach-wash); padding:80px 24px; }
+  .doors-inner { max-width:1100px; margin:0 auto; }
+  .doors-header { text-align:center; margin-bottom:48px; }
+  .doors-grid {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:20px;
+  }
+  .door-card {
+    background:#fff; border-radius:10px; padding:32px 26px 28px;
+    border:1px solid rgba(50,60,38,0.08);
+    text-decoration:none; color:inherit;
+    display:flex; flex-direction:column;
+    transition:transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .door-card:hover {
+    transform:translateY(-3px);
+    box-shadow:0 12px 32px rgba(50,60,38,0.10);
+    border-color:var(--green-sage);
+  }
+  .door-eyebrow {
+    font-size:10px; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--terracotta); font-weight:500; margin-bottom:14px;
+  }
+  .door-title {
+    font-family:'Fraunces',serif; font-size:1.35rem; font-weight:700;
+    color:var(--green-deep); line-height:1.25; margin-bottom:12px;
+  }
+  .door-body {
+    font-size:14.5px; color:var(--text-mid); line-height:1.6;
+    flex:1; margin-bottom:18px;
+  }
+  .door-arrow {
+    font-size:12px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--green-deep); font-weight:500;
+  }
+
+  /* PATENT */
+  .patent-section { background:var(--green-deep); padding:60px 24px; text-align:center; }
+  .patent-badge {
+    display:inline-flex; align-items:center; gap:16px;
+    background:rgba(247,246,240,0.06); border:1px solid rgba(247,246,240,0.12);
+    border-radius:8px; padding:18px 32px; margin-bottom:16px;
+  }
+  .patent-badge-title { font-family:'Fraunces',serif; font-size:1rem; color:var(--cream); font-weight:600; margin-bottom:3px; }
+  .patent-badge-num { font-size:12px; color:rgba(247,246,240,0.5); letter-spacing:0.06em; }
+  .patent-sub { color:rgba(247,246,240,0.6); font-size:14px; max-width:540px; margin:8px auto 0; line-height:1.65; }
+
+  /* BOTTOM CTA -- Kickstarter + waitlist combined */
+  .bottom-cta { padding:96px 24px; text-align:center; background:var(--peach-wash); border-top:3px solid var(--blush); }
+  .bottom-cta .live-pill {
+    display:inline-flex; align-items:center; gap:10px; background:var(--terracotta); color:#fff;
+    font-size:11px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase;
+    padding:9px 18px; border-radius:100px; margin-bottom:18px;
+  }
+  .bottom-cta .section-body { margin-bottom:30px; }
+  .cta-buttons { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-bottom:44px; }
+  .btn-kickstarter {
+    background:var(--terracotta); color:#fff; text-decoration:none;
+    padding:16px 30px; border-radius:100px; font-weight:700; font-size:15px;
+    box-shadow:0 10px 22px rgba(50,60,38,0.2); transition:background 0.2s, transform 0.15s;
+  }
+  .btn-kickstarter:hover { background:var(--terracotta-hover); transform:translateY(-2px); }
+  .bottom-cta .waitlist-form { margin:0 auto 12px; background:#fff; }
+  .bottom-cta .form-note { color:var(--text-mid); opacity:0.7; }
+  .cta-divider { font-size:12px; color:var(--text-mid); opacity:0.6; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:18px; }
+
+  /* FOOTER */
+  .site-footer { background:var(--deep-bg); padding:36px 40px 24px; }
+  .footer-inner { max-width:960px; margin:0 auto; }
+  .footer-top { display:flex; justify-content:space-between; align-items:center; gap:24px; padding-bottom:22px; border-bottom:1px solid rgba(247,246,240,0.1); flex-wrap:wrap; }
+  .footer-logo img { height:40px; width:auto; display:block; }
+  .footer-links { display:flex; gap:20px; flex-wrap:wrap; align-items:center; }
+  .footer-links a { color:rgba(247,246,240,0.5); text-decoration:none; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; transition:color 0.2s; }
+  .footer-links a:hover { color:var(--green-sage); }
+  .footer-socials { display:flex; align-items:center; gap:12px; }
+  .footer-bottom { padding-top:16px; text-align:center; color:rgba(247,246,240,0.35); font-size:11px; line-height:1.8; }
+
+  @media(max-width:700px) {
+    .site-nav { padding:12px 20px; }
+    .nav-socials { display:none; }
+    .hero { padding:36px 20px 48px; }
+    .site-footer { padding:28px 20px 20px; }
+  }
+</style>
+</head>
+<body>
+<!-- NAV -->
+<nav class="site-nav">
+<div class="nav-socials">
+<a aria-label="Instagram" href="https://www.instagram.com/go.poddy" rel="noopener" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;" target="_blank"><svg height="18" style="display:block;flex-shrink:0;fill:#445134;" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg></a>
+<a aria-label="TikTok" href="https://www.tiktok.com/@go.poddy" rel="noopener" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;" target="_blank"><svg height="18" style="display:block;flex-shrink:0;fill:#445134;" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"></path></svg></a>
+<a aria-label="Bluesky" href="https://bsky.app/profile/gopoddy.bsky.social" rel="noopener" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;" target="_blank"><svg height="18" style="display:block;flex-shrink:0;fill:#445134;" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"></path></svg></a>
+<a aria-label="YouTube" href="https://www.youtube.com/@gopoddyscooper" rel="noopener" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;" target="_blank"><svg height="18" style="display:block;flex-shrink:0;fill:#445134;" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg></a>
+</div>
+<div class="nav-pages">
+<a href="/">Home</a>
+<a href="/blog/">Learn</a>
+<a href="/how-it-works.html">How It Works</a>
+<a href="/lca.html">Life Cycle Analysis</a>
+<a href="/contact.html">Contact</a>
+<a class="nav-cta" href="/kickstarter">Back on Kickstarter</a>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="waitlist">
+<div class="hero-inner">
+<div>
+<div class="hero-logo"><img alt="The Poddy" src="/ThePoddyLogo.svg"/></div>
+<div class="hero-badges">
+<div class="hero-badge is-live"><a href="/kickstarter">Live on Kickstarter →</a></div>
+</div>
+<h1>Zero plastic bags.<br>One <em>better</em> way.</h1>
+<p class="hero-sub">A reusable scoop-and-seal system that replaces disposable dog waste bags — patented, tested for six years, and built for the walk you actually take.</p>
+<form action="https://moshergroupllc.us10.list-manage.com/subscribe/post?u=5a11aadc0e9f8998b861f2483&amp;id=732248216d&amp;f_id=00cc4ae4f0" class="waitlist-form" method="post" novalidate="" target="_blank">
+<input aria-label="Email address" name="EMAIL" placeholder="Your email address" required="" type="email"/>
+<button name="subscribe" type="submit">Notify Me</button>
+<div aria-hidden="true" style="position:absolute;left:-5000px;"><input name="b_5a11aadc0e9f8998b861f2483_732248216d" tabindex="-1" type="text" value=""/></div>
+</form>
+<p class="form-note">🔒 Share your email to stay connected — no spam, ever.</p>
+</div>
+<div class="hero-photo"><img src="/hero-paul-teddy.jpg" alt="Paul walking Teddy on a path, carrying the Poddy"/></div>
+</div>
+</section>
+
+<!-- STAT STRIP -->
+<section class="stat-strip reveal">
+<div class="stat-strip-inner">
+<div><div class="stat-num">82B</div><div class="stat-label">plastic bags used by North American dog owners every year</div></div>
+<div><div class="stat-num">116</div><div class="stat-label">pounds of plastic bags sent to landfill with the poop of one dog over its lifetime</div></div>
+<div><div class="stat-num">$1.19B</div><div class="stat-label">in annual resource value sent to landfills instead</div></div>
+<div><div class="stat-num">0</div><div class="stat-label">plastic bags needed with the Poddy</div></div>
+</div>
+</section>
+
+<!-- THESIS / PROBLEM -->
+<section class="thesis-section reveal">
+<p class="section-eyebrow">The problem isn't just the bag</p>
+<h2 class="section-title">We solved the <em>wrong</em> half.</h2>
+<p class="section-body">The bag was never the solution — it was the workaround. A 2022 peer-reviewed study (<a href="https://pubmed.ncbi.nlm.nih.gov/34648841/" rel="noopener" target="_blank">Mai et al., Environmental Pollution</a>) estimated 82 billion plastic dog waste bags consumed annually across North America. Bags are only the most visible part of the problem — dog waste also pollutes waterways, threatens public health, and represents over a billion dollars in renewable energy and fertilizer value sent straight to landfills.</p>
+<p class="section-body">The Poddy is the only product designed to address all three. It eliminates the bag, routes waste to the wastewater system the EPA recommends, and turns a daily nuisance into something better for your walk, your community, and the planet.</p>
+<p class="section-body" style="font-size:14px; opacity:0.75; margin-top:24px;">A note on the numbers: the bag estimate above comes from Mai et al., 2022 (<em>Environmental Pollution</em>), covering all of North America. Resource-value and adoption math throughout the site is built on the ~72 million suburban and urban dogs in the U.S. that represent the realistic addressable market for a collection system like the Poddy.</p>
+</section>
+
+<!-- HOW IT WORKS — quick steps -->
+<section class="steps-strip reveal">
+<div class="steps-inner">
+<p class="section-eyebrow" style="text-align:center">How it works</p>
+<h2 class="section-title">The lid <em>is</em> the scoop.</h2>
+<div class="steps-grid">
+<div class="step"><div class="step-head"><span class="step-num">1</span><span class="step-name">Scoop</span></div><p>The scooper is integrated into the lid. Waste lifts cleanly — no hand contact, no thin bag between you and the problem.</p></div>
+<div class="step"><div class="step-head"><span class="step-num">2</span><span class="step-name">Seal</span></div><p>The lid screws closed and traps the air, keeping odor in. Carry it home clipped to your belt, leash, or bag.</p></div>
+<div class="step"><div class="step-head"><span class="step-num">3</span><span class="step-name">Empty</span></div><p>Tip the contents into the toilet — the EPA-recommended method. Rinse. Done. Ready for the next walk.</p></div>
+</div>
+<div class="steps-cta"><a href="/how-it-works.html">Full step-by-step guide →</a></div>
+</div>
+</section>
+
+<!-- FIELD NOTES / STORY -->
+<section class="founder-section reveal">
+<div class="founder-inner">
+<div class="founder-photo"><img src="/story-paul-teddy.jpg" alt="Paul kneeling with Teddy, holding the Poddy"/></div>
+<div class="founder-text">
+<p class="section-eyebrow">Field notes</p>
+<h2 class="section-title">Six years of use.<br>Still only <em>one</em> dog.</h2>
+<p class="founder-body">Teddy and I have carried a Poddy every day since 2020, through thirteen prototypes. That's the longest run of real use this product has — and it's still just one dog, one neighborhood. We're the sample size of one that got this far; the rest of the story needs other people, other dogs, other routines.</p>
+<p class="founder-body">Version fourteen exists because of things we only found by using it — in rain, in snow, with gloves on, at 6am when neither of us felt like it.</p>
+<p class="founder-sig">— Paul, Mosher Group</p>
+</div>
+</div>
+</section>
+
+<!-- THREE WAYS IN -->
+<section class="doors-section reveal">
+<div class="doors-inner">
+<div class="doors-header">
+<p class="section-eyebrow">Explore</p>
+<h2 class="section-title">Three ways into the story.</h2>
+</div>
+<div class="doors-grid">
+<a class="door-card" href="/how-it-works.html">
+<div class="door-eyebrow">How It Works</div>
+<div class="door-title">Designed for the walk — and everything around it.</div>
+<div class="door-body">Three moments: the walk, after the walk, and in between. See how scoop, seal, and empty actually work.</div>
+<div class="door-arrow">See how it works →</div>
+</a>
+<a class="door-card" href="/blog/">
+<div class="door-eyebrow">Learn</div>
+<div class="door-title">The full case for rethinking dog waste.</div>
+<div class="door-body">EPA guidance, the biodegradable-bag myth, the biogas opportunity, and the daily benefits of the walk itself. Sourced and cited.</div>
+<div class="door-arrow">Browse the library →</div>
+</a>
+<a class="door-card" href="/lca.html">
+<div class="door-eyebrow">Original Research</div>
+<div class="door-title">Possibly the most thorough dog waste analysis in the pet industry.</div>
+<div class="door-body">Carbon, plastic, pathogens, cost — every disposal method compared with real data. Adjust for any number of dogs, any number of years.</div>
+<div class="door-arrow">Explore the LCA →</div>
+</a>
+</div>
+</div>
+</section>
+
+<!-- PATENT -->
+<section class="patent-section reveal">
+<div class="patent-badge">
+<div>
+<div class="patent-badge-title">U.S. Utility Patent</div>
+<div class="patent-badge-num">No. 12,297,613 B2  ·  Granted May 2025</div>
+</div>
+</div>
+<p class="patent-sub">A utility patent protects how the Poddy works — not just how it looks. That's a higher bar, and a stronger protection.</p>
+</section>
+
+<!-- BOTTOM CTA: Kickstarter + waitlist -->
+<section class="bottom-cta reveal" id="kickstarter">
+<div class="live-pill">● Live on Kickstarter</div>
+<h2 class="section-title">It launched this week.</h2>
+<p class="section-body">Six years from first prototype to a price that works. The campaign funds the steel molds — and the molds are what make the rest possible.</p>
+<div class="cta-buttons">
+<a class="btn-kickstarter" href="/kickstarter">Back it on Kickstarter →</a>
+</div>
+<p class="cta-divider">Not ready to back it yet?</p>
+<h3 style="font-family:'Fraunces',serif; font-weight:700; color:var(--green-deep); font-size:1.3rem; margin-bottom:16px;">Share your email to stay connected.</h3>
+<form action="https://moshergroupllc.us10.list-manage.com/subscribe/post?u=5a11aadc0e9f8998b861f2483&amp;id=732248216d&amp;f_id=00cc4ae4f0" class="waitlist-form" method="post" novalidate="" target="_blank">
+<input aria-label="Email address" name="EMAIL" placeholder="Your email address" required="" type="email"/>
+<button name="subscribe" type="submit">Notify Me</button>
+<div aria-hidden="true" style="position:absolute;left:-5000px;"><input name="b_5a11aadc0e9f8998b861f2483_732248216d" tabindex="-1" type="text" value=""/></div>
+</form>
+<p class="form-note">🔒 No spam, ever.</p>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+<div class="footer-inner">
+<div class="footer-top">
+<div class="footer-logo"><img src="/ThePoddyLogo.svg" alt="The Poddy"/></div>
+<div class="footer-links">
+<a href="/">Home</a>
+<a href="/blog/">Learn</a>
+<a href="/how-it-works.html">How It Works</a>
+<a href="/lca.html">Life Cycle Analysis</a>
+</div>
+<div class="footer-socials">
+<a aria-label="Instagram" href="https://www.instagram.com/go.poddy" rel="noopener" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;" target="_blank"><svg height="18" style="display:block;flex-shrink:0;fill:#f7f6f0;" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg></a>
+<a aria-label="TikTok" href="https://www.tiktok.com/@go.poddy" rel="noopener" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;" target="_blank"><svg height="18" style="display:block;flex-shrink:0;fill:#f7f6f0;" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"></path></svg></a>
+<a aria-label="Bluesky" href="https://bsky.app/profile/gopoddy.bsky.social" rel="noopener" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;" target="_blank"><svg height="18" style="display:block;flex-shrink:0;fill:#f7f6f0;" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"></path></svg></a>
+<a aria-label="YouTube" href="https://www.youtube.com/@gopoddyscooper" rel="noopener" style="display:inline-flex;align-items:center;opacity:0.65;transition:opacity 0.2s;text-decoration:none;" target="_blank"><svg height="18" style="display:block;flex-shrink:0;fill:#f7f6f0;" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg></a>
+</div>
+</div>
+<div class="footer-bottom">
+      gopoddy.com  ·  U.S. Patent No. 12,297,613 B2  ·  © 2026 Mosher Group, LLC  ·  Pups. People. Planet.
+    </div>
+</div>
+</footer>
+
+<script>
+(function(){
+  if (!('IntersectionObserver' in window)) return;
+  var els = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
