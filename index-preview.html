@@ -37,6 +37,7 @@
     --harbor-l:    #6c8494;  /* lighter harbor, for accents on dark harbor bg */
   }
   * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { height:100%; overflow:hidden; }
   body { font-family:'DM Sans',sans-serif; background:#fff; color:var(--text); font-size:17px; line-height:1.7; }
 
   /* ============ SCROLL-SNAP FLOW ============ */
@@ -81,7 +82,7 @@
     display:flex; justify-content:flex-end; align-items:center;
     padding:16px 40px; background:#fff;
     border-bottom:1px solid rgba(50,60,38,0.08);
-    gap:20px; position:sticky; top:0; z-index:200;
+    gap:20px; position:fixed; top:0; left:0; right:0; z-index:200;
   }
   .nav-socials { display:flex; align-items:center; gap:14px; padding-right:20px; margin-right:4px; border-right:1px solid rgba(50,60,38,0.15); }
   .nav-pages { display:flex; align-items:center; gap:20px; }
@@ -142,6 +143,7 @@
     border-radius:14px; overflow:hidden;
     box-shadow:0 30px 60px rgba(50,60,38,0.22);
     aspect-ratio:2/3;
+    max-height:58vh; margin:0 auto;
   }
   .hero-photo img { width:100%; height:100%; object-fit:cover; display:block; }
   .scroll-cue {
@@ -327,7 +329,8 @@
 <div class="slide-inner split-slide">
 <div>
 <p class="section-eyebrow">How it works</p>
-<h2 class="section-title">The lid <em>is</em> the scoop.</h2>
+<h2 class="section-title" style="margin-bottom:2px;">The lid <em>is</em> the scoop.</h2>
+<h2 class="section-title">The scoop <em>is</em> the lid.</h2>
 <div class="steps">
 <div><div class="step-n">1</div><div class="step-t">Scoop</div><div class="step-d">The scooper is integrated into the lid. Waste lifts cleanly — no hand contact, no thin bag between you and the problem.</div></div>
 <div><div class="step-n">2</div><div class="step-t">Seal</div><div class="step-d">The lid screws closed and traps the air, keeping odor in. Carry it home clipped to your belt, leash, or bag.</div></div>
@@ -373,8 +376,8 @@
 <div>
 <p class="section-eyebrow">Six years in the making</p>
 <h2 class="section-title">Tested until it was ready — <em>not before</em>.</h2>
-<p class="trust-body">This was tried and tested for six years before we felt we could deliver a version that works as well as it needs to — at a price everyone can actually afford. We've been asked the same questions the whole way: when will you be on Kickstarter, when can I buy one, how much will it cost, how does it work.</p>
-<p class="trust-body">Here's what six years of real, daily use bought us: a lid that seals right the first time, a shape that holds up to rain and snow and 6am, and a price that doesn't ask you to choose between doing the right thing and staying on budget.</p>
+<p class="trust-body">This was tried and tested for six years before we felt it was ready. Every prototype along the way was 3D printed — at roughly $750 each. That's not a price you build a product around, it's a price you learn from. The whole time, we've been asked the same questions: when will you be on Kickstarter, when can I buy one, how much will it cost, how does it work.</p>
+<p class="trust-body">Here's what six years of real, daily use bought us: a lid that seals right the first time, a shape that holds up to rain and snow and 6am, and a manufacturing process that turns a $750 prototype into a $30 product, plus shipping.</p>
 <div class="patent-chip">U.S. Utility Patent No. 12,297,613 B2 — protects how the Poddy works, not just how it looks.</div>
 </div>
 </div>
@@ -384,8 +387,9 @@
 <section class="slide bg-green cta-slide" id="kickstarter">
 <div class="slide-inner">
 <div class="live-pill">● Live on Kickstarter</div>
-<h2 class="section-title">It launched this week.</h2>
-<p class="section-body">Six years from first prototype to a price that works. The campaign funds the steel molds — and the molds are what make the rest possible.</p>
+<h2 class="section-title">The ask is simple.</h2>
+<p class="section-body">Live on Kickstarter August 12 through September 13. Back it for $30, plus shipping — then take the next 30 days to learn how it actually fits into your walk. Questions along the way? Contact us anytime.</p>
+<p class="section-body" style="margin-top:14px;">Don't have a dog? Back one for the Humane Society instead.</p>
 <div class="cta-buttons">
 <a class="btn-kickstarter" href="/kickstarter">Back it on Kickstarter →</a>
 </div>
