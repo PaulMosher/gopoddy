@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Poddy on Kickstarter — Go Poddy</title>
+<meta name="robots" content="noindex, follow">
+<meta name="description" content="Follow The Poddy on Kickstarter.">
+
+<!-- Redirect target. To change the destination, edit BOTH the URL below and the two links further down. -->
+<meta http-equiv="refresh" content="2; url=https://www.kickstarter.com/projects/thepoddy/the-poddy">
+<link rel="canonical" href="https://www.kickstarter.com/projects/thepoddy/the-poddy">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --nw-green:#33441f; --nw-sage:#b3bc8e; --nw-clay:#c15c53;
+    --nw-peach:#dd9f83; --nw-slate:#547379; --nw-cream:#f8f7f0;
+    --nw-clay-dk:#a9463d; --nw-green-mid:#4d6235;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    font-family:'DM Sans',system-ui,sans-serif;
+    background:var(--nw-cream); color:var(--nw-green);
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; padding:32px 24px; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:460px}
+  .brand{
+    font-size:13px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--nw-green-mid); font-weight:700; margin-bottom:20px;
+  }
+  h1{
+    font-size:clamp(30px,7vw,44px); line-height:1.08;
+    letter-spacing:-.02em; font-weight:700; margin-bottom:14px;
+  }
+  p{font-size:17px; line-height:1.6; color:var(--nw-green-mid); margin-bottom:28px}
+  .btn{
+    display:inline-block; background:var(--nw-clay); color:#fff;
+    text-decoration:none; font-weight:500; font-size:17px;
+    padding:15px 34px; border-radius:4px; transition:background .2s;
+  }
+  .btn:hover,.btn:focus{background:var(--nw-clay-dk)}
+  .back{display:block; margin-top:22px; font-size:14px; color:var(--nw-green-mid)}
+  .back a{color:var(--nw-green); text-decoration:underline}
+
+  /* thin peach progress bar to signal the auto-forward */
+  .bar{height:3px; width:100%; max-width:260px; margin:0 auto 30px;
+       background:rgba(51,68,31,.12); border-radius:2px; overflow:hidden}
+  .bar span{display:block; height:100%; width:0; background:var(--nw-peach);
+            animation:fill 2s linear forwards}
+  @keyframes fill{to{width:100%}}
+  @media (prefers-reduced-motion:reduce){ .bar span{animation:none;width:100%} }
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="brand">Go Poddy</div>
+    <h1>Taking you to Kickstarter&hellip;</h1>
+    <div class="bar"><span></span></div>
+    <p>We&rsquo;re sending you to The Poddy&rsquo;s Kickstarter page. If nothing happens, tap the button below.</p>
+
+    <a class="btn" href="https://www.kickstarter.com/projects/thepoddy/the-poddy">Go to Kickstarter</a>
+
+    <span class="back">or <a href="/">return to gopoddy.com</a></span>
+  </main>
+
+  <script>
+    // Immediate forward for browsers with JS; the meta refresh above is the fallback.
+    window.location.replace("https://www.kickstarter.com/projects/thepoddy/the-poddy");
+  </script>
+</body>
+</html>
