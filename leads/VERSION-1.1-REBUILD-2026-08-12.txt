@@ -1,0 +1,86 @@
+GO PODDY — LEAD CAPTURE
+App code: v1.1 · 2026-08-09     Shell files: rebuilt 2026-08-12
+
+WHY THIS FILE IS NOT NAMED VERSION-1.1.txt
+------------------------------------------
+The original v1.1 package contained a file named VERSION-1.1.txt. That file was
+the integrity check: if it was present, the folder was the correct build.
+
+This folder is a partial rebuild. Writing a file called VERSION-1.1.txt would
+make a rebuilt folder indistinguishable from the original, which is exactly the
+failure the check existed to prevent. So it carries a different name, and the
+difference is deliberate.
+
+
+WHAT IS ORIGINAL
+----------------
+index.html          Byte-identical to the verified v1.1 source.
+                    MD5 6697316de3c4a96623d434e4931f34a3
+                    This is the whole application: capture, IndexedDB storage,
+                    audio recording, CSV generation, ZIP writer. All of it was
+                    verified in headless Chromium before the original delivery.
+                    Settings will report "build 1.1 - 2026-08-09", correctly.
+
+
+WHAT WAS REWRITTEN 2026-08-12
+-----------------------------
+manifest.json       Authored fresh. Derived from the metadata index.html
+                    declares: name, short name "GP Leads", theme colour
+                    #445134, icon-192.png. Background is Porcelain #F7F6F0
+                    per the original icon decision.
+
+sw.js               Authored fresh. Caches the eight shell files and serves
+                    them cache-first so the app opens with no signal. Scoped
+                    to this folder only; it cannot touch the rest of the site.
+
+
+BRAND ASSETS — REAL ARTWORK, REGENERATED 2026-08-12
+---------------------------------------------------
+logo.png                 The complete mark, 622x1026, native resolution from
+                         Jeff's supplied transparent PNG. Not recoloured.
+
+mark-white.png           The dog + "Go" tank, cropped at the gap above the
+                         bowl rim, reversed out to white on transparent.
+                         268x288, displayed 34x36 in the header bar.
+
+icon-192.png             All three built from the dog + "Go" crop, not the
+icon-512.png             full mark: the full logo's aspect is 0.61, so in a
+icon-512-maskable.png    square it renders half-width with wide margins. The
+                         crop's aspect is 0.93 and fills the icon.
+                         Field is Porcelain #F7F6F0, never Hunter green — the
+                         "Go" letterforms are transparent knockouts and would
+                         fill in on a green field.
+                         The maskable variant keeps the mark inside the inner
+                         60% so Android's circular crop cannot clip it.
+
+    Note on ink colour: the supplied artwork's green is #0B4525, which is
+    darker than the UI's Hunter #445134. The artwork was left exactly as
+    supplied rather than recoloured to match. If the two greens should
+    agree, that is a design decision to make deliberately.
+
+    If these are ever replaced:
+      1. Overwrite the files, keeping the exact filenames.
+      2. In sw.js, change the CACHE string to any new value. Without that,
+         phones keep serving the cached copies.
+      3. Re-upload. Launch the app twice on each phone.
+
+
+NOT VERIFIED ON A REAL DEVICE
+-----------------------------
+Unchanged from the original build notes. Three things cannot be tested
+anywhere but an actual iPhone at the live HTTPS URL:
+  - iOS Safari camera behaviour
+  - iOS Safari microphone behaviour
+  - iOS storage eviction
+
+Plus one that is new to this rebuild, because sw.js is new:
+  - Offline launch from the home-screen icon
+
+Test all four before relying on this at a booth. Airplane Mode, force-quit,
+reopen from the icon, capture a lead.
+
+
+WHAT IS NOT AFFECTED
+--------------------
+Lead data lives in IndexedDB and is untouched by any of this. Service worker
+caches hold only the eight shell files. Clearing a cache cannot lose a lead.

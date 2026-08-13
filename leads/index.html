@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GP Leads">
+<meta name="theme-color" content="#445134">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png" type="image/png">
+<title>Go Poddy — Lead Capture</title>
+<style>
+:root{
+  --hunter:#445134; --harbor:#576B7B; --clay:#C15C53;
+  --blush:#E9C2AE; --porcelain:#F7F6F0; --sage:#C1C7A1;
+  --ink:#22291c; --line:#ddd9cf; --warn:#8a6d1f;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--porcelain);color:var(--ink);
+  font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  overscroll-behavior-y:none}
+body{padding-bottom:env(safe-area-inset-bottom)}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+input,textarea{width:100%;padding:13px 12px;border:1.5px solid var(--line);border-radius:10px;
+  background:#fff;-webkit-appearance:none;appearance:none}
+input:focus,textarea:focus{outline:none;border-color:var(--hunter)}
+textarea{resize:vertical;min-height:88px}
+
+/* ---------- chrome ---------- */
+header{position:sticky;top:0;z-index:40;background:var(--hunter);color:#fff;
+  padding:calc(env(safe-area-inset-top) + 12px) 14px 12px;display:flex;align-items:center;gap:10px}
+header h1{font-size:17px;margin:0;font-weight:650;letter-spacing:.2px;flex:1}
+header .hmark{height:36px;width:auto;display:block;flex:none}
+header .hbtn{color:#fff;font-size:14px;padding:8px 12px;border-radius:8px;
+  background:rgba(255,255,255,.16);font-weight:600}
+main{padding:14px;max-width:640px;margin:0 auto}
+.screen{display:none} .screen.on{display:block}
+
+/* ---------- shared bits ---------- */
+.card{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;
+  color:var(--harbor);margin:0 0 7px}
+.row{display:flex;gap:8px}
+.row>*{flex:1}
+.muted{color:var(--harbor);font-size:13px}
+.hide{display:none !important}
+
+/* ---------- capture buttons ---------- */
+.caps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.cap{border:2px solid var(--hunter);background:#fff;border-radius:14px;padding:14px 6px;
+  display:flex;flex-direction:column;align-items:center;gap:7px;font-weight:650;font-size:13px;
+  color:var(--hunter);min-height:96px;justify-content:center;text-align:center;position:relative}
+.cap svg{width:27px;height:27px;stroke:var(--hunter);fill:none;stroke-width:1.9;
+  stroke-linecap:round;stroke-linejoin:round}
+.cap.filled{background:var(--hunter);color:#fff}
+.cap.filled svg{stroke:#fff}
+.cap.rec{background:var(--clay);border-color:var(--clay);color:#fff}
+.cap.rec svg{stroke:#fff}
+.cap .badge{position:absolute;top:6px;right:8px;font-size:11px;font-weight:700}
+.thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.thumb{position:relative;width:74px;height:74px;border-radius:10px;overflow:hidden;
+  border:1.5px solid var(--line);background:#fff}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .x{position:absolute;top:2px;right:2px;width:22px;height:22px;border-radius:11px;
+  background:rgba(0,0,0,.62);color:#fff;font-size:14px;line-height:22px;text-align:center;font-weight:700}
+.thumb .cap-lbl{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.6);color:#fff;
+  font-size:9px;text-align:center;padding:2px 0;letter-spacing:.4px;font-weight:700}
+
+/* ---------- audio ---------- */
+.audiobar{display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px;
+  background:var(--porcelain);border-radius:10px;border:1.5px solid var(--line)}
+.audiobar audio{flex:1;height:34px;min-width:0}
+.reclive{display:flex;align-items:center;gap:9px;margin-top:10px;padding:12px;
+  background:var(--clay);color:#fff;border-radius:10px;font-weight:700}
+.dot{width:11px;height:11px;border-radius:50%;background:#fff;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* ---------- chips ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:9px 14px;
+  font-size:14px;font-weight:600;color:var(--harbor)}
+.chip.on{background:var(--hunter);border-color:var(--hunter);color:#fff}
+.heat{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.heat .chip{justify-content:center;text-align:center;padding:14px 4px;font-size:15px;border-radius:12px}
+.heat .chip.on[data-h="hot"]{background:var(--clay);border-color:var(--clay)}
+.heat .chip.on[data-h="warm"]{background:var(--blush);border-color:var(--blush);color:var(--ink)}
+.heat .chip.on[data-h="cool"]{background:var(--harbor);border-color:var(--harbor)}
+
+/* ---------- buttons ---------- */
+.btn{display:block;width:100%;padding:15px;border-radius:12px;font-weight:700;font-size:16px;
+  text-align:center;background:var(--hunter);color:#fff}
+.btn.alt{background:#fff;color:var(--hunter);border:2px solid var(--hunter)}
+.btn.danger{background:#fff;color:var(--clay);border:2px solid var(--clay)}
+.btn:disabled{opacity:.45}
+.savebar{position:sticky;bottom:0;background:linear-gradient(to top,var(--porcelain) 62%,transparent);
+  padding:12px 0 calc(env(safe-area-inset-bottom) + 12px);margin-top:4px}
+
+/* ---------- list ---------- */
+.lead{display:flex;gap:11px;align-items:center;background:#fff;border:1.5px solid var(--line);
+  border-radius:12px;padding:10px;margin-bottom:9px}
+.lead .av{width:50px;height:50px;border-radius:10px;background:var(--sage);flex:none;
+  display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--hunter);
+  overflow:hidden;font-size:17px}
+.lead .av img{width:100%;height:100%;object-fit:cover}
+.lead .meta{flex:1;min-width:0}
+.lead .nm{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lead .sub{font-size:12.5px;color:var(--harbor);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pip{width:11px;height:11px;border-radius:50%;flex:none}
+.pip.hot{background:var(--clay)} .pip.warm{background:var(--blush)}
+.pip.cool{background:var(--harbor)} .pip.none{background:var(--line)}
+.icns{font-size:12px;color:var(--harbor)}
+.icns .ic{letter-spacing:3px;margin-right:4px}
+.icns .unx{color:var(--warn);font-weight:700}
+
+/* ---------- banners ---------- */
+.banner{border-radius:12px;padding:12px 13px;margin-bottom:12px;font-size:14px;font-weight:600}
+.banner.warn{background:#fdf3d8;border:1.5px solid #e8d18a;color:var(--warn)}
+.banner.ok{background:#e8efe3;border:1.5px solid var(--sage);color:var(--hunter)}
+.empty{text-align:center;padding:44px 20px 8px;color:var(--harbor)}
+/* Brand mark. Large when the list is empty (it has the room), quiet once
+   there are leads on screen — the leads are the point, not the logo. */
+.brandmark{display:block;margin:30px auto calc(env(safe-area-inset-bottom) + 28px);
+  width:190px;height:auto;opacity:.82;transition:width .25s,opacity .25s}
+.brandmark.hero{width:236px;opacity:1;margin-top:40px}
+details{margin-top:11px} details summary{font-weight:650;color:var(--harbor);font-size:14px;
+  cursor:pointer;padding:9px 0;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary:before{content:"▸ ";display:inline-block;transition:transform .15s}
+details[open] summary:before{content:"▾ "}
+.fields>*+*{margin-top:10px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 22px);
+  background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-weight:650;font-size:14px;
+  z-index:99;opacity:0;transition:opacity .2s;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:.96}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="mark-white.png" alt="Go Poddy" class="hmark">
+  <h1 id="title">Leads</h1>
+  <button class="hbtn" id="navList">List</button>
+  <button class="hbtn" id="navSettings">⚙</button>
+</header>
+
+<main>
+
+<!-- ============ HOME / LIST ============ -->
+<section class="screen on" id="scrList">
+  <div id="unexported"></div>
+  <button class="btn" id="btnNew" style="margin-bottom:14px">+ New Lead</button>
+  <div id="listBody"></div>
+  <div style="margin-top:16px">
+    <button class="btn alt" id="btnExport">Export all leads (.zip)</button>
+  </div>
+  <img src="logo.png" alt="Go Poddy" class="brandmark hero" id="brandmark" decoding="async">
+</section>
+
+<!-- ============ CAPTURE / EDIT ============ -->
+<section class="screen" id="scrEdit">
+  <div class="card">
+    <p class="lbl">Capture</p>
+    <div class="caps">
+      <button class="cap" id="capCard">
+        <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M6 10h5M6 14h8"/></svg>
+        Card
+      </button>
+      <button class="cap" id="capPhoto">
+        <svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 012-2h2.5l1.2-2h6.6L16.5 6H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><circle cx="12" cy="12.5" r="3.4"/></svg>
+        Photo
+      </button>
+      <button class="cap" id="capRec">
+        <svg viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="11.5" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3.5"/></svg>
+        Record
+      </button>
+    </div>
+    <div id="recLive" class="reclive hide"><span class="dot"></span><span id="recTime">0:00</span>
+      <span style="flex:1;text-align:right;font-weight:600;font-size:13px">tap Record again to stop</span></div>
+    <div class="thumbs" id="thumbs"></div>
+    <div id="audioWrap"></div>
+    <input type="file" accept="image/*" capture="environment" id="fileCard" class="hide">
+    <input type="file" accept="image/*" capture="environment" id="filePhoto" class="hide">
+  </div>
+
+  <div class="card">
+    <p class="lbl">How hot?</p>
+    <div class="heat" id="heat">
+      <button class="chip" data-h="hot">Hot</button>
+      <button class="chip" data-h="warm">Warm</button>
+      <button class="chip" data-h="cool">Cool</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="lbl">What are they?</p>
+    <div class="chips" id="tags"></div>
+  </div>
+
+  <div class="card">
+    <p class="lbl">Who</p>
+    <div class="fields">
+      <input id="fName" placeholder="Name" autocomplete="off" autocapitalize="words">
+      <input id="fCompany" placeholder="Company" autocomplete="off" autocapitalize="words">
+    </div>
+    <details id="moreFields">
+      <summary>More fields</summary>
+      <div class="fields" style="margin-top:6px">
+        <input id="fTitle" placeholder="Job title" autocomplete="off">
+        <input id="fPhone" placeholder="Phone" type="tel" autocomplete="off">
+        <input id="fEmail" placeholder="Email" type="email" autocomplete="off"
+               autocapitalize="none" spellcheck="false">
+        <input id="fMet" placeholder="Where we met" autocomplete="off">
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <p class="lbl">Notes</p>
+    <textarea id="fNotes" placeholder="Anything the recording won't capture…"></textarea>
+    <details style="margin-top:8px">
+      <summary>Transcript</summary>
+      <textarea id="fTranscript" placeholder="Paste or type the transcript later" style="margin-top:6px"></textarea>
+    </details>
+  </div>
+
+  <div id="editExtra"></div>
+
+  <div class="savebar">
+    <button class="btn" id="btnSave">Save lead</button>
+    <button class="btn alt" id="btnCancel" style="margin-top:8px">Cancel</button>
+  </div>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<section class="screen" id="scrSettings">
+  <div class="card">
+    <p class="lbl">Event / default "where we met"</p>
+    <input id="setEvent" placeholder="e.g. SuperZoo 2026">
+    <p class="muted" style="margin:8px 0 0">Pre-fills every new lead so you never type it at the booth.</p>
+  </div>
+  <div class="card">
+    <p class="lbl">Who is holding this phone</p>
+    <input id="setWho" placeholder="e.g. Jeff" autocapitalize="words">
+    <p class="muted" style="margin:8px 0 0">Stamped on every lead and exported as its own column. Set it once —
+      it's how you tell your leads from Paul's after the two exports are combined.</p>
+  </div>
+  <div class="card">
+    <p class="lbl">Category tags</p>
+    <textarea id="setTags" style="min-height:190px" spellcheck="false"></textarea>
+    <p class="muted" style="margin:8px 0 0">One per line. Editing these does not change tags already saved on a lead.</p>
+  </div>
+  <div class="card">
+    <p class="lbl">Keep audio after export</p>
+    <div class="chips" id="setKeep">
+      <button class="chip" data-k="ask">Ask me each time</button>
+      <button class="chip" data-k="always">Always keep</button>
+      <button class="chip" data-k="never">Discard after export</button>
+    </div>
+    <p class="muted" style="margin:9px 0 0">Audio is always included in the export ZIP. This only controls whether the
+      recording stays on the phone afterward.</p>
+  </div>
+  <div class="card">
+    <p class="lbl">Storage</p>
+    <div id="storageInfo" class="muted"></div>
+    <button class="btn alt" id="btnPersist" style="margin-top:10px">Ask iOS/Android to keep this data</button>
+  </div>
+  <div class="card">
+    <p class="lbl">Danger zone</p>
+    <button class="btn danger" id="btnWipe">Delete all leads</button>
+  </div>
+  <button class="btn" id="btnSettingsDone">Done</button>
+  <p class="muted" style="text-align:center;margin:14px 0 0" id="buildStamp"></p>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* =======================================================================
+   Go Poddy — Lead Capture
+   Local-only. Nothing leaves the device until you press Export.
+   ======================================================================= */
+
+const DEFAULT_TAGS = ["Retailer","Chain Buyer","Distributor","Rep Group","International",
+  "Media / Influencer","Investor","Supplier","Partner / License","Backer / Consumer"];
+
+const BUILD = "1.1 · 2026-08-09";
+
+const S = {
+  tags: DEFAULT_TAGS.slice(),
+  event: "SuperZoo 2026",
+  capturedBy: "",
+  keepAudio: "ask",
+  lastExport: null
+};
+
+/* ---------------- settings persistence (localStorage: small + sync) ------- */
+function loadSettings(){
+  try{
+    const raw = localStorage.getItem("gpleads.settings");
+    if(raw) Object.assign(S, JSON.parse(raw));
+  }catch(e){ /* first run, or storage blocked */ }
+}
+function saveSettings(){
+  try{ localStorage.setItem("gpleads.settings", JSON.stringify(S)); }catch(e){}
+}
+
+/* ---------------- IndexedDB ---------------------------------------------- */
+let db = null;
+function openDB(){
+  return new Promise((res,rej)=>{
+    const r = indexedDB.open("gpleads", 1);
+    r.onupgradeneeded = () => {
+      const d = r.result;
+      if(!d.objectStoreNames.contains("leads")){
+        const st = d.createObjectStore("leads",{keyPath:"id"});
+        st.createIndex("createdAt","createdAt");
+      }
+    };
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+function tx(mode){ return db.transaction("leads", mode).objectStore("leads"); }
+function dbPut(rec){ return new Promise((res,rej)=>{ const q=tx("readwrite").put(rec);
+  q.onsuccess=()=>res(); q.onerror=()=>rej(q.error); }); }
+function dbDel(id){ return new Promise((res,rej)=>{ const q=tx("readwrite").delete(id);
+  q.onsuccess=()=>res(); q.onerror=()=>rej(q.error); }); }
+function dbAll(){ return new Promise((res,rej)=>{ const q=tx("readonly").getAll();
+  q.onsuccess=()=>res(q.result||[]); q.onerror=()=>rej(q.error); }); }
+function dbClear(){ return new Promise((res,rej)=>{ const q=tx("readwrite").clear();
+  q.onsuccess=()=>res(); q.onerror=()=>rej(q.error); }); }
+
+/* ---------------- helpers ------------------------------------------------ */
+const $ = id => document.getElementById(id);
+function uid(){
+  if(crypto.randomUUID) return crypto.randomUUID();
+  return "id-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2,10);
+}
+let toastTimer=null;
+function toast(msg, ms){
+  const t=$("toast"); t.textContent=msg; t.classList.add("on");
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("on"), ms||2200);
+}
+function fmtTime(s){
+  const m=Math.floor(s/60), r=Math.floor(s%60);
+  return m+":"+String(r).padStart(2,"0");
+}
+function fmtBytes(n){
+  if(n==null) return "unknown";
+  const u=["B","KB","MB","GB"]; let i=0;
+  while(n>=1024 && i<u.length-1){ n/=1024; i++; }
+  return n.toFixed(i?1:0)+" "+u[i];
+}
+
+/* Downscale a captured image so 50 leads don't fill the phone.
+   1600px on the long edge keeps a business card comfortably readable
+   for OCR later, at roughly 250-450 KB instead of 3-5 MB. */
+function downscale(file, maxEdge){
+  maxEdge = maxEdge || 1600;
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      let {width:w, height:h} = img;
+      const scale = Math.min(1, maxEdge/Math.max(w,h));
+      w = Math.round(w*scale); h = Math.round(h*scale);
+      const c = document.createElement("canvas");
+      c.width=w; c.height=h;
+      c.getContext("2d").drawImage(img,0,0,w,h);
+      c.toBlob(b => { URL.revokeObjectURL(url); resolve(b || file); }, "image/jpeg", 0.82);
+    };
+    // If decoding fails for any reason, keep the original rather than losing the capture.
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+    img.src = url;
+  });
+}
+
+/* ---------------- draft (the lead currently being edited) ---------------- */
+let draft = null;
+let objectUrls = [];
+function freeUrls(){ objectUrls.forEach(URL.revokeObjectURL); objectUrls = []; }
+function mkUrl(blob){ const u=URL.createObjectURL(blob); objectUrls.push(u); return u; }
+
+function blankDraft(){
+  return { id:uid(), createdAt:new Date().toISOString(), name:"", company:"", title:"",
+    phone:"", email:"", met:S.event, capturedBy:S.capturedBy, tags:[], heat:"", notes:"",
+    transcript:"", photo:null, card:null, audio:null, audioExt:"m4a",
+    exported:false, isNew:true };
+}
+
+/* ---------------- screens ------------------------------------------------ */
+function show(which){
+  ["scrList","scrEdit","scrSettings"].forEach(id => $(id).classList.toggle("on", id===which));
+  $("title").textContent = which==="scrEdit" ? (draft && !draft.isNew ? "Edit lead" : "New lead")
+                          : which==="scrSettings" ? "Settings" : "Leads";
+  $("navList").classList.toggle("hide", which==="scrList");
+  window.scrollTo(0,0);
+}
+
+/* ---------------- capture: images ---------------------------------------- */
+async function handleImage(kind, input){
+  const f = input.files && input.files[0];
+  input.value = "";                       // allow re-picking the same file
+  if(!f) return;
+  toast("Processing photo…", 1200);
+  draft[kind] = await downscale(f, 1600);
+  renderDraftMedia();
+}
+
+/* ---------------- capture: audio ----------------------------------------- */
+let mediaRec = null, recChunks = [], recStart = 0, recTimer = null, recStream = null;
+
+function pickMime(){
+  /* Order matters. Safari does not support webm recording, so it falls through to
+     audio/mp4 and produces AAC in an .m4a — correct and playable everywhere.
+     Chrome-family browsers take webm first, which avoids the odd Opus-in-.m4a
+     combination that some desktop players refuse to open. */
+  const opts = ["audio/webm;codecs=opus","audio/webm","audio/mp4","audio/ogg;codecs=opus"];
+  if(typeof MediaRecorder === "undefined") return null;
+  for(const m of opts){
+    try{ if(MediaRecorder.isTypeSupported(m)) return m; }catch(e){}
+  }
+  return "";   // let the browser choose
+}
+function extFor(mime){
+  if(!mime) return "bin";
+  if(mime.indexOf("mp4")>-1) return "m4a";
+  if(mime.indexOf("webm")>-1) return "webm";
+  if(mime.indexOf("ogg")>-1) return "ogg";
+  return "bin";
+}
+
+async function toggleRecord(){
+  if(mediaRec && mediaRec.state === "recording"){ stopRecord(); return; }
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    toast("This browser can't record audio here", 3200); return;
+  }
+  try{
+    recStream = await navigator.mediaDevices.getUserMedia({audio:true});
+  }catch(e){
+    toast("Microphone blocked — check Settings", 3400); return;
+  }
+  const mime = pickMime();
+  try{
+    mediaRec = mime ? new MediaRecorder(recStream, {mimeType:mime}) : new MediaRecorder(recStream);
+  }catch(e){
+    try{ mediaRec = new MediaRecorder(recStream); }
+    catch(e2){ toast("Recording not supported on this browser", 3400); return; }
+  }
+  recChunks = [];
+  mediaRec.ondataavailable = e => { if(e.data && e.data.size) recChunks.push(e.data); };
+  mediaRec.onstop = () => {
+    const type = mediaRec.mimeType || mime || "audio/webm";
+    draft.audio = new Blob(recChunks, {type});
+    draft.audioExt = extFor(type);
+    if(recStream){ recStream.getTracks().forEach(t=>t.stop()); recStream = null; }
+    renderDraftMedia();
+  };
+  mediaRec.start();
+  recStart = Date.now();
+  $("capRec").classList.add("rec");
+  $("recLive").classList.remove("hide");
+  $("recTime").textContent = "0:00";
+  recTimer = setInterval(()=>{
+    $("recTime").textContent = fmtTime((Date.now()-recStart)/1000);
+  }, 250);
+}
+function stopRecord(){
+  if(mediaRec && mediaRec.state === "recording") mediaRec.stop();
+  clearInterval(recTimer);
+  $("capRec").classList.remove("rec");
+  $("recLive").classList.add("hide");
+}
+
+/* ---------------- render the edit screen --------------------------------- */
+function renderDraftMedia(){
+  freeUrls();
+  const t = $("thumbs"); t.innerHTML = "";
+  [["card","CARD"],["photo","PHOTO"]].forEach(([k,label])=>{
+    $("cap"+(k==="card"?"Card":"Photo")).classList.toggle("filled", !!draft[k]);
+    if(!draft[k]) return;
+    const d = document.createElement("div"); d.className = "thumb";
+    d.innerHTML = '<img src="'+mkUrl(draft[k])+'" alt="'+label+'">'
+                + '<div class="cap-lbl">'+label+'</div><div class="x">×</div>';
+    d.querySelector(".x").onclick = () => { draft[k] = null; renderDraftMedia(); };
+    t.appendChild(d);
+  });
+
+  const aw = $("audioWrap"); aw.innerHTML = "";
+  if(draft.audio){
+    const wrap = document.createElement("div"); wrap.className = "audiobar";
+    const a = document.createElement("audio"); a.controls = true; a.src = mkUrl(draft.audio);
+    const del = document.createElement("button"); del.className = "chip"; del.textContent = "×";
+    del.onclick = () => { draft.audio = null; renderDraftMedia(); };
+    wrap.appendChild(a); wrap.appendChild(del); aw.appendChild(wrap);
+  }
+}
+
+function renderTags(){
+  const c = $("tags"); c.innerHTML = "";
+  // Show configured tags, plus any tag already on this lead that has since been removed
+  // from settings — otherwise editing an old lead would silently drop it.
+  const all = S.tags.slice();
+  draft.tags.forEach(t => { if(all.indexOf(t) === -1) all.push(t); });
+  all.forEach(name => {
+    const b = document.createElement("button");
+    b.className = "chip" + (draft.tags.indexOf(name)>-1 ? " on" : "");
+    b.textContent = name;
+    b.onclick = () => {
+      const i = draft.tags.indexOf(name);
+      if(i>-1) draft.tags.splice(i,1); else draft.tags.push(name);
+      renderTags();
+    };
+    c.appendChild(b);
+  });
+}
+
+function renderHeat(){
+  [...$("heat").children].forEach(b =>
+    b.classList.toggle("on", b.dataset.h === draft.heat));
+}
+
+function loadDraftIntoForm(){
+  $("fName").value = draft.name; $("fCompany").value = draft.company;
+  $("fTitle").value = draft.title; $("fPhone").value = draft.phone;
+  $("fEmail").value = draft.email; $("fMet").value = draft.met;
+  $("fNotes").value = draft.notes; $("fTranscript").value = draft.transcript;
+  renderDraftMedia(); renderTags(); renderHeat();
+
+  const ex = $("editExtra"); ex.innerHTML = "";
+  if(!draft.isNew){
+    const b = document.createElement("button");
+    b.className = "btn danger"; b.textContent = "Delete this lead";
+    b.onclick = async () => {
+      if(!confirm("Delete this lead permanently?")) return;
+      await dbDel(draft.id); toast("Deleted"); freeUrls(); await refreshList(); show("scrList");
+    };
+    ex.appendChild(b);
+  }
+}
+function pullFormIntoDraft(){
+  draft.name = $("fName").value.trim();
+  draft.company = $("fCompany").value.trim();
+  draft.title = $("fTitle").value.trim();
+  draft.phone = $("fPhone").value.trim();
+  draft.email = $("fEmail").value.trim();
+  draft.met = $("fMet").value.trim();
+  draft.notes = $("fNotes").value;
+  draft.transcript = $("fTranscript").value;
+}
+
+/* ---------------- list --------------------------------------------------- */
+let listUrls = [];
+async function refreshList(){
+  listUrls.forEach(URL.revokeObjectURL); listUrls = [];
+  const rows = await dbAll();
+  rows.sort((a,b) => b.createdAt.localeCompare(a.createdAt));
+
+  const un = rows.filter(r => !r.exported).length;
+  const ub = $("unexported");
+  if(rows.length === 0){ ub.innerHTML = ""; }
+  else if(un > 0){
+    ub.innerHTML = '<div class="banner warn">'+un+' lead'+(un===1?"":"s")+
+      ' not yet exported. Export at the end of each day — phone storage is not a backup.</div>';
+  } else {
+    ub.innerHTML = '<div class="banner ok">All '+rows.length+' leads exported.</div>';
+  }
+
+  $("brandmark").classList.toggle("hero", rows.length === 0);
+
+  const body = $("listBody"); body.innerHTML = "";
+  if(rows.length === 0){
+    body.innerHTML = '<div class="empty">No leads yet.<br>Tap <b>+ New Lead</b> when you meet someone.</div>';
+    $("btnExport").disabled = true;
+    return;
+  }
+  $("btnExport").disabled = false;
+
+  rows.forEach(r => {
+    const el = document.createElement("div"); el.className = "lead";
+    const av = document.createElement("div"); av.className = "av";
+    const img = r.photo || r.card;
+    if(img){
+      const u = URL.createObjectURL(img); listUrls.push(u);
+      av.innerHTML = '<img src="'+u+'" alt="">';
+    } else {
+      av.textContent = (r.name||"?").trim().charAt(0).toUpperCase() || "?";
+    }
+    const icons = [r.card?"▤":"", r.photo?"◉":"", r.audio?"♪":""].filter(Boolean).join(" ");
+    const when = new Date(r.createdAt).toLocaleString([], {month:"short", day:"numeric",
+      hour:"numeric", minute:"2-digit"});
+    const sub = [r.company, r.tags.join(", ")].filter(Boolean).join(" · ");
+    const meta = document.createElement("div"); meta.className = "meta";
+    meta.innerHTML = '<div class="nm">'+esc(r.name || "(no name)")+'</div>'
+      + '<div class="sub">'+esc(sub || when)+'</div>'
+      + '<div class="icns"><span class="ic">'+icons+'</span>'
+      + (r.exported ? '' : '<span class="unx">not exported</span>')+'</div>';
+    const pip = document.createElement("div");
+    pip.className = "pip " + (r.heat || "none");
+    el.appendChild(av); el.appendChild(meta); el.appendChild(pip);
+    el.onclick = () => {
+      draft = Object.assign({}, r, {isNew:false});
+      draft.tags = (r.tags||[]).slice();
+      loadDraftIntoForm(); show("scrEdit");
+    };
+    body.appendChild(el);
+  });
+}
+function esc(s){ return String(s).replace(/[&<>"]/g, c =>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+/* =========================================================================
+   EXPORT  —  store-only ZIP written by hand so the app has zero
+   dependencies and works with no network at a convention centre.
+   ========================================================================= */
+const CRC_TABLE = (() => {
+  const t = new Uint32Array(256);
+  for(let n=0;n<256;n++){
+    let c=n;
+    for(let k=0;k<8;k++) c = (c & 1) ? (0xEDB88320 ^ (c>>>1)) : (c>>>1);
+    t[n]=c>>>0;
+  }
+  return t;
+})();
+function crc32(u8){
+  let c = 0xFFFFFFFF;
+  for(let i=0;i<u8.length;i++) c = CRC_TABLE[(c ^ u8[i]) & 0xFF] ^ (c>>>8);
+  return (c ^ 0xFFFFFFFF)>>>0;
+}
+function dosStamp(d){
+  const time = (d.getHours()<<11) | (d.getMinutes()<<5) | (Math.floor(d.getSeconds()/2));
+  const date = ((d.getFullYear()-1980)<<9) | ((d.getMonth()+1)<<5) | d.getDate();
+  return {time, date};
+}
+function makeZip(entries, when){
+  const enc = new TextEncoder();
+  const {time, date} = dosStamp(when || new Date());
+  const parts = [], central = [];
+  let offset = 0;
+  for(const e of entries){
+    const nameBytes = enc.encode(e.name);
+    const crc = crc32(e.data);
+    const size = e.data.length;
+    const lh = new Uint8Array(30 + nameBytes.length);
+    const dv = new DataView(lh.buffer);
+    dv.setUint32(0, 0x04034b50, true);
+    dv.setUint16(4, 20, true);
+    dv.setUint16(6, 0x0800, true);      // UTF-8 filename flag
+    dv.setUint16(8, 0, true);           // stored, no compression
+    dv.setUint16(10, time, true);
+    dv.setUint16(12, date, true);
+    dv.setUint32(14, crc, true);
+    dv.setUint32(18, size, true);
+    dv.setUint32(22, size, true);
+    dv.setUint16(26, nameBytes.length, true);
+    dv.setUint16(28, 0, true);
+    lh.set(nameBytes, 30);
+    parts.push(lh, e.data);
+
+    const cd = new Uint8Array(46 + nameBytes.length);
+    const cv = new DataView(cd.buffer);
+    cv.setUint32(0, 0x02014b50, true);
+    cv.setUint16(4, 20, true);
+    cv.setUint16(6, 20, true);
+    cv.setUint16(8, 0x0800, true);
+    cv.setUint16(10, 0, true);
+    cv.setUint16(12, time, true);
+    cv.setUint16(14, date, true);
+    cv.setUint32(16, crc, true);
+    cv.setUint32(20, size, true);
+    cv.setUint32(24, size, true);
+    cv.setUint16(28, nameBytes.length, true);
+    cv.setUint32(42, offset, true);
+    cd.set(nameBytes, 46);
+    central.push(cd);
+    offset += lh.length + size;
+  }
+  const centralSize = central.reduce((a,b) => a + b.length, 0);
+  const eocd = new Uint8Array(22);
+  const ev = new DataView(eocd.buffer);
+  ev.setUint32(0, 0x06054b50, true);
+  ev.setUint16(8, entries.length, true);
+  ev.setUint16(10, entries.length, true);
+  ev.setUint32(12, centralSize, true);
+  ev.setUint32(16, offset, true);
+  return new Blob([...parts, ...central, eocd], {type:"application/zip"});
+}
+
+function csvCell(v){
+  const s = (v==null ? "" : String(v));
+  return '"' + s.replace(/"/g,'""') + '"';
+}
+/* One name field is faster at a booth than two. We split on the last space for
+   First/Last so Outlook and Zoho map cleanly, and we also emit the untouched
+   Full Name column so nothing is lost if the split guesses wrong. */
+function splitName(full){
+  const s = (full||"").trim();
+  if(!s) return {first:"", last:""};
+  const i = s.lastIndexOf(" ");
+  if(i === -1) return {first:s, last:""};
+  return {first:s.slice(0,i), last:s.slice(i+1)};
+}
+function slug(s, fallback){
+  const t = String(s||"").trim().toLowerCase().replace(/[^a-z0-9]+/g,"-")
+            .replace(/^-+|-+$/g,"").slice(0,40);
+  return t || fallback;
+}
+function blobBytes(b){
+  return b.arrayBuffer().then(ab => new Uint8Array(ab));
+}
+
+const CSV_COLS = ["First Name","Last Name","Full Name","Company","Job Title","Business Phone",
+  "Email Address","Heat","Tags","Notes","Transcript","Where We Met","Captured By","Captured At",
+  "Card File","Photo File","Audio File","Record ID"];
+
+async function doExport(){
+  const rows = await dbAll();
+  if(!rows.length){ toast("Nothing to export"); return; }
+  toast("Building export…", 60000);
+  rows.sort((a,b) => a.createdAt.localeCompare(b.createdAt));
+
+  const entries = [];
+  const lines = [CSV_COLS.map(csvCell).join(",")];
+  const used = Object.create(null);
+
+  for(let i=0;i<rows.length;i++){
+    const r = rows[i];
+    const n = String(i+1).padStart(3,"0");
+    // Prefix media with whose phone it came from, so two people's exports can be
+    // merged into one folder without filenames colliding.
+    const who = r.capturedBy ? slug(r.capturedBy,"") : "";
+    let base = (who ? who + "-" : "") + n + "-" + slug(r.name || r.company, "lead");
+    while(used[base]) base = base + "x";
+    used[base] = true;
+
+    let cardFile="", photoFile="", audioFile="";
+    if(r.card){  cardFile  = "media/"+base+"-card.jpg";
+                 entries.push({name:cardFile,  data: await blobBytes(r.card)}); }
+    if(r.photo){ photoFile = "media/"+base+"-photo.jpg";
+                 entries.push({name:photoFile, data: await blobBytes(r.photo)}); }
+    if(r.audio){ audioFile = "media/"+base+"-audio."+(r.audioExt||"m4a");
+                 entries.push({name:audioFile, data: await blobBytes(r.audio)}); }
+
+    const nm = splitName(r.name);
+    lines.push([nm.first, nm.last, r.name, r.company, r.title, r.phone, r.email,
+      r.heat, (r.tags||[]).join("; "), r.notes, r.transcript, r.met, r.capturedBy || "",
+      new Date(r.createdAt).toLocaleString(), cardFile, photoFile, audioFile, r.id
+    ].map(csvCell).join(","));
+  }
+
+  // BOM so Excel opens UTF-8 correctly on a double-click.
+  const csv = "﻿" + lines.join("\r\n") + "\r\n";
+  entries.unshift({name:"contacts.csv", data:new TextEncoder().encode(csv)});
+  entries.push({name:"README.txt", data:new TextEncoder().encode(READ_ME)});
+
+  const stamp = new Date().toISOString().slice(0,16).replace(/[:T]/g,"-");
+  const whoTag = S.capturedBy ? slug(S.capturedBy,"") + "-" : "";
+  const zip = makeZip(entries, new Date());
+  downloadBlob(zip, "gopoddy-leads-"+whoTag+stamp+".zip");
+
+  // Mark exported, and honour the audio-retention preference.
+  let dropped = 0, keep = S.keepAudio;
+  if(keep === "ask"){
+    const withAudio = rows.filter(r => r.audio).length;
+    if(withAudio){
+      keep = confirm("Export saved.\n\nKeep the "+withAudio+" audio recording"+
+        (withAudio===1?"":"s")+" on this phone?\n\nOK = keep   |   Cancel = delete from phone")
+        ? "always" : "never";
+    } else keep = "always";
+  }
+  for(const r of rows){
+    r.exported = true;
+    if(keep === "never" && r.audio){ r.audio = null; dropped++; }
+    await dbPut(r);
+  }
+  S.lastExport = new Date().toISOString(); saveSettings();
+  await refreshList();
+  toast("Exported "+rows.length+" leads"+(dropped?" · "+dropped+" recordings cleared":""), 3600);
+}
+
+function downloadBlob(blob, filename){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename; a.rel="noopener";
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); }, 4000);
+}
+
+const READ_ME = [
+"GO PODDY — LEAD EXPORT",
+"",
+"contacts.csv   one row per lead, UTF-8.",
+"media/         the photos and voice recordings.",
+"",
+"The CSV's Card File / Photo File / Audio File columns hold the path to each",
+"lead's media inside this ZIP. Spreadsheets cannot embed those files, so keep",
+"the folder together if you want the images and audio alongside the records.",
+"",
+"MERGING TWO PHONES",
+"  Each phone holds its own leads. The Captured By column and the media filename",
+"  prefix both record whose phone a lead came from, so two exports can be combined",
+"  into one spreadsheet and one media folder without collisions. Set the name under",
+"  Settings > Who is holding this phone before the show, or the column will be blank.",
+"",
+"IMPORTING",
+"  Outlook / Microsoft 365 : People > Manage > Import contacts > choose contacts.csv.",
+"  Zoho CRM                : Leads > Import > map the columns on the first screen.",
+"",
+"Both let you map columns during import, so extra columns such as Heat, Tags and",
+"Transcript can be sent to custom fields or ignored.",
+"",
+"First Name / Last Name were split from a single typed name at the last space.",
+"Check them before importing — 'Mary Anne Delgado' and anyone with a two-word",
+"surname will split in the wrong place. Full Name holds exactly what was typed."
+].join("\n");
+
+/* ---------------- settings screen ---------------------------------------- */
+function openSettings(){
+  $("setEvent").value = S.event;
+  $("setWho").value = S.capturedBy;
+  $("setTags").value = S.tags.join("\n");
+  [...$("setKeep").children].forEach(b => b.classList.toggle("on", b.dataset.k === S.keepAudio));
+  $("buildStamp").textContent = "Go Poddy Lead Capture — build " + BUILD;
+  showStorage();
+  show("scrSettings");
+}
+async function showStorage(){
+  const rows = await dbAll().catch(()=>[]);
+  let bytes = 0;
+  rows.forEach(r => { ["photo","card","audio"].forEach(k => { if(r[k]) bytes += r[k].size; }); });
+  let quota = "";
+  if(navigator.storage && navigator.storage.estimate){
+    try{
+      const est = await navigator.storage.estimate();
+      quota = "<br>Browser reports " + fmtBytes(est.usage) + " used of about " +
+              fmtBytes(est.quota) + " available.";
+    }catch(e){}
+  }
+  let persisted = "";
+  if(navigator.storage && navigator.storage.persisted){
+    try{
+      persisted = (await navigator.storage.persisted())
+        ? "<br><b>Storage is marked persistent.</b>"
+        : "<br>Storage is <b>not</b> marked persistent — the browser may clear it if space runs low.";
+    }catch(e){}
+  }
+  $("storageInfo").innerHTML = rows.length + " leads · " + fmtBytes(bytes) +
+    " of photos and audio." + quota + persisted;
+}
+
+/* ---------------- wiring ------------------------------------------------- */
+function wire(){
+  $("btnNew").onclick = () => { draft = blankDraft(); loadDraftIntoForm(); show("scrEdit"); };
+  $("navList").onclick = () => { stopRecord(); freeUrls(); refreshList(); show("scrList"); };
+  $("navSettings").onclick = openSettings;
+  $("btnCancel").onclick = () => {
+    stopRecord();
+    if(!confirm("Discard this lead?")) return;
+    freeUrls(); show("scrList");
+  };
+
+  $("capCard").onclick  = () => $("fileCard").click();
+  $("capPhoto").onclick = () => $("filePhoto").click();
+  $("fileCard").onchange  = e => handleImage("card", e.target);
+  $("filePhoto").onchange = e => handleImage("photo", e.target);
+  $("capRec").onclick = toggleRecord;
+
+  [...$("heat").children].forEach(b => b.onclick = () => {
+    draft.heat = (draft.heat === b.dataset.h) ? "" : b.dataset.h;
+    renderHeat();
+  });
+
+  $("btnSave").onclick = async () => {
+    stopRecord();
+    // Give a just-stopped recorder a moment to flush its final chunk.
+    await new Promise(r => setTimeout(r, 180));
+    pullFormIntoDraft();
+    if(!draft.name && !draft.company && !draft.card && !draft.photo && !draft.audio && !draft.notes){
+      toast("Nothing captured yet", 2600); return;
+    }
+    const rec = Object.assign({}, draft);
+    delete rec.isNew;
+    if(draft.isNew) rec.exported = false; else rec.exported = false; // any edit needs re-export
+    await dbPut(rec);
+    freeUrls();
+    await refreshList();
+    show("scrList");
+    toast(draft.isNew ? "Lead saved" : "Lead updated");
+  };
+
+  $("btnExport").onclick = () => doExport().catch(e => {
+    console.error(e); toast("Export failed: " + e.message, 5000);
+  });
+
+  $("setEvent").onchange = e => { S.event = e.target.value.trim(); saveSettings(); };
+  $("setWho").onchange = e => { S.capturedBy = e.target.value.trim(); saveSettings(); };
+  $("setTags").onchange = e => {
+    const list = e.target.value.split("\n").map(s=>s.trim()).filter(Boolean);
+    S.tags = list.length ? list : DEFAULT_TAGS.slice();
+    saveSettings();
+  };
+  [...$("setKeep").children].forEach(b => b.onclick = () => {
+    S.keepAudio = b.dataset.k; saveSettings();
+    [...$("setKeep").children].forEach(x => x.classList.toggle("on", x.dataset.k === S.keepAudio));
+  });
+  $("btnPersist").onclick = async () => {
+    if(!(navigator.storage && navigator.storage.persist)){
+      toast("This browser doesn't offer that", 3000); return;
+    }
+    const ok = await navigator.storage.persist();
+    toast(ok ? "Granted — data marked persistent" : "Browser declined; export daily", 4000);
+    showStorage();
+  };
+  $("btnWipe").onclick = async () => {
+    if(!confirm("Delete ALL leads and media from this phone? This cannot be undone.")) return;
+    if(!confirm("Really delete everything? Make sure you have exported first.")) return;
+    await dbClear(); await refreshList(); showStorage(); toast("All leads deleted");
+  };
+  $("btnSettingsDone").onclick = () => { refreshList(); show("scrList"); };
+
+  // Don't lose a capture to an accidental swipe-back or tab close.
+  window.addEventListener("beforeunload", e => {
+    if($("scrEdit").classList.contains("on") && draft &&
+       (draft.name || draft.card || draft.photo || draft.audio)){
+      e.preventDefault(); e.returnValue = "";
+    }
+  });
+}
+
+/* ---------------- boot --------------------------------------------------- */
+(async function boot(){
+  loadSettings();
+  wire();
+  try{
+    db = await openDB();
+  }catch(e){
+    document.querySelector("main").innerHTML =
+      '<div class="banner warn">This browser blocked local storage, so leads cannot be saved. '+
+      'If you are in Private Browsing, switch to a normal tab and reload.</div>';
+    return;
+  }
+  await refreshList();
+  // Ask for persistent storage on first run; harmless if already granted or unsupported.
+  if(navigator.storage && navigator.storage.persist){
+    navigator.storage.persisted().then(p => { if(!p) navigator.storage.persist(); }).catch(()=>{});
+  }
+  if("serviceWorker" in navigator){
+    navigator.serviceWorker.register("sw.js").catch(()=>{});
+  }
+})();
+</script>
+</body>
+</html>
