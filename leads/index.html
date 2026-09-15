@@ -128,6 +128,23 @@ main{padding:14px;max-width:640px;margin:0 auto}
 details{margin-top:11px} details summary{font-weight:650;color:var(--harbor);font-size:14px;
   cursor:pointer;padding:9px 0;list-style:none}
 details summary::-webkit-details-marker{display:none}
+/* ---------- appearance release ---------- */
+.releasebox{max-height:44vh;overflow:auto;border:1.5px solid var(--line);border-radius:10px;
+  padding:13px;background:#fff;font-size:13.5px;line-height:1.52}
+.releasebox p{margin:0 0 10px}
+.releasebox p:last-child{margin-bottom:0}
+.releasebox .rtitle{font-weight:700;font-size:14.5px;margin-bottom:10px}
+.releasebox .rver{color:var(--harbor);font-size:11.5px;margin-top:12px}
+.sigpad{width:100%;height:186px;border:2px dashed var(--line);border-radius:10px;
+  background:#fff;touch-action:none;display:block}
+.sigpad.signed{border-style:solid;border-color:var(--hunter)}
+.steps{display:flex;gap:5px;margin-bottom:12px}
+.steps i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.steps i.on{background:var(--hunter)}
+.sigshot{width:100%;max-width:320px;border:1.5px solid var(--line);border-radius:10px;background:#fff}
+.kv{font-size:14px;margin:0 0 7px}
+.kv b{color:var(--harbor);font-weight:700;font-size:11.5px;text-transform:uppercase;
+  letter-spacing:.6px;display:block;margin-bottom:1px}
 details summary:before{content:"▸ ";display:inline-block;transition:transform .15s}
 details[open] summary:before{content:"▾ "}
 .fields>*+*{margin-top:10px}
@@ -151,7 +168,8 @@ details[open] summary:before{content:"▾ "}
 <!-- ============ HOME / LIST ============ -->
 <section class="screen on" id="scrList">
   <div id="unexported"></div>
-  <button class="btn" id="btnNew" style="margin-bottom:14px">+ New Lead</button>
+  <button class="btn" id="btnNew" style="margin-bottom:9px">+ New Lead</button>
+  <button class="btn alt" id="btnNewWaiver" style="margin-bottom:14px">+ Appearance Release</button>
   <div id="listBody"></div>
   <div style="margin-top:16px">
     <button class="btn alt" id="btnExport">Export all leads (.zip)</button>
@@ -234,6 +252,77 @@ details[open] summary:before{content:"▾ "}
   </div>
 </section>
 
+<!-- ============ APPEARANCE RELEASE ============ -->
+<section class="screen" id="scrWaiver">
+  <div class="steps" id="wDots"></div>
+
+  <div class="card wstep" id="wStep1">
+    <p class="lbl">Who is appearing</p>
+    <div class="fields">
+      <input id="wName" placeholder="Full name" autocapitalize="words" autocomplete="off">
+      <input id="wPhone" placeholder="Mobile number" type="tel" autocomplete="off">
+      <input id="wEmail" placeholder="Email" type="email" autocapitalize="none"
+             spellcheck="false" autocomplete="off">
+      <input id="wLoc" placeholder="Where we filmed" autocomplete="off">
+      <textarea id="wSaid" placeholder="What they said on camera — optional. Tap the microphone on your keyboard and let them say it."></textarea>
+    </div>
+    <div class="chips" style="margin-top:11px">
+      <button class="chip" id="wMinor">Person appearing is under 18</button>
+    </div>
+    <p class="muted" style="margin:9px 0 0">Name, plus a phone or an email. One of the two is
+      needed so they can be sent a copy — and so they can withdraw consent later if they choose.</p>
+  </div>
+
+  <div class="card wstep hide" id="wStep2">
+    <p class="lbl">Please read this</p>
+    <div class="releasebox" id="wReleaseBox"></div>
+    <div class="chips" style="margin-top:12px">
+      <button class="chip" id="wAgree">I have read this and I agree</button>
+    </div>
+  </div>
+
+  <div class="card wstep hide" id="wStep3">
+    <p class="lbl">Signature</p>
+    <canvas id="wSig" class="sigpad"></canvas>
+    <button class="btn alt" id="wSigClear" style="margin-top:9px">Clear and sign again</button>
+    <p class="muted" style="margin:9px 0 0">Sign with a finger.</p>
+  </div>
+
+  <div class="card wstep hide" id="wStep4">
+    <p class="lbl">Parent or guardian</p>
+    <p class="muted" style="margin:0 0 10px">I am the parent or legal guardian of the person named
+      above and I consent on their behalf to all of the terms stated above.</p>
+    <input id="wGName" placeholder="Parent / guardian full name" autocapitalize="words" autocomplete="off">
+    <canvas id="wGSig" class="sigpad" style="margin-top:10px"></canvas>
+    <button class="btn alt" id="wGSigClear" style="margin-top:9px">Clear and sign again</button>
+  </div>
+
+  <div class="card wstep hide" id="wStep5">
+    <p class="lbl">Send them a copy</p>
+    <p class="muted" style="margin:0 0 12px">Opens your own Messages or Mail with the release ready
+      to send — it goes out when you have signal. They keep a record of what they agreed to, and
+      they know where to write if they ever want to withdraw it.</p>
+    <button class="btn alt" id="wCopySms">Text a copy</button>
+    <button class="btn alt" id="wCopyMail" style="margin-top:8px">Email a copy</button>
+    <p class="muted" id="wCopyState" style="margin:11px 0 0"></p>
+  </div>
+
+  <div class="savebar">
+    <button class="btn" id="wNext">Next</button>
+    <button class="btn alt" id="wBack" style="margin-top:8px">Back</button>
+    <button class="btn alt" id="wCancel" style="margin-top:8px">Cancel</button>
+  </div>
+</section>
+
+<!-- ============ SIGNED RELEASE (read only) ============ -->
+<section class="screen" id="scrWaiverView">
+  <div id="wvBody"></div>
+  <div class="savebar">
+    <button class="btn" id="wvDone">Back to list</button>
+    <button class="btn danger" id="wvDelete" style="margin-top:8px">Delete this release</button>
+  </div>
+</section>
+
 <!-- ============ SETTINGS ============ -->
 <section class="screen" id="scrSettings">
   <div class="card">
@@ -263,6 +352,14 @@ details[open] summary:before{content:"▾ "}
       recording stays on the phone afterward.</p>
   </div>
   <div class="card">
+    <p class="lbl">Contact address for release copies</p>
+    <input id="setReleaseContact" placeholder="e.g. jeff@example.com" type="email"
+           autocapitalize="none" spellcheck="false">
+    <p class="muted" style="margin:8px 0 0">Printed on the copy each signer receives, as the address
+      to write to if they want to withdraw consent for future content. The release is not much use
+      to them without it.</p>
+  </div>
+  <div class="card">
     <p class="lbl">Storage</p>
     <div id="storageInfo" class="muted"></div>
     <button class="btn alt" id="btnPersist" style="margin-top:10px">Ask iOS/Android to keep this data</button>
@@ -286,16 +383,62 @@ details[open] summary:before{content:"▾ "}
    ======================================================================= */
 
 const DEFAULT_TAGS = ["Retailer","Chain Buyer","Distributor","Rep Group","International",
-  "Media / Influencer","Investor","Supplier","Partner / License","Backer / Consumer"];
+  "Media / Influencer","Investor","Supplier","Partner / License","Backer / Consumer",
+  "Manufacturer","Competitor"];
 
-const BUILD = "1.1 · 2026-08-09";
+const BUILD = "1.3 · 2026-09-09";
+
+/* =======================================================================
+   APPEARANCE RELEASE, version 1.
+
+   RELEASE_TEXT is the single source of truth. It is what the signer reads,
+   what gets hashed into their record, what is texted or emailed to them,
+   and what is written to release-text-v1.txt in the export. One string, so
+   all four are byte-identical by construction.
+
+   TO REVISE: do not edit this text. Add a v2 alongside it and change
+   RELEASE_VERSION. Records already signed must keep pointing at the exact
+   words their signer read, and a hash over edited text would no longer
+   match the file in any export already handed over.
+   ======================================================================= */
+const RELEASE_VERSION = "v1";
+const RELEASE_TEXT = [
+"GO PODDY — Appearance & Footage Release",
+"",
+"By signing below, I agree to appear in photo, video, and/or audio content produced by Mosher Group LLC / Go Poddy (\"Company\"), and I agree to the following terms:",
+"",
+"1. Grant of Rights. I grant Company the irrevocable right to record, photograph, and use my name, image, likeness, voice, and performance (\"My Likeness\") captured during the session or event described below.",
+"",
+"2. Scope of Use. Company may use My Likeness in any media now known or later invented, including but not limited to social media (TikTok, Instagram, YouTube, and similar platforms), Company's website, crowdfunding campaigns (including Kickstarter), advertising, and other promotional or marketing materials, without further notice to or approval from me.",
+"",
+"3. Territory & Duration. This grant is worldwide and continues indefinitely unless I revoke it in a signed written notice to Company — revocation applies only to content created after Company receives that notice, not to content already posted or in use.",
+"",
+"4. Compensation. I understand I will receive no payment or other compensation for this appearance unless separately agreed to in writing.",
+"",
+"5. Recording Consent. I consent to being recorded on both video and audio for the purposes described above.",
+"",
+"6. Release. I release Company and its owners, employees, and representatives from any claims arising from the use of My Likeness as described above, including claims related to privacy or right of publicity."
+].join("\n");
+
+const RELEASE_GUARDIAN =
+"I am the parent or legal guardian of the minor named above and I consent on their behalf to all of the terms stated above.";
+
+let RELEASE_HASH = "";
+async function computeReleaseHash(){
+  try{
+    const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(RELEASE_TEXT));
+    RELEASE_HASH = [...new Uint8Array(d)].map(b => b.toString(16).padStart(2,"0")).join("");
+  }catch(e){ RELEASE_HASH = ""; }   /* not a secure context, or no subtle crypto */
+}
 
 const S = {
   tags: DEFAULT_TAGS.slice(),
   event: "SuperZoo 2026",
   capturedBy: "",
   keepAudio: "ask",
-  lastExport: null
+  lastExport: null,
+  tagsV12: false,
+  releaseContact: ""
 };
 
 /* ---------------- settings persistence (localStorage: small + sync) ------- */
@@ -304,6 +447,13 @@ function loadSettings(){
     const raw = localStorage.getItem("gpleads.settings");
     if(raw) Object.assign(S, JSON.parse(raw));
   }catch(e){ /* first run, or storage blocked */ }
+  /* 1.2 added Manufacturer and Competitor. Add them to a phone that already has
+     settings saved, without disturbing any other tag edits made there. */
+  if(!S.tagsV12){
+    ["Manufacturer","Competitor"].forEach(x => { if(S.tags.indexOf(x) === -1) S.tags.push(x); });
+    S.tagsV12 = true;
+    saveSettings();
+  }
 }
 function saveSettings(){
   try{ localStorage.setItem("gpleads.settings", JSON.stringify(S)); }catch(e){}
@@ -395,8 +545,11 @@ function blankDraft(){
 
 /* ---------------- screens ------------------------------------------------ */
 function show(which){
-  ["scrList","scrEdit","scrSettings"].forEach(id => $(id).classList.toggle("on", id===which));
+  ["scrList","scrEdit","scrSettings","scrWaiver","scrWaiverView"]
+    .forEach(id => $(id).classList.toggle("on", id===which));
   $("title").textContent = which==="scrEdit" ? (draft && !draft.isNew ? "Edit lead" : "New lead")
+                          : which==="scrWaiver" ? "Appearance release"
+                          : which==="scrWaiverView" ? "Signed release"
                           : which==="scrSettings" ? "Settings" : "Leads";
   $("navList").classList.toggle("hide", which==="scrList");
   window.scrollTo(0,0);
@@ -554,6 +707,279 @@ function pullFormIntoDraft(){
   draft.transcript = $("fTranscript").value;
 }
 
+/* Loose duplicate check, run only when saving a NEW lead. An exact email match,
+   or the same company plus a shared name word. Deliberately generous: it only ever
+   asks, it never blocks. SuperZoo 2026 produced 17 duplicate clusters because
+   nothing at the booth said "you already have this person". */
+function normName(s){ return String(s||"").toLowerCase().replace(/[^a-z ]/g," ")
+                        .replace(/\s+/g," ").trim(); }
+async function findDuplicate(d){
+  const email = String(d.email||"").trim().toLowerCase();
+  const comp  = normName(d.company);
+  const nm    = normName(d.name);
+  if(!email && !comp) return null;
+  let rows = [];
+  try{ rows = await dbAll(); }catch(e){ return null; }
+  for(const r of rows){
+    if(r.id === d.id) continue;
+    if(r.recType === "waiver") continue;      /* a signer is not a duplicate lead */
+    if(email && String(r.email||"").trim().toLowerCase() === email) return r;
+    if(comp && normName(r.company) === comp){
+      const b = normName(r.name);
+      if(!nm || !b) return r;
+      const aw = nm.split(" ").filter(x => x.length > 2);
+      const bw = b.split(" ").filter(Boolean);
+      if(aw.some(x => bw.indexOf(x) > -1)) return r;
+    }
+  }
+  return null;
+}
+
+/* =========================================================================
+   APPEARANCE RELEASE
+   ========================================================================= */
+let wDraft = null, wStep = 1, wSigPad = null, wGSigPad = null;
+
+function blankWaiver(){
+  return { id:uid(), recType:"waiver", createdAt:new Date().toISOString(),
+    name:"", phone:"", email:"", location:S.event, said:"",
+    isMinor:false, agreed:false, agreedAt:"",
+    signature:null, guardianName:"", guardianSignature:null,
+    copySentTo:"", releaseVersion:RELEASE_VERSION, releaseHash:"",
+    releaseText:RELEASE_TEXT, capturedBy:S.capturedBy, exported:false };
+}
+
+/* Signature pad. No library: a canvas, pointer events, and a dirty flag.
+   Sized to the device pixel ratio or the stroke looks soft on a phone. */
+function makeSigPad(canvas){
+  const ctx = canvas.getContext("2d");
+  let drawing = false, dirty = false, last = null;
+
+  function reset(){
+    const r = canvas.getBoundingClientRect();
+    if(!r.width) return;                     /* still hidden; nothing to size to */
+    const dpr = Math.min(3, window.devicePixelRatio || 1);
+    canvas.width  = Math.round(r.width  * dpr);
+    canvas.height = Math.round(r.height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    /* White, not transparent — a transparent signature vanishes in a dark PDF viewer. */
+    ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, r.width, r.height);
+    ctx.lineWidth = 2.2; ctx.lineCap = "round"; ctx.lineJoin = "round";
+    ctx.strokeStyle = "#22291c";
+  }
+  function pt(e){
+    const r = canvas.getBoundingClientRect();
+    return {x: e.clientX - r.left, y: e.clientY - r.top};
+  }
+  canvas.addEventListener("pointerdown", e => {
+    try{ canvas.setPointerCapture(e.pointerId); }catch(err){}
+    drawing = true; last = pt(e);
+    ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(last.x + 0.01, last.y); ctx.stroke();
+    dirty = true; canvas.classList.add("signed");
+    e.preventDefault();
+  });
+  canvas.addEventListener("pointermove", e => {
+    if(!drawing) return;
+    const q = pt(e);
+    ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(q.x, q.y); ctx.stroke();
+    last = q; e.preventDefault();
+  });
+  ["pointerup","pointercancel","pointerleave"].forEach(ev =>
+    canvas.addEventListener(ev, () => { drawing = false; }));
+
+  return {
+    /* Only size an untouched pad — reset() repaints, which would erase a signature. */
+    show(){ if(!dirty) reset(); },
+    clear(){ reset(); dirty = false; canvas.classList.remove("signed"); },
+    isEmpty(){ return !dirty; },
+    toBlob(){ return new Promise(res => canvas.toBlob(res, "image/png")); }
+  };
+}
+
+function renderReleaseBox(){
+  const box = $("wReleaseBox");
+  box.innerHTML = "";
+  const lines = RELEASE_TEXT.split("\n").filter(s => s.length);
+  lines.forEach((line, i) => {
+    const el = document.createElement("p");
+    if(i === 0) el.className = "rtitle";
+    el.textContent = line;
+    box.appendChild(el);
+  });
+  const v = document.createElement("p");
+  v.className = "rver";
+  v.textContent = "Release " + RELEASE_VERSION +
+    (RELEASE_HASH ? "  ·  " + RELEASE_HASH.slice(0,16) : "");
+  box.appendChild(v);
+}
+
+function wStepList(){ return wDraft.isMinor ? [1,2,3,4,5] : [1,2,3,5]; }
+
+function wRender(){
+  const steps = wStepList();
+  [1,2,3,4,5].forEach(n => $("wStep"+n).classList.toggle("hide", n !== wStep));
+
+  const dots = $("wDots"); dots.innerHTML = "";
+  steps.forEach(n => {
+    const i = document.createElement("i");
+    if(steps.indexOf(n) <= steps.indexOf(wStep)) i.className = "on";
+    dots.appendChild(i);
+  });
+
+  $("wMinor").classList.toggle("on", wDraft.isMinor);
+  $("wAgree").classList.toggle("on", wDraft.agreed);
+  $("wBack").classList.toggle("hide", steps.indexOf(wStep) === 0);
+  $("wNext").textContent = (wStep === 5) ? "Save release" : "Next";
+
+  if(wStep === 3 && wSigPad) wSigPad.show();
+  if(wStep === 4 && wGSigPad) wGSigPad.show();
+  if(wStep === 5){
+    const to = wDraft.phone || wDraft.email || "";
+    $("wCopyState").textContent = wDraft.copySentTo
+      ? ("Copy composed to " + wDraft.copySentTo + ".")
+      : (S.releaseContact ? "" : "No contact address set — add one in Settings, or the copy will not tell them where to write to withdraw consent.");
+    $("wCopySms").classList.toggle("hide", !wDraft.phone);
+    $("wCopyMail").classList.toggle("hide", !wDraft.email);
+  }
+  window.scrollTo(0,0);
+}
+
+function wPull(){
+  wDraft.name     = $("wName").value.trim();
+  wDraft.phone    = $("wPhone").value.trim();
+  wDraft.email    = $("wEmail").value.trim();
+  wDraft.location = $("wLoc").value.trim();
+  wDraft.said     = $("wSaid").value;
+  wDraft.guardianName = $("wGName").value.trim();
+}
+
+/* Returns an error string, or "" when the step is complete. */
+function wValidate(){
+  wPull();
+  if(wStep === 1){
+    if(!wDraft.name) return "A printed name is needed.";
+    if(!wDraft.phone && !wDraft.email) return "A phone number or an email is needed.";
+  }
+  if(wStep === 2 && !wDraft.agreed) return "They need to tap to agree.";
+  if(wStep === 3 && wSigPad.isEmpty()) return "The release needs a signature.";
+  if(wStep === 4){
+    if(!wDraft.guardianName) return "The guardian's printed name is needed.";
+    if(wGSigPad.isEmpty()) return "The guardian needs to sign too.";
+  }
+  return "";
+}
+
+function releaseCopyText(w){
+  const parts = [
+    "Go Poddy — your copy of the appearance release you signed.",
+    "",
+    "Name: " + w.name,
+    "Signed: " + new Date(w.createdAt).toLocaleString(),
+    "Where: " + (w.location || "not recorded")
+  ];
+  if(w.isMinor) parts.push("Parent / guardian: " + w.guardianName);
+  parts.push("", RELEASE_TEXT, "");
+  if(w.isMinor) parts.push(RELEASE_GUARDIAN, "");
+  parts.push("Release " + RELEASE_VERSION + (RELEASE_HASH ? "  ·  " + RELEASE_HASH : ""));
+  parts.push("");
+  parts.push(S.releaseContact
+    ? ("To withdraw consent for content created from here on, write to: " + S.releaseContact)
+    : "To withdraw consent for content created from here on, write to Mosher Group LLC.");
+  return parts.join("\n");
+}
+
+async function wSave(){
+  wPull();
+  wDraft.releaseHash = RELEASE_HASH;
+  wDraft.agreedAt = wDraft.agreedAt || new Date().toISOString();
+  if(!wDraft.signature && wSigPad && !wSigPad.isEmpty())
+    wDraft.signature = await wSigPad.toBlob();
+  if(wDraft.isMinor && !wDraft.guardianSignature && wGSigPad && !wGSigPad.isEmpty())
+    wDraft.guardianSignature = await wGSigPad.toBlob();
+  if(!wDraft.isMinor){ wDraft.guardianName = ""; wDraft.guardianSignature = null; }
+
+  const rec = Object.assign({}, wDraft);
+  rec.exported = false;
+  await dbPut(rec);
+  wDraft = null;
+  await refreshList();
+  show("scrList");
+  toast("Release saved");
+}
+
+/* ---------------- signed release, read only -----------------------------
+   A signed consent record is not editable. Correcting one after the fact
+   would make every record in the set worth less. Delete and re-take is the
+   only way to change one, and that is deliberate.
+   ---------------------------------------------------------------------- */
+let wvUrls = [], wvRec = null;
+function openWaiverView(rec){
+  wvUrls.forEach(URL.revokeObjectURL); wvUrls = [];
+  wvRec = rec;
+  const b = $("wvBody"); b.innerHTML = "";
+
+  function card(title, rows){
+    const c = document.createElement("div"); c.className = "card";
+    const h = document.createElement("p"); h.className = "lbl"; h.textContent = title;
+    c.appendChild(h);
+    rows.forEach(([k, v]) => {
+      if(!v) return;
+      const p = document.createElement("p"); p.className = "kv";
+      p.innerHTML = "<b>" + esc(k) + "</b>" + esc(v);
+      c.appendChild(p);
+    });
+    b.appendChild(c);
+    return c;
+  }
+
+  card("Who appeared", [
+    ["Name", rec.name],
+    ["Phone", rec.phone],
+    ["Email", rec.email],
+    ["Where filmed", rec.location],
+    ["Signed", new Date(rec.createdAt).toLocaleString()],
+    ["Captured by", rec.capturedBy],
+    ["Under 18", rec.isMinor ? "yes" : ""],
+    ["Parent / guardian", rec.guardianName],
+    ["Copy sent to", rec.copySentTo]
+  ]);
+
+  if(rec.said) card("What they said on camera", [["", rec.said]]);
+
+  [["Signature", rec.signature], ["Guardian signature", rec.guardianSignature]]
+    .forEach(([label, blob]) => {
+      if(!blob) return;
+      const c = document.createElement("div"); c.className = "card";
+      const h = document.createElement("p"); h.className = "lbl"; h.textContent = label;
+      const u = URL.createObjectURL(blob); wvUrls.push(u);
+      const img = document.createElement("img"); img.className = "sigshot"; img.src = u;
+      c.appendChild(h); c.appendChild(img); b.appendChild(c);
+    });
+
+  const c = document.createElement("div"); c.className = "card";
+  const h = document.createElement("p"); h.className = "lbl";
+  h.textContent = "What they agreed to";
+  const d = document.createElement("details");
+  const s = document.createElement("summary");
+  s.textContent = "Release " + (rec.releaseVersion || "?") +
+    (rec.releaseHash ? "  ·  " + rec.releaseHash.slice(0,16) : "");
+  const box = document.createElement("div");
+  box.className = "releasebox"; box.style.marginTop = "8px";
+  (rec.releaseText || "").split("\n").filter(x => x.length).forEach(line => {
+    const q = document.createElement("p"); q.textContent = line; box.appendChild(q);
+  });
+  d.appendChild(s); d.appendChild(box);
+  c.appendChild(h); c.appendChild(d); b.appendChild(c);
+
+  if(!rec.exported){
+    const w = document.createElement("div");
+    w.className = "banner warn";
+    w.textContent = "Not yet exported. This release exists only on this phone.";
+    b.insertBefore(w, b.firstChild);
+  }
+  show("scrWaiverView");
+}
+
 /* ---------------- list --------------------------------------------------- */
 let listUrls = [];
 async function refreshList(){
@@ -565,17 +991,18 @@ async function refreshList(){
   const ub = $("unexported");
   if(rows.length === 0){ ub.innerHTML = ""; }
   else if(un > 0){
-    ub.innerHTML = '<div class="banner warn">'+un+' lead'+(un===1?"":"s")+
+    ub.innerHTML = '<div class="banner warn">'+un+' record'+(un===1?"":"s")+
       ' not yet exported. Export at the end of each day — phone storage is not a backup.</div>';
   } else {
-    ub.innerHTML = '<div class="banner ok">All '+rows.length+' leads exported.</div>';
+    ub.innerHTML = '<div class="banner ok">All '+rows.length+' records exported.</div>';
   }
 
   $("brandmark").classList.toggle("hero", rows.length === 0);
 
   const body = $("listBody"); body.innerHTML = "";
   if(rows.length === 0){
-    body.innerHTML = '<div class="empty">No leads yet.<br>Tap <b>+ New Lead</b> when you meet someone.</div>';
+    body.innerHTML = '<div class="empty">Nothing captured yet.<br>Tap <b>+ New Lead</b> when you meet someone, '
+      + 'or <b>+ Appearance Release</b> before you film them.</div>';
     $("btnExport").disabled = true;
     return;
   }
@@ -584,17 +1011,26 @@ async function refreshList(){
   rows.forEach(r => {
     const el = document.createElement("div"); el.className = "lead";
     const av = document.createElement("div"); av.className = "av";
-    const img = r.photo || r.card;
-    if(img){
+    const img = r.recType === "waiver" ? null : (r.photo || r.card);
+    if(r.recType === "waiver"){
+      av.textContent = "✍";
+      av.style.background = "var(--blush)";
+    } else if(img){
       const u = URL.createObjectURL(img); listUrls.push(u);
       av.innerHTML = '<img src="'+u+'" alt="">';
     } else {
       av.textContent = (r.name||"?").trim().charAt(0).toUpperCase() || "?";
     }
-    const icons = [r.card?"▤":"", r.photo?"◉":"", r.audio?"♪":""].filter(Boolean).join(" ");
+    const isW = r.recType === "waiver";
+    const icons = isW
+      ? [r.signature?"✍":"", r.guardianSignature?"✍":"", r.said?"❞":""].filter(Boolean).join(" ")
+      : [r.card?"▤":"", r.photo?"◉":"", r.audio?"♪":""].filter(Boolean).join(" ");
     const when = new Date(r.createdAt).toLocaleString([], {month:"short", day:"numeric",
       hour:"numeric", minute:"2-digit"});
-    const sub = [r.company, r.tags.join(", ")].filter(Boolean).join(" · ");
+    const sub = isW
+      ? ["Appearance release", r.location, r.isMinor ? "guardian signed" : ""]
+          .filter(Boolean).join(" · ")
+      : [r.company, (r.tags||[]).join(", ")].filter(Boolean).join(" · ");
     const meta = document.createElement("div"); meta.className = "meta";
     meta.innerHTML = '<div class="nm">'+esc(r.name || "(no name)")+'</div>'
       + '<div class="sub">'+esc(sub || when)+'</div>'
@@ -604,6 +1040,7 @@ async function refreshList(){
     pip.className = "pip " + (r.heat || "none");
     el.appendChild(av); el.appendChild(meta); el.appendChild(pip);
     el.onclick = () => {
+      if(r.recType === "waiver"){ openWaiverView(r); return; }
       draft = Object.assign({}, r, {isNew:false});
       draft.tags = (r.tags||[]).slice();
       loadDraftIntoForm(); show("scrEdit");
@@ -698,12 +1135,51 @@ function csvCell(v){
 /* One name field is faster at a booth than two. We split on the last space for
    First/Last so Outlook and Zoho map cleanly, and we also emit the untouched
    Full Name column so nothing is lost if the split guesses wrong. */
+const NAME_PREFIXES = ["dr","dr.","mr","mr.","mrs","mrs.","ms","ms.","miss",
+  "prof","prof.","rev","rev.","capt","capt.","sgt","sgt."];
+const NAME_SUFFIXES = ["jr","jr.","sr","sr.","ii","iii","iv",
+  "md","m.d.","dvm","phd","ph.d.","dds","rn","esq","esq."];
+const NAME_PARTICLES = ["van","von","de","del","della","der","den","di","da","du",
+  "la","le","los","mac","mc","st","st.","ter","ten","bin","al","abu"];
 function splitName(full){
-  const s = (full||"").trim();
+  let s = String(full||"").replace(/\s+/g," ").trim();
   if(!s) return {first:"", last:""};
-  const i = s.lastIndexOf(" ");
-  if(i === -1) return {first:s, last:""};
-  return {first:s.slice(0,i), last:s.slice(i+1)};
+
+  /* A parenthetical is a nickname or a middle name, never the surname.
+     "Min Chang (Michael) Choi" must not become last name "(Michael)". */
+  const paren = s.match(/\s*\(([^)]*)\)\s*/);
+  if(paren) s = s.replace(paren[0], " ").replace(/\s+/g," ").trim();
+
+  /* "Last, First Middle" is unambiguous - trust the comma over any guess. */
+  const comma = s.indexOf(",");
+  if(comma > 0){
+    const last  = s.slice(0, comma).trim();
+    const first = s.slice(comma + 1).trim();
+    if(last && first) return {first:first, last:last};
+  }
+
+  let parts = s.split(" ").filter(Boolean);
+
+  /* A leading title belongs in Job Title, not in First Name. Full Name keeps it. */
+  while(parts.length > 1 && NAME_PREFIXES.indexOf(parts[0].toLowerCase()) > -1) parts.shift();
+  if(parts.length === 0) return {first:s, last:""};
+  if(parts.length === 1) return {first:parts[0], last:""};
+
+  /* Trailing suffixes travel with the surname; they are not the surname. */
+  const suffix = [];
+  while(parts.length > 2 &&
+        NAME_SUFFIXES.indexOf(parts[parts.length-1].toLowerCase().replace(/[.,]+$/,"")) > -1){
+    suffix.unshift(parts.pop());
+  }
+
+  /* Pull particles in: "Bernd van der Voss" -> last name "van der Voss". */
+  let last = [parts.pop()];
+  while(parts.length > 1 &&
+        NAME_PARTICLES.indexOf(parts[parts.length-1].toLowerCase()) > -1){
+    last.unshift(parts.pop());
+  }
+  if(suffix.length) last = last.concat(suffix);
+  return {first: parts.join(" "), last: last.join(" ")};
 }
 function slug(s, fallback){
   const t = String(s||"").trim().toLowerCase().replace(/[^a-z0-9]+/g,"-")
@@ -718,11 +1194,18 @@ const CSV_COLS = ["First Name","Last Name","Full Name","Company","Job Title","Bu
   "Email Address","Heat","Tags","Notes","Transcript","Where We Met","Captured By","Captured At",
   "Card File","Photo File","Audio File","Record ID"];
 
+const REL_COLS = ["Title","Record Type","First Name","Last Name","Phone","Email","Location",
+  "Signed At","Said On Camera","Is Minor","Guardian Name","Release Version","Release Hash",
+  "Signature File","Guardian Signature File","Copy Sent To","Notes","Captured By","Record ID"];
+
 async function doExport(){
-  const rows = await dbAll();
-  if(!rows.length){ toast("Nothing to export"); return; }
+  const all = await dbAll();
+  if(!all.length){ toast("Nothing to export"); return; }
   toast("Building export…", 60000);
-  rows.sort((a,b) => a.createdAt.localeCompare(b.createdAt));
+  all.sort((a,b) => a.createdAt.localeCompare(b.createdAt));
+
+  const rows     = all.filter(r => r.recType !== "waiver");
+  const waivers  = all.filter(r => r.recType === "waiver");
 
   const entries = [];
   const lines = [CSV_COLS.map(csvCell).join(",")];
@@ -753,6 +1236,40 @@ async function doExport(){
     ].map(csvCell).join(","));
   }
 
+  /* ---- appearance releases: their own CSV, their own signatures ---- */
+  if(waivers.length){
+    const rl = [REL_COLS.map(csvCell).join(",")];
+    for(let i=0;i<waivers.length;i++){
+      const w = waivers[i];
+      const n = String(i+1).padStart(3,"0");
+      const who = w.capturedBy ? slug(w.capturedBy,"") : "";
+      let base = (who ? who + "-" : "") + "release-" + n + "-" + slug(w.name, "signer");
+      while(used[base]) base = base + "x";
+      used[base] = true;
+
+      let sigFile = "", gsigFile = "";
+      if(w.signature){ sigFile = "media/" + base + "-signature.png";
+        entries.push({name:sigFile, data: await blobBytes(w.signature)}); }
+      if(w.guardianSignature){ gsigFile = "media/" + base + "-guardian-signature.png";
+        entries.push({name:gsigFile, data: await blobBytes(w.guardianSignature)}); }
+
+      const nm = splitName(w.name);
+      const title = (nm.last ? (nm.last + ", " + nm.first).replace(/, $/,"") : w.name);
+      rl.push([title, "Waiver", nm.first, nm.last, w.phone, w.email, w.location,
+        new Date(w.createdAt).toLocaleString(), w.said, w.isMinor ? "yes" : "no",
+        w.guardianName, w.releaseVersion || RELEASE_VERSION, w.releaseHash || "",
+        sigFile, gsigFile, w.copySentTo || "", "", w.capturedBy || "", w.id
+      ].map(csvCell).join(","));
+    }
+    entries.push({name:"releases.csv",
+      data:new TextEncoder().encode("﻿" + rl.join("\r\n") + "\r\n")});
+
+    /* The wording as signed, once per version. Never edited in place — the hash
+       in every release row is taken over exactly these bytes. */
+    entries.push({name:"release-text-" + RELEASE_VERSION + ".txt",
+      data:new TextEncoder().encode(RELEASE_TEXT + "\n")});
+  }
+
   // BOM so Excel opens UTF-8 correctly on a double-click.
   const csv = "﻿" + lines.join("\r\n") + "\r\n";
   entries.unshift({name:"contacts.csv", data:new TextEncoder().encode(csv)});
@@ -766,21 +1283,23 @@ async function doExport(){
   // Mark exported, and honour the audio-retention preference.
   let dropped = 0, keep = S.keepAudio;
   if(keep === "ask"){
-    const withAudio = rows.filter(r => r.audio).length;
+    const withAudio = all.filter(r => r.audio).length;
     if(withAudio){
       keep = confirm("Export saved.\n\nKeep the "+withAudio+" audio recording"+
         (withAudio===1?"":"s")+" on this phone?\n\nOK = keep   |   Cancel = delete from phone")
         ? "always" : "never";
     } else keep = "always";
   }
-  for(const r of rows){
+  for(const r of all){
     r.exported = true;
     if(keep === "never" && r.audio){ r.audio = null; dropped++; }
     await dbPut(r);
   }
   S.lastExport = new Date().toISOString(); saveSettings();
   await refreshList();
-  toast("Exported "+rows.length+" leads"+(dropped?" · "+dropped+" recordings cleared":""), 3600);
+  toast("Exported "+rows.length+" leads"
+        + (waivers.length ? " · "+waivers.length+" release"+(waivers.length===1?"":"s") : "")
+        + (dropped?" · "+dropped+" recordings cleared":""), 3600);
 }
 
 function downloadBlob(blob, filename){
@@ -814,15 +1333,31 @@ const READ_ME = [
 "Both let you map columns during import, so extra columns such as Heat, Tags and",
 "Transcript can be sent to custom fields or ignored.",
 "",
-"First Name / Last Name were split from a single typed name at the last space.",
-"Check them before importing — 'Mary Anne Delgado' and anyone with a two-word",
-"surname will split in the wrong place. Full Name holds exactly what was typed."
+"First Name / Last Name are split from the single name you typed. The split",
+"understands 'Last, First' with a comma, titles (Dr., Prof.), suffixes (Jr., III,",
+"DVM), a parenthetical nickname, and surname particles such as van / de / von.",
+"It still cannot know that an unpunctuated two-word surname is one name, so give",
+"those a look. Full Name always holds exactly what was typed.",
+"",
+"APPEARANCE RELEASES",
+"  releases.csv appears only when releases were taken. One row per signed release,",
+"  with its own columns - none of the lead columns apply to it, so it is a separate",
+"  file and belongs in a separate list.",
+"",
+"  release-text-vN.txt is the wording as signed. Release Hash in each row is a",
+"  SHA-256 taken over exactly those bytes, so the file can be shown to be the one",
+"  that person read. Do not edit it. A revision becomes vN+1 as a new file.",
+"",
+"  Signatures are PNGs in media/, on white, named to match their row.",
+"",
+"  Signed releases cannot be edited in the app, only deleted. That is deliberate."
 ].join("\n");
 
 /* ---------------- settings screen ---------------------------------------- */
 function openSettings(){
   $("setEvent").value = S.event;
   $("setWho").value = S.capturedBy;
+  $("setReleaseContact").value = S.releaseContact || "";
   $("setTags").value = S.tags.join("\n");
   [...$("setKeep").children].forEach(b => b.classList.toggle("on", b.dataset.k === S.keepAudio));
   $("buildStamp").textContent = "Go Poddy Lead Capture — build " + BUILD;
@@ -856,6 +1391,77 @@ async function showStorage(){
 /* ---------------- wiring ------------------------------------------------- */
 function wire(){
   $("btnNew").onclick = () => { draft = blankDraft(); loadDraftIntoForm(); show("scrEdit"); };
+
+  /* ---------------- appearance release ---------------- */
+  wSigPad  = makeSigPad($("wSig"));
+  wGSigPad = makeSigPad($("wGSig"));
+
+  $("btnNewWaiver").onclick = () => {
+    wDraft = blankWaiver(); wStep = 1;
+    $("wName").value = ""; $("wPhone").value = ""; $("wEmail").value = "";
+    $("wLoc").value = wDraft.location; $("wSaid").value = ""; $("wGName").value = "";
+    wSigPad.clear(); wGSigPad.clear();
+    renderReleaseBox();
+    show("scrWaiver"); wRender();
+  };
+  $("wMinor").onclick = () => { wDraft.isMinor = !wDraft.isMinor; wRender(); };
+  $("wAgree").onclick = () => {
+    wDraft.agreed = !wDraft.agreed;
+    wDraft.agreedAt = wDraft.agreed ? new Date().toISOString() : "";
+    wRender();
+  };
+  $("wSigClear").onclick  = () => { wSigPad.clear();  wDraft.signature = null; };
+  $("wGSigClear").onclick = () => { wGSigPad.clear(); wDraft.guardianSignature = null; };
+
+  $("wNext").onclick = async () => {
+    const err = wValidate();
+    if(err){ toast(err, 3000); return; }
+    if(wStep === 3) wDraft.signature = await wSigPad.toBlob();
+    if(wStep === 4) wDraft.guardianSignature = await wGSigPad.toBlob();
+    const steps = wStepList();
+    const at = steps.indexOf(wStep);
+    if(at === steps.length - 1){ await wSave(); return; }
+    wStep = steps[at + 1];
+    wRender();
+  };
+  $("wBack").onclick = () => {
+    const steps = wStepList();
+    const at = steps.indexOf(wStep);
+    if(at > 0){ wStep = steps[at - 1]; wRender(); }
+  };
+  $("wCancel").onclick = () => {
+    if(!confirm("Discard this release? Nothing will be saved.")) return;
+    wDraft = null; show("scrList");
+  };
+  $("wCopySms").onclick = () => {
+    wPull();
+    const body = encodeURIComponent(releaseCopyText(wDraft));
+    /* "?&body=" is the spelling both iOS and Android accept. Long bodies get
+       truncated by some messaging apps - email has no such limit. */
+    window.location.href = "sms:" + wDraft.phone + "?&body=" + body;
+    wDraft.copySentTo = wDraft.phone; wRender();
+  };
+  $("wCopyMail").onclick = () => {
+    wPull();
+    const subj = encodeURIComponent("Your Go Poddy appearance release");
+    const body = encodeURIComponent(releaseCopyText(wDraft));
+    window.location.href = "mailto:" + wDraft.email + "?subject=" + subj + "&body=" + body;
+    wDraft.copySentTo = wDraft.email; wRender();
+  };
+
+  $("wvDone").onclick = () => {
+    wvUrls.forEach(URL.revokeObjectURL); wvUrls = [];
+    refreshList(); show("scrList");
+  };
+  $("wvDelete").onclick = async () => {
+    if(!wvRec) return;
+    if(!confirm("Delete this signed release permanently?\n\nA release cannot be edited, only "
+      + "deleted and taken again.")) return;
+    await dbDel(wvRec.id);
+    wvUrls.forEach(URL.revokeObjectURL); wvUrls = [];
+    wvRec = null; toast("Release deleted");
+    await refreshList(); show("scrList");
+  };
   $("navList").onclick = () => { stopRecord(); freeUrls(); refreshList(); show("scrList"); };
   $("navSettings").onclick = openSettings;
   $("btnCancel").onclick = () => {
@@ -883,9 +1489,18 @@ function wire(){
     if(!draft.name && !draft.company && !draft.card && !draft.photo && !draft.audio && !draft.notes){
       toast("Nothing captured yet", 2600); return;
     }
+    if(draft.isNew){
+      const dupe = await findDuplicate(draft);
+      if(dupe){
+        const who = dupe.name || dupe.company || "an earlier lead";
+        const extra = (dupe.company && dupe.company !== who) ? "  (" + dupe.company + ")" : "";
+        if(!confirm("You may already have this lead:\n\n" + who + extra +
+          "\n\nSave this as a separate lead anyway?\n\nOK = save both   |   Cancel = go back")) return;
+      }
+    }
     const rec = Object.assign({}, draft);
     delete rec.isNew;
-    if(draft.isNew) rec.exported = false; else rec.exported = false; // any edit needs re-export
+    rec.exported = false;            // a new lead, or any edit, needs exporting again
     await dbPut(rec);
     freeUrls();
     await refreshList();
@@ -899,6 +1514,9 @@ function wire(){
 
   $("setEvent").onchange = e => { S.event = e.target.value.trim(); saveSettings(); };
   $("setWho").onchange = e => { S.capturedBy = e.target.value.trim(); saveSettings(); };
+  $("setReleaseContact").onchange = e => {
+    S.releaseContact = e.target.value.trim(); saveSettings();
+  };
   $("setTags").onchange = e => {
     const list = e.target.value.split("\n").map(s=>s.trim()).filter(Boolean);
     S.tags = list.length ? list : DEFAULT_TAGS.slice();
@@ -929,6 +1547,9 @@ function wire(){
        (draft.name || draft.card || draft.photo || draft.audio)){
       e.preventDefault(); e.returnValue = "";
     }
+    if($("scrWaiver").classList.contains("on") && wDraft && wDraft.name){
+      e.preventDefault(); e.returnValue = "";
+    }
   });
 }
 
@@ -936,6 +1557,7 @@ function wire(){
 (async function boot(){
   loadSettings();
   wire();
+  computeReleaseHash();
   try{
     db = await openDB();
   }catch(e){

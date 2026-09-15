@@ -17,8 +17,12 @@
 "use strict";
 
 /* Bump this string to force every phone to re-download the shell on its
-   next launch. Nothing else needs changing to ship an update. */
-const CACHE = "gpleads-shell-v1.1-2026-08-12";
+   next launch. Nothing else needs changing to ship an update.
+
+   v1.3 — 2026-09-09 : appearance release module, name splitting, duplicate
+   warning, Manufacturer and Competitor tags. Bumped from
+   gpleads-shell-v1.1-2026-08-12. */
+const CACHE = "gpleads-shell-v1.3-2026-09-09";
 
 /* Relative paths, so the folder can be renamed or hosted elsewhere
    without editing this list. "./" is the app itself. */
