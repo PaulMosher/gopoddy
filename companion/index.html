@@ -126,6 +126,13 @@ textarea{min-height:110px;resize:vertical}
 .video .play{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.18);
   display:flex;align-items:center;justify-content:center}
 .video small{opacity:.85}
+.mtext p{font-size:16px;line-height:1.6;margin:0 0 14px}
+.mkick{font-size:15px;color:var(--muted);margin-top:2px}
+.maside{background:var(--hunter);color:#fff;border-radius:14px;padding:18px;margin:18px 0}
+.maside .k{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+.maside h3{font:700 20px/1.25 var(--head);margin:4px 0 8px}
+.maside p{font-size:15px;line-height:1.55;margin:0;opacity:.95}
+.maside blockquote{margin:14px 0 0;padding-left:12px;border-left:3px solid var(--sage);font-style:italic}
 .skel{height:12px;border-radius:6px;background:var(--line);margin:10px 0}
 .skel.s{width:62%}
 .back{font-weight:700;color:var(--primary);padding:8px 0}
@@ -300,13 +307,9 @@ h1{font-family:var(--title);font-synthesis:none}
     <!-- MANUAL DETAIL -->
     <section class="screen" id="s-mdetail">
       <button class="back" data-go="manual">‹ Field Manual</button>
+      <div class="mkick" id="mKick"></div>
       <h2 id="mTitle"></h2>
-      <div class="video">
-        <div class="play"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div>
-        <small>Video goes here</small>
-      </div>
-      <p class="hint">Written outline goes here.</p>
-      <div class="skel"></div><div class="skel"></div><div class="skel s"></div>
+      <div id="mBody"></div>
     </section>
 
     <!-- COMING SOON -->
@@ -357,9 +360,9 @@ var state = { role:null, name:"", email:"", used:null, ease:null,
               rWhat:null, photos:{ ci:null, r:null }, section:null };
 
 var SECTIONS = [
-  { id:"use",   title:"Use",   blurb:"Collecting and Transporting with the Poddy", suggested:false },
-  { id:"clean", title:"Clean", blurb:"Cleaning the Poddy after a walk", suggested:false },
-  { id:"store", title:"Store", blurb:"Managing the Poddy between walks", suggested:false },
+  { id:"use",   title:"The Walk",          blurb:"Clip it on. Scoop and seal. Keep going.", suggested:false, detail:{"head": "Clip it on. Scoop and seal. Keep going.", "body": ["Before you leave, clip the Poddy to your belt loop, leash handle, or bag. It moves naturally with your stride and stays secure and out of the way. There’s nothing to stuff into a pocket and nothing to forget on the counter. The routine starts the moment you reach for the leash — and the Poddy is already part of it.", "When your dog goes, open the lid and use the integrated scooper to retrieve the waste. The flared opening is designed to make transfer clean and straightforward — no awkward angles, no hand contact, no thin plastic between you and the problem. Once the waste is inside, screw the lid closed. The lid traps air inside and contains odor effectively. Clip the Poddy back to your belt and keep walking. The whole process takes about the same time as tying off a bag — except nothing gets knotted, nothing gets carried in your hand, and nothing gets left on the trail.", "Most dogs go more than once. Most bag users know the quiet dread of that second stop when they’re already carrying the first one. The Poddy handles the whole walk — just open, scoop, close, and go again. It works in gloves, in rain, in the dark. It goes wherever you and your dog go, and it stays closed until you’re ready to deal with it at home."], "aside": {"kicker": "Why it works", "head": "The lid is the whole game.", "text": "When the lid is screwed closed, air is trapped inside and odor is effectively contained. You can walk past people on the trail, ride home in your car, hang it on the stroller — and no one knows it’s there. No gasket required. Just close it, clip it, and go."}} },
+  { id:"clean", title:"After the Walk",   blurb:"Home. Empty. Done.", suggested:false, detail:{"head": "Home. Empty. Done.", "body": ["Getting home is the moment the Poddy earns its keep. The lid is already closed, the walk is done, and the only thing left is a thirty-second task that’s cleaner than anything a bag ever asked you to do. Head to the bathroom, flip on the fan, and open the Poddy over the toilet. The waste empties directly in — no bag to untie, no knot to fumble with, no moment where things go sideways. Flush, and it’s gone into the infrastructure designed to handle it.", "The EPA recommends flushing dog waste as the preferred disposal method — the same wastewater treatment system that handles human waste is built for this. If flushing isn’t available or preferred, a not-for-food compost pile is a solid alternative. The trash is always an option too, though it’s the least preferable from an environmental standpoint. The Poddy works with all three. You choose what makes sense for your situation.", "Once empty, screw the lid back on. If the inside looks clean — which it often will after a good walk — the Poddy is ready to go again. No rinsing required. No sink involved. The whole process from front door to done takes under a minute, and the only thing that touched the waste was the Poddy itself."], "aside": {"kicker": "The technique", "head": "Come up from the underside.", "text": "Grab a couple squares of toilet paper, slowly tilt the Poddy over the bowl, and aim for the porcelain, not the water, to avoid splash. While the container is still tilted, wipe the rim from the underside upward as you bring it back to level. Toss the tissue. Flush. The outside stays clean.", "quote": "One motion. Every time. The outside stays clean."}} },
+  { id:"store", title:"In-Between Walks", blurb:"The Rinse — if it’s needed.", suggested:false, detail:{"head": "The Rinse — if it’s needed.", "body": ["Most of the time, In-Between Walks doesn’t exist. If your dog’s waste is firm and well-formed, the inside of the Poddy will look nearly clean after emptying. Screw the lid back on and it’s ready for the next walk. No sink, no scrubbing, no extra steps. The Poddy was designed around this reality — for a dog with a healthy diet, cleanup is genuinely that simple.", "When a rinse is needed, the process is passive by design. Hold the Poddy under the faucet and run water down the inside walls while slowly rotating the container. Leave enough water inside that when you screw the lid closed, the integrated scooper is submerged. Set it behind the toilet and walk away. The water does the work while you go about your day. When you return for your next bathroom visit, empty the rinse water into the toilet, flush, and the Poddy is clean. Never pour the rinse water down the sink.", "The deeper point is this — the Poddy doesn’t need to be spotless on the inside between every walk. The lid being closed is what contains odor, not the cleanliness of the interior. A little residue between walks is normal and expected. What matters is the exterior — and the design keeps it that way. The underside wipe technique, the flared opening, the way the lid closes — all of it is engineered so that nothing reaches the outside of the container. That’s the promise. Every few weeks, a longer soak in a utility sink with a mild cleanser keeps the interior fresh. The rest of the time, close it and go."], "aside": {"kicker": "A note on stool quality", "head": "What goes in affects what comes out.", "text": "Optimal waste (Purina Fecal Score 2–3) leaves little to no residue and rarely requires anything more than a seal and go. If your dog consistently has looser stools, the Poddy still works — but consider your dog’s diet. Stool quality directly affects the cleanup experience, and a simple food adjustment often makes a significant difference."}} },
   { id:"trbl",  title:"Troubleshooting", blurb:"When something isn't right", suggested:true }
 ];
 
@@ -374,7 +377,13 @@ var FEATURES = [
   { id:"places",   title:"Share a place", status:"soon",
     blurb:"Tell other Poddy users about a dog park or a store you love." },
   { id:"sewer",    title:"Verify your Sewer Service", status:"soon",
-    blurb:"Enter your wastewater treatment plant and confirm it accepts dog waste." }
+    blurb:"Enter your wastewater treatment plant and confirm it accepts dog waste." },
+  { id:"tips",     title:"Walking Tips", status:"soon",
+    blurb:"Meeting other dogs and people, leash basics, and staying safe on the road." },
+  { id:"tricks",   title:"Tricks and Treats", status:"soon",
+    blurb:"Fun ideas to get more out of your walk, from toys to found objects to picking up litter along the way." },
+  { id:"games",    title:"Go Puppy Game", status:"soon",
+    blurb:"A fun introduction to becoming Your Dog's Hero." }
 ];
 
 var ICONS = {
@@ -627,12 +636,29 @@ function renderSoon(){
 }
 
 /* ---------- manual ---------- */
+function esc(t){ var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
+function showDetail(s){
+  var d = s.detail, h = "";
+  $("mKick").textContent = d ? s.title : "";
+  $("mTitle").textContent = d ? d.head : s.title;
+  if(d){
+    h += '<div class="mtext">' + d.body.map(function(p){ return "<p>"+esc(p)+"</p>"; }).join("") + "</div>";
+    if(d.aside){
+      h += '<div class="maside"><div class="k">'+esc(d.aside.kicker)+'</div><h3>'+esc(d.aside.head)+'</h3><p>'+esc(d.aside.text)+'</p>'
+        + (d.aside.quote ? '<blockquote>'+esc(d.aside.quote)+'</blockquote>' : '') + '</div>';
+    }
+  } else {
+    h = '<p class="hint">Coming soon.</p>';
+  }
+  $("mBody").innerHTML = h;
+  window.scrollTo(0,0);
+}
 function renderManual(){
   var box = $("mlist"); box.innerHTML = "";
   SECTIONS.forEach(function(s){
     var b = document.createElement("button"); b.className = "mrow";
     b.innerHTML = '<div><b>'+s.title+(s.suggested ? '<span class="tag">suggested</span>' : '')+'</b><span>'+s.blurb+'</span></div><div class="go">›</div>';
-    b.onclick = function(){ state.section = s; $("mTitle").textContent = s.title; go("mdetail"); };
+    b.onclick = function(){ state.section = s; showDetail(s); go("mdetail"); };
     box.appendChild(b);
   });
 }
