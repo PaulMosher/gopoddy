@@ -157,6 +157,25 @@ nav.tabs button svg .ac{stroke:var(--accent)}
 .scard b{display:block;font:700 19px/1.2 var(--head);margin-bottom:4px}
 .scard span{font-size:15px;color:var(--muted);display:block}
 .scard .tag{margin-left:0;margin-top:10px;background:var(--soft);color:var(--hunter)}
+/* see your impact */
+.scard.tap{border-style:solid;border-color:var(--primary);cursor:pointer;text-align:left;width:100%}
+.scard.tap .tag{background:var(--blush);color:#4a2f23}
+.imp-hero{background:var(--hunter);color:var(--on-primary);border-radius:18px;padding:20px;margin:14px 0 12px;text-align:center}
+.imp-hero .k{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.imp-hero .big{font:800 52px/1.05 var(--head);letter-spacing:-1px;margin:6px 0 2px}
+.imp-hero .u{font-size:15px;opacity:.9}
+.imp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.imp-tile{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:14px}
+.imp-tile .v{font:800 26px/1.1 var(--head);color:var(--primary);letter-spacing:-.4px}
+.imp-tile .l{font-size:14px;color:var(--muted);margin-top:4px}
+.imp-chart{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:12px 12px 8px;margin:10px 0}
+.imp-chart b{display:block;font:700 16px/1.2 var(--head);margin-bottom:6px}
+.imp-chart svg{width:100%;height:auto;display:block}
+.imp-axis{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:2px}
+.imp-how{margin:14px 0}
+.imp-how summary{font-weight:700;color:var(--primary);cursor:pointer;padding:8px 0}
+.imp-how div{font-size:14.5px;line-height:1.55;color:var(--ink)}
+.imp-how li{margin:0 0 6px}
 h1{font-family:var(--title);font-synthesis:none}
 @media (prefers-reduced-motion:no-preference){
   .screen.on{animation:in .18s ease-out}
@@ -318,6 +337,24 @@ h1{font-family:var(--title);font-synthesis:none}
       <p class="sub">Features we're building next. They aren't active yet.</p>
       <div class="soonlist" id="soonlist"></div>
     </section>
+
+    <!-- SEE YOUR IMPACT -->
+    <section class="screen" id="s-impact">
+      <button class="back" data-go="soon">‹ Coming soon</button>
+      <h1>See Your Impact</h1>
+      <p class="sub">Every Poddy use adds up for pups, people and the planet.</p>
+      <div class="note" id="impNote"></div>
+      <div class="chips" id="impScope" role="group" aria-label="Whose uses to show">
+        <button class="chip on" data-scope="all">All Poddy users</button>
+        <button class="chip" data-scope="you">Just you</button>
+      </div>
+      <div class="imp-hero"><div class="k" id="impHeroK"></div><div class="big" id="impHeroN"></div><div class="u">Poddy uses logged</div></div>
+      <div class="imp-grid" id="impGrid"></div>
+      <div class="imp-chart" id="impChartBox"><b id="impChartT"></b><div id="impChart"></div>
+        <div class="imp-axis"><span id="impAx0"></span><span>Now</span></div></div>
+      <details class="imp-how"><summary>How we calculate this</summary>
+        <div id="impHow"></div></details>
+    </section>
   </main>
 
   <nav class="tabs hide" id="tabs"></nav>
@@ -370,7 +407,7 @@ var SECTIONS = [
    To launch a feature: build its screen, then change its status to "live" and
    handle "live" in renderSoon() (for example by linking to its screen). */
 var FEATURES = [
-  { id:"impact", title:"See Your Impact", status:"soon",
+  { id:"impact", title:"See Your Impact", status:"preview",
     blurb:"Explore how your Poddy adds up for pups, people and the planet." },
   { id:"gut",      title:"Gut health", status:"soon",
     blurb:"A quick daily note on how things looked, with simple drawings, and a trend over time." },
@@ -405,8 +442,9 @@ function go(name){
   if(name === "report") prepReport();
   if(name === "manual") renderManual();
   if(name === "soon") renderSoon();
+  if(name === "impact") renderImpact();
 }
-var tabScreens = { checkin:"checkin", ciDone:"checkin", report:"report", rDone:"report", manual:"manual", mdetail:"manual", soon:"soon" };
+var tabScreens = { checkin:"checkin", ciDone:"checkin", report:"report", rDone:"report", manual:"manual", mdetail:"manual", soon:"soon", impact:"soon" };
 function renderTabs(){
   var nav = $("tabs");
   var inApp = state.role && tabScreens[current];
@@ -628,12 +666,107 @@ $("rDoneBtn").onclick = function(){
 function renderSoon(){
   var box = $("soonlist"); box.innerHTML = "";
   FEATURES.forEach(function(f){
-    if(f.status !== "soon") return;
+    if(f.status !== "soon" && f.status !== "preview") return;
     var d = document.createElement("div"); d.className = "scard";
-    d.innerHTML = '<b>'+f.title+'</b><span>'+f.blurb+'</span><span class="tag">Coming soon</span>';
+    if(f.status === "preview"){
+      d.className = "scard tap"; d.setAttribute("role","button"); d.tabIndex = 0;
+      d.innerHTML = '<b>'+f.title+'</b><span>'+f.blurb+'</span><span class="tag">Preview with sample numbers</span>';
+      d.onclick = function(){ go(f.id); };
+      d.onkeydown = function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); go(f.id); } };
+    } else {
+      d.innerHTML = '<b>'+f.title+'</b><span>'+f.blurb+'</span><span class="tag">Coming soon</span>';
+    }
     box.appendChild(d);
   });
 }
+
+
+/* ---------- see your impact ----------
+   One place holds the numbers behind every impact figure. They come from the
+   Go Poddy Life Cycle Analysis (gopoddy.com/lca.html), compared with a new
+   single-use bag. One logged use = one bag avoided. */
+var IMPACT = {
+  plasticG:6,            /* grams of plastic in one new single-use bag */
+  mfgKg:0.006,           /* kg CO2e to make one new bag */
+  decompKgPerDogYr:32.6, /* kg CO2e per dog-year from landfill decomposition */
+  walksPerYr:730,        /* 2 walks a day, one bag per walk */
+  wasteLbsPerDay:0.75,   /* lbs of waste per dog per day */
+  usdPerDogYr:20.34,     /* biogas + biosolids resource value, Go Poddy analysis */
+  LBS_PER_KG:2.2046, G_PER_LB:453.6
+};
+function impactFrom(uses){
+  var I = IMPACT;
+  var kg = uses * (I.mfgKg + I.decompKgPerDogYr / I.walksPerYr);
+  return {
+    bags: uses,
+    plasticLbs: uses * I.plasticG / I.G_PER_LB,
+    co2Lbs: kg * I.LBS_PER_KG,
+    wasteLbs: uses * I.wasteLbsPerDay * 365 / I.walksPerYr,
+    usd: uses * I.usdPerDogYr / I.walksPerYr
+  };
+}
+/* Placeholder data for the preview. When the Poddy-use tally exists, replace this
+   with an api() call that returns the same shape: { sample:false,
+   all:{ uses, series }, you:{ uses, series } }. series = cumulative uses by week,
+   oldest first. Nothing else on this screen needs to change. */
+function getImpactData(){
+  return {
+    sample:true,
+    all:{ uses:12480, series:[0,150,420,900,1600,2500,3700,5200,6900,8800,10600,12480] },
+    you:{ uses:37,    series:[0,2,5,8,12,16,20,24,28,31,34,37] }
+  };
+}
+var impScope = "all";
+function nfmt(n){ return Math.round(n).toLocaleString("en-US"); }
+function plasticFmt(lbs){ return lbs >= 1 ? lbs.toFixed(1)+" lbs" : (lbs*16).toFixed(1)+" oz"; }
+function impactChart(series){
+  var W = 320, H = 130, pad = 6, max = Math.max.apply(null, series) || 1, n = series.length;
+  var pts = series.map(function(v,i){
+    return [pad + i*(W-2*pad)/(n-1), H - pad - (v/max)*(H-2*pad)];
+  });
+  var line = pts.map(function(p){ return p[0].toFixed(1)+","+p[1].toFixed(1); }).join(" ");
+  var area = pad+","+(H-pad)+" "+line+" "+(W-pad)+","+(H-pad);
+  return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Cumulative Poddy uses over time">'
+    + '<polygon points="'+area+'" fill="#445134" fill-opacity=".14"/>'
+    + '<polyline points="'+line+'" fill="none" stroke="#445134" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>'
+    + '<circle cx="'+pts[n-1][0].toFixed(1)+'" cy="'+pts[n-1][1].toFixed(1)+'" r="5" fill="#C15C53"/></svg>';
+}
+function renderImpact(){
+  var data = getImpactData(), set = data[impScope], im = impactFrom(set.uses);
+  $("impNote").textContent = data.sample
+    ? "Sample numbers for this preview. Real totals will come from uses logged by Poddy users."
+    : "Totals come from uses logged by Poddy users.";
+  $("impHeroK").textContent = impScope === "all" ? "All Poddy users" : "Just you";
+  $("impHeroN").textContent = nfmt(set.uses);
+  var tiles = [
+    [nfmt(im.bags), "single-use bags kept out of landfill"],
+    [plasticFmt(im.plasticLbs), "plastic kept out of landfill"],
+    [nfmt(im.co2Lbs)+" lbs", "CO2e avoided vs. new bags"],
+    [nfmt(im.wasteLbs)+" lbs", "waste sent to treatment"],
+    ["$"+nfmt(im.usd), "resource value unlocked (biogas + biosolids)"]
+  ];
+  $("impGrid").innerHTML = tiles.map(function(t){
+    return '<div class="imp-tile"><div class="v">'+t[0]+'</div><div class="l">'+t[1]+'</div></div>';
+  }).join("");
+  $("impChartT").textContent = "Poddy uses over time, running total";
+  $("impChart").innerHTML = impactChart(set.series);
+  $("impAx0").textContent = (set.series.length - 1) + " weeks ago";
+  $("impHow").innerHTML =
+    '<ul>'
+    + '<li>Each logged use counts as one new single-use bag avoided.</li>'
+    + '<li>Plastic: 6 g per bag. Manufacturing: 0.013 lbs CO2e per bag. Landfill decomposition: about 72 lbs CO2e per dog per year, spread over 730 walks.</li>'
+    + '<li>Waste: 0.75 lbs per dog per day, sent to a wastewater treatment plant.</li>'
+    + '<li>Resource value: $20.34 per dog per year (biogas $15.56, biosolids $4.78), a Go Poddy analysis.</li>'
+    + '<li>CO2e is shown before subtracting the Poddy’s own one-time manufacturing footprint (about 4.7 lbs). By the LCA’s numbers, that pays back after roughly 42 uses.</li>'
+    + '<li>Uses are logged by Poddy users and are not independently verified.</li>'
+    + '</ul><p><a class="link" href="https://gopoddy.com/lca.html" target="_blank" rel="noopener">Read the full Life Cycle Analysis</a></p>';
+  var chips = document.querySelectorAll("#impScope .chip");
+  for(var i=0;i<chips.length;i++) chips[i].classList.toggle("on", chips[i].getAttribute("data-scope") === impScope);
+}
+document.getElementById("impScope").addEventListener("click", function(e){
+  var c = e.target.closest(".chip"); if(!c) return;
+  impScope = c.getAttribute("data-scope"); renderImpact();
+});
 
 /* ---------- manual ---------- */
 function esc(t){ var d = document.createElement("div"); d.textContent = t; return d.innerHTML; }
