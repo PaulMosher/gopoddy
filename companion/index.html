@@ -348,6 +348,10 @@ h1{font-family:var(--title);font-synthesis:none}
         <button class="chip on" data-scope="all">All Poddy users</button>
         <button class="chip" data-scope="you">Just you</button>
       </div>
+      <div id="impLog" style="display:none">
+        <button class="btn" id="impLogBtn">Log a Poddy use</button>
+        <p class="hint" id="impLogMsg" style="margin-top:8px"></p>
+      </div>
       <div class="imp-hero"><div class="k" id="impHeroK"></div><div class="big" id="impHeroN"></div><div class="u">Poddy uses logged</div></div>
       <div class="imp-grid" id="impGrid"></div>
       <div class="imp-chart" id="impChartBox"><b id="impChartT"></b><div id="impChart"></div>
@@ -442,7 +446,7 @@ function go(name){
   if(name === "report") prepReport();
   if(name === "manual") renderManual();
   if(name === "soon") renderSoon();
-  if(name === "impact") renderImpact();
+  if(name === "impact"){ renderImpact(); loadImpactLive(); }
 }
 var tabScreens = { checkin:"checkin", ciDone:"checkin", report:"report", rDone:"report", manual:"manual", mdetail:"manual", soon:"soon", impact:"soon" };
 function renderTabs(){
@@ -606,10 +610,12 @@ function sendCheckin(){
   var used = state.used === "yes";
   api({ action:"checkin", email:state.email, name:state.name,
         used_poddy:used, cleanup_ease: used ? state.ease : null,
-        note:$("ciFlag").value.trim() }).then(function(r){
+        note:$("ciFlag").value.trim(), day:todayStr() }).then(function(r){
     if(r.status === 200 && r.data.ok){ go("ciDone"); return; }
     renderCi();
-    $("ciErr").textContent = r.data.error || "We couldn’t send that. Check your connection and try again.";
+    $("ciErr").textContent = (r.data && r.data.limit)
+      ? "You\u2019ve logged " + CHECKIN_CAP + " uses today, see you tomorrow."
+      : (r.data.error || "We couldn’t send that. Check your connection and try again.");
   });
 }
 chipGroup("ciUsed", function(v){ state.used = v; renderCi(); });
@@ -670,7 +676,7 @@ function renderSoon(){
     var d = document.createElement("div"); d.className = "scard";
     if(f.status === "preview"){
       d.className = "scard tap"; d.setAttribute("role","button"); d.tabIndex = 0;
-      d.innerHTML = '<b>'+f.title+'</b><span>'+f.blurb+'</span><span class="tag">Preview with sample numbers</span>';
+      d.innerHTML = '<b>'+f.title+'</b><span>'+f.blurb+'</span><span class="tag">Preview</span>';
       d.onclick = function(){ go(f.id); };
       d.onkeydown = function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); go(f.id); } };
     } else {
@@ -705,17 +711,141 @@ function impactFrom(uses){
     usd: uses * I.usdPerDogYr / I.walksPerYr
   };
 }
-/* Placeholder data for the preview. When the Poddy-use tally exists, replace this
-   with an api() call that returns the same shape: { sample:false,
-   all:{ uses, series }, you:{ uses, series } }. series = cumulative uses by week,
-   oldest first. Nothing else on this screen needs to change. */
+/* Founders' history, frozen. Paul and Jeff used the Poddy from April 15, 2021 through
+   October 31, 2026, two uses a day, one of them or the other on any given day. Paul is
+   credited with 95% of those uses and Jeff with 5%. Both end days are counted. These are
+   estimates from that rule, not a log. From November 1, 2026 on, totals count only uses
+   logged in this app (the server returns them). The repo is public, so the founders are
+   matched by a SHA-256 hash of the email, not the email itself. */
+var HIST_START = new Date(2021, 3, 15), HIST_END = new Date(2026, 9, 31);
+var HIST_PER_DAY = 2, SHARE_PAUL = 0.95;
+var HIST_DAYS = Math.round((HIST_END - HIST_START) / 86400000) + 1;
+var HIST_TOTAL = HIST_DAYS * HIST_PER_DAY;
+var HIST_PAUL = Math.round(HIST_TOTAL * SHARE_PAUL), HIST_JEFF = HIST_TOTAL - HIST_PAUL;
+var VIEWER_HASH = {
+  "65eb9c5ec871137358b12ea2f543287d343659317701e308967c95a456435c47":"paul",
+  "a3225be0c7046684855c32fc436224ccb707a78ffdde3f6b9098fa09f80596a7":"jeff"
+};
+var CHECKIN_CAP = 2, LOG_CAP = 3;
+var impViewer = null; /* null = not checked yet, "none" = neither founder */
+function resolveViewer(){
+  if(impViewer !== null) return;
+  impViewer = "none";
+  var em = (state.email || "").trim().toLowerCase();
+  if(!em || !window.crypto || !crypto.subtle) return;
+  crypto.subtle.digest("SHA-256", new TextEncoder().encode(em)).then(function(buf){
+    var hex = Array.prototype.map.call(new Uint8Array(buf), function(b){ return ("0"+b.toString(16)).slice(-2); }).join("");
+    impViewer = VIEWER_HASH[hex] || "none";
+    if(current === "impact") renderImpact();
+  }).catch(function(){});
+}
+
+/* dates and identity */
+function todayStr(){
+  var d = new Date(); function z(n){ return (n<10?"0":"")+n; }
+  return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate());
+}
+function rid(){
+  try{ if(crypto.randomUUID) return crypto.randomUUID(); }catch(x){}
+  return "id"+Date.now().toString(36)+Math.random().toString(36).slice(2,10);
+}
+function deviceId(){
+  try{
+    var v = localStorage.getItem("gopoddy_device");
+    if(!v){ v = rid(); localStorage.setItem("gopoddy_device", v); }
+    return v;
+  }catch(x){ return "nostore-"+rid(); }
+}
+function isAgent(){ return state.role === "agent" && !!state.email; }
+function whoId(){ return isAgent() ? state.email.trim().toLowerCase() : deviceId(); }
+
+/* uses logged on a non-agent phone while offline, sent later */
+var PEND_KEY = "gopoddy_pending_uses";
+function loadPending(){ try{ return JSON.parse(localStorage.getItem(PEND_KEY) || "[]"); }catch(x){ return []; } }
+function savePending(l){ try{ localStorage.setItem(PEND_KEY, JSON.stringify(l)); }catch(x){} }
+function pendingToday(){ var t = todayStr(); return loadPending().filter(function(e){ return e.day === t; }).length; }
+function flushPending(done){
+  var list = loadPending();
+  if(!list.length){ if(done) done(); return; }
+  var e = list[0];
+  api({ action:"log_use", who:deviceId(), day:e.day, client_id:e.id }).then(function(r){
+    var gone = (r.status === 200 && r.data.ok) || (r.data && r.data.limit);
+    if(!gone){ if(done) done(); return; }   /* offline or server error: keep the rest */
+    list.shift(); savePending(list); flushPending(done);
+  });
+}
+
+/* series: running total, oldest first. Frozen history, then one point per logged day. */
+function histSeries(share){
+  var out = [], step = 60, d;
+  for(d = 0; d < HIST_DAYS; d += step) out.push(Math.round(d * HIST_PER_DAY * share));
+  out.push(Math.round(HIST_TOTAL * share));
+  return out;
+}
+function withLive(series, daily){
+  var out = series.slice(), run = out[out.length-1];
+  (daily || []).slice().sort(function(a,b){ return a.day < b.day ? -1 : 1; }).forEach(function(r){
+    run += r.n; out.push(run);
+  });
+  return out;
+}
+
+/* Live totals from the server. Expected reply from { action:"impact", who, day }:
+   { ok:true, all:{ uses, daily:[{day,n}] }, you:{ uses, daily:[{day,n}] }, today:n }
+   where uses and daily count only uses on or after 2026-11-01. If the server cannot
+   answer, the screen shows the frozen history and says so. */
+var impLive = null, impLiveErr = false;
+function loadImpactLive(){
+  api({ action:"impact", who:whoId(), day:todayStr() }).then(function(r){
+    if(r.status === 200 && r.data && r.data.ok){ impLive = r.data; impLiveErr = false; }
+    else { impLiveErr = true; }
+    if(current === "impact") renderImpact();
+  });
+  flushPending(function(){ if(current === "impact") renderImpact(); });
+}
 function getImpactData(){
+  var la = (impLive && impLive.all) || { uses:0, daily:[] };
+  var ly = (impLive && impLive.you) || { uses:0, daily:[] };
+  var h = impViewer === "paul" ? { uses:HIST_PAUL, share:SHARE_PAUL }
+        : impViewer === "jeff" ? { uses:HIST_JEFF, share:1 - SHARE_PAUL }
+        : { uses:0, share:0 };
   return {
-    sample:true,
-    all:{ uses:12480, series:[0,150,420,900,1600,2500,3700,5200,6900,8800,10600,12480] },
-    you:{ uses:37,    series:[0,2,5,8,12,16,20,24,28,31,34,37] }
+    all:{ uses:HIST_TOTAL + la.uses, series:withLive(histSeries(1), la.daily) },
+    you:{ uses:h.uses + ly.uses,     series:withLive(histSeries(h.share), ly.daily) }
   };
 }
+
+/* Log a Poddy use (people who are not Field Agents). Field Agents count through the check-in. */
+function renderLog(){
+  var box = $("impLog");
+  box.style.display = isAgent() ? "none" : "block";
+  if(isAgent()) return;
+  var n = Math.max((impLive && impLive.today) || 0, 0) + pendingToday();
+  $("impLogMsg").textContent = "Logged today: " + Math.min(n, LOG_CAP) + " of " + LOG_CAP;
+  $("impLogBtn").disabled = n >= LOG_CAP;
+}
+function logUse(){
+  var btn = $("impLogBtn"), msg = $("impLogMsg");
+  var n = ((impLive && impLive.today) || 0) + pendingToday();
+  if(n >= LOG_CAP){ msg.textContent = "You’ve logged " + LOG_CAP + " today, see you tomorrow."; return; }
+  btn.disabled = true;
+  var id = rid(), day = todayStr();
+  api({ action:"log_use", who:deviceId(), day:day, client_id:id }).then(function(r){
+    if(r.status === 200 && r.data.ok){
+      if(impLive) impLive.today = r.data.today; else impLive = { ok:true, all:{uses:0,daily:[]}, you:{uses:0,daily:[]}, today:r.data.today };
+      loadImpactLive();
+    } else if(r.data && r.data.limit){
+      if(impLive) impLive.today = LOG_CAP;
+      renderImpact(); msg.textContent = "You’ve logged " + LOG_CAP + " today, see you tomorrow."; return;
+    } else if(r.status === 0){
+      var l = loadPending(); l.push({ day:day, id:id }); savePending(l);
+      renderImpact(); msg.textContent += ". Saved on this phone; it will count when you’re back online."; return;
+    } else { msg.textContent = "We couldn’t log that. Try again in a moment."; }
+    renderLog();
+  });
+}
+$("impLogBtn").onclick = logUse;
+window.addEventListener("online", function(){ flushPending(function(){ if(current === "impact") loadImpactLive(); }); });
 var impScope = "all";
 function nfmt(n){ return Math.round(n).toLocaleString("en-US"); }
 function plasticFmt(lbs){ return lbs >= 1 ? lbs.toFixed(1)+" lbs" : (lbs*16).toFixed(1)+" oz"; }
@@ -733,9 +863,10 @@ function impactChart(series){
 }
 function renderImpact(){
   var data = getImpactData(), set = data[impScope], im = impactFrom(set.uses);
-  $("impNote").textContent = data.sample
-    ? "Sample numbers for this preview. Real totals will come from uses logged by Poddy users."
-    : "Totals come from uses logged by Poddy users.";
+  resolveViewer();
+  $("impNote").textContent = "Includes the founders\u2019 own Poddy use from April 15, 2021 through October 31, 2026 (about two uses a day). Since November 1, 2026, totals count uses logged in this app."
+    + (impLiveErr ? " Live totals couldn\u2019t be loaded just now." : "");
+  renderLog();
   $("impHeroK").textContent = impScope === "all" ? "All Poddy users" : "Just you";
   $("impHeroN").textContent = nfmt(set.uses);
   var tiles = [
@@ -750,7 +881,7 @@ function renderImpact(){
   }).join("");
   $("impChartT").textContent = "Poddy uses over time, running total";
   $("impChart").innerHTML = impactChart(set.series);
-  $("impAx0").textContent = (set.series.length - 1) + " weeks ago";
+  $("impAx0").textContent = "Apr 2021";
   $("impHow").innerHTML =
     '<ul>'
     + '<li>Each logged use counts as one new single-use bag avoided.</li>'
@@ -758,7 +889,7 @@ function renderImpact(){
     + '<li>Waste: 0.75 lbs per dog per day, sent to a wastewater treatment plant.</li>'
     + '<li>Resource value: $20.34 per dog per year (biogas $15.56, biosolids $4.78), a Go Poddy analysis.</li>'
     + '<li>CO2e is shown before subtracting the Poddy’s own one-time manufacturing footprint (about 4.7 lbs). By the LCA’s numbers, that pays back after roughly 42 uses.</li>'
-    + '<li>Uses are logged by Poddy users and are not independently verified.</li>'
+    + '<li>The founders\u2019 history assumes two uses a day from April 15, 2021 through October 31, 2026, split 95% and 5% between the two founders. It is an estimate, not a log. It is frozen; only uses logged since November 1, 2026 are added to it.</li><li>Field Agents log uses through the daily check-in (up to 2 a day). Everyone else can log up to 3 a day.</li><li>Uses are not independently verified.</li>'
     + '</ul><p><a class="link" href="https://gopoddy.com/lca.html" target="_blank" rel="noopener">Read the full Life Cycle Analysis</a></p>';
   var chips = document.querySelectorAll("#impScope .chip");
   for(var i=0;i<chips.length;i++) chips[i].classList.toggle("on", chips[i].getAttribute("data-scope") === impScope);
