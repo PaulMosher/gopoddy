@@ -157,6 +157,8 @@ nav.tabs button svg .ac{stroke:var(--accent)}
 .scard b{display:block;font:700 19px/1.2 var(--head);margin-bottom:4px}
 .scard span{font-size:15px;color:var(--muted);display:block}
 .scard .tag{margin-left:0;margin-top:10px;background:var(--soft);color:var(--hunter)}
+.btn small{display:block;font-weight:500;font-size:14px;opacity:.85;margin-top:2px}
+#ciQuick{margin-top:22px}
 /* see your impact */
 .scard.tap{border-style:solid;border-color:var(--primary);cursor:pointer;text-align:left;width:100%}
 .scard.tap .tag{background:var(--blush);color:#4a2f23}
@@ -239,6 +241,7 @@ h1{font-family:var(--title);font-synthesis:none}
           <button class="chip" data-v="yes">Yes</button>
           <button class="chip" data-v="no">No</button>
         </div>
+        <button class="btn alt" id="ciQuick">Same as usual<small>Yes, Easy, nothing to report</small></button>
       </div>
 
       <div id="ci2" style="display:none">
@@ -604,6 +607,27 @@ function renderCi(){
   if(ciStep === 2) ok = !!state.ease;
   $("ciNext").disabled = !ok;
 }
+function ciErrText(r){
+  return (r.data && r.data.limit)
+    ? "You\u2019ve logged " + CHECKIN_CAP + " uses today, see you tomorrow."
+    : ((r.data && r.data.error) || "We couldn\u2019t send that. Check your connection and try again.");
+}
+/* One tap for a person who used the Poddy as usual: the same check-in as answering
+   Yes, Easy and leaving the note as "Nothing to report". It goes through the same
+   server call, so the daily limit applies. */
+function quickCheckin(){
+  var btn = $("ciQuick");
+  btn.disabled = true; btn.firstChild.nodeValue = "Sending\u2026";
+  $("ciErr").textContent = "";
+  api({ action:"checkin", email:state.email, name:state.name,
+        used_poddy:true, cleanup_ease:"Easy",
+        note:"Nothing to report", day:todayStr() }).then(function(r){
+    btn.disabled = false; btn.firstChild.nodeValue = "Same as usual";
+    if(r.status === 200 && r.data.ok){ go("ciDone"); return; }
+    $("ciErr").textContent = ciErrText(r);
+  });
+}
+$("ciQuick").onclick = quickCheckin;
 function sendCheckin(){
   var btn = $("ciNext"); btn.disabled = true; btn.textContent = "Sending…";
   $("ciErr").textContent = "";
@@ -613,9 +637,7 @@ function sendCheckin(){
         note:$("ciFlag").value.trim(), day:todayStr() }).then(function(r){
     if(r.status === 200 && r.data.ok){ go("ciDone"); return; }
     renderCi();
-    $("ciErr").textContent = (r.data && r.data.limit)
-      ? "You\u2019ve logged " + CHECKIN_CAP + " uses today, see you tomorrow."
-      : (r.data.error || "We couldn’t send that. Check your connection and try again.");
+    $("ciErr").textContent = ciErrText(r);
   });
 }
 chipGroup("ciUsed", function(v){ state.used = v; renderCi(); });
