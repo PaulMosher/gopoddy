@@ -178,6 +178,58 @@ nav.tabs button svg .ac{stroke:var(--accent)}
 .imp-how summary{font-weight:700;color:var(--primary);cursor:pointer;padding:8px 0}
 .imp-how div{font-size:14.5px;line-height:1.55;color:var(--ink)}
 .imp-how li{margin:0 0 6px}
+/* gut health (stool log) */
+.gutalert{background:#F6E6D6;border:1.5px solid var(--blush);border-radius:16px;padding:16px 16px 12px;margin:14px 0}
+.gutalert h2{margin:0 0 6px}
+.gutalert p{margin:0 0 4px}
+.gutalert .btn{margin-top:10px}
+.gutnone{margin:22px 0 6px}
+.gutnone h2{margin-bottom:4px}
+.opts{display:grid;gap:8px;margin-top:12px}
+.opt{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;
+  padding:12px 16px;min-height:62px;border-radius:16px;background:var(--surface);border:1.5px solid var(--line)}
+.opt b{display:block;font:700 17px/1.2 var(--head)}
+.opt .s{display:block;font-size:13.5px;color:var(--muted)}
+.opt .ck{visibility:hidden;font-weight:800;font-size:22px;color:var(--primary)}
+.opt.on{border:2px solid var(--primary);background:var(--soft);padding:11.5px 15.5px}
+.opt.on .ck{visibility:visible}
+.spec{display:flex;gap:14px;align-items:stretch;margin:12px 0}
+.specbar{position:relative;width:60px;height:372px;border-radius:30px;flex-shrink:0;
+  background:linear-gradient(180deg,#7A5230 0%,#7A5230 8.33%,#B79F7C 25%,#D9A23A 41.67%,#6E8F3E 58.33%,#2B2522 75%,#B8352F 91.67%,#B8352F 100%)}
+.specdot{position:absolute;left:15px;width:30px;height:30px;border-radius:50%;border:4px solid #fff;
+  box-shadow:0 0 0 2px var(--ink);display:none}
+.specrows{flex:1;display:flex;flex-direction:column}
+.specrows button{height:62px;text-align:left;padding:0 14px;border-radius:14px;font:700 17px var(--body);
+  border:2px solid transparent;display:flex;align-items:center;justify-content:space-between}
+.specrows button.on{border-color:var(--primary);background:var(--soft)}
+.specrows button .ck{visibility:hidden;font-weight:800;color:var(--primary)}
+.specrows button.on .ck{visibility:visible}
+.grow{display:flex;gap:10px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.grow .d{font-weight:700;min-width:64px}
+.grow .x{flex:1}
+.grow button{font-size:13px;color:var(--muted);text-decoration:underline;padding:4px 0}
+.sumpage{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:18px;margin:12px 0}
+.sumk{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--primary)}
+.sumpage h2{margin:2px 0 2px}
+.sumrecap{background:var(--bg);border-radius:12px;padding:12px 14px;margin:14px 0}
+.sumrecap b,.sumsec b{display:block;font-size:14px;margin-bottom:4px}
+.sumsec{margin:16px 0}
+.sumsec svg{width:100%;height:auto;display:block}
+.sumleg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--muted);margin-top:6px}
+.sumleg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.sumfoot{border-top:1px solid var(--line);padding-top:10px;margin-top:16px;font-size:12px;line-height:1.5;color:var(--muted)}
+@media print{
+  .top,.proto,nav.tabs,.noprint{display:none!important}
+  html,body,#app{background:#fff}
+  #app{border:0;max-width:none;min-height:0}
+  main{padding:0}
+  .sumpage{border:0;padding:0;margin:0}
+  .sumsec svg{width:78%;margin:0 auto}
+  .grow{padding:6px 0}
+  .sumrecap{margin:10px 0}
+  .sumsec{margin:10px 0}
+  @page{margin:14mm}
+}
 h1{font-family:var(--title);font-synthesis:none}
 @media (prefers-reduced-motion:no-preference){
   .screen.on{animation:in .18s ease-out}
@@ -351,6 +403,73 @@ h1{font-family:var(--title);font-synthesis:none}
       <div class="soonlist" id="soonlist"></div>
     </section>
 
+    <!-- GUT HEALTH: STOOL LOG (saved on this phone only) -->
+    <section class="screen" id="s-gut">
+      <button class="back" data-go="soon">‹ Coming soon</button>
+      <h1>Gut health</h1>
+      <p class="sub">A few taps after a walk. When your vet asks how things have been, you’ll have the answer.</p>
+      <div class="gutalert" id="gutAlert" style="display:none"></div>
+      <button class="btn" id="gutLogBtn">Log a poop</button>
+      <div class="gutnone">
+        <h2>Has your dog not pooped today?</h2>
+        <p class="hint">One tap logs it, so a quiet day still shows up for your vet.</p>
+        <button class="btn alt" id="gutNoneBtn">Yes, no poop today</button>
+        <button class="btn alt" id="gutStrainBtn">Straining, but nothing came out</button>
+        <div class="err" id="gutErr"></div>
+      </div>
+      <button class="btn alt" data-go="gutsum">Vet summary</button>
+      <h2>Recent entries</h2>
+      <div id="gutRecent"></div>
+      <p class="hint" style="margin-top:14px">Entries are saved on this phone only. For information only, not a diagnosis. Talk to your vet about health concerns.</p>
+    </section>
+
+    <section class="screen" id="s-gutlog">
+      <div class="steps" id="gBar"></div>
+      <div class="stepn" id="gStepN"></div>
+      <div id="g1">
+        <h2>How firm was it?</h2>
+        <p class="hint">Tap the closest match.</p>
+        <div class="opts" id="gFirm"></div>
+      </div>
+      <div id="g2" style="display:none">
+        <h2>What color was it?</h2>
+        <p class="hint">Tap the closest shade. You can skip this one.</p>
+        <div class="spec" id="gSpec"></div>
+        <p class="hint">Screens show color a little differently, so the names matter more than the shade you see.</p>
+      </div>
+      <div id="g3" style="display:none">
+        <h2>Anything else you noticed?</h2>
+        <p class="hint">Tap all that apply, or skip.</p>
+        <div class="chips" id="gExtras" style="margin-top:12px"></div>
+      </div>
+      <div class="err" id="gErr"></div>
+      <button class="btn" id="gNext" disabled>Next</button>
+      <button class="btn alt" id="gSkip" style="display:none">Skip</button>
+      <button class="btn alt" id="gBack" style="display:none">Back</button>
+    </section>
+
+    <section class="screen" id="s-gutDone">
+      <div class="confirm">
+        <div class="tick">&#10003;</div>
+        <h2 id="gDoneT">Saved</h2>
+        <p class="sub" id="gDoneS"></p>
+      </div>
+      <div class="gutalert" id="gutAlert2" style="display:none"></div>
+      <button class="btn" data-go="gutsum">See vet summary</button>
+      <button class="btn alt" data-go="gut">Back to Gut health</button>
+    </section>
+
+    <section class="screen" id="s-gutsum">
+      <button class="back noprint" data-go="gut">‹ Gut health</button>
+      <div class="noprint">
+        <label class="f" for="gutDog">Dog’s name (shows on the summary)</label>
+        <input type="text" id="gutDog" autocomplete="off">
+      </div>
+      <div class="sumpage" id="sumPage"></div>
+      <button class="btn noprint" id="sumPrint">Print or save as PDF</button>
+      <p class="hint noprint">Opens your phone’s print options, which should include saving as a PDF.</p>
+    </section>
+
     <!-- SEE YOUR IMPACT -->
     <section class="screen" id="s-impact">
       <button class="back" data-go="soon">‹ Coming soon</button>
@@ -426,8 +545,8 @@ var SECTIONS = [
 var FEATURES = [
   { id:"impact", title:"See Your Impact", status:"preview",
     blurb:"Explore how your Poddy adds up for pups, people and the planet." },
-  { id:"gut",      title:"Gut health", status:"soon",
-    blurb:"A quick daily note on how things looked, with simple drawings, and a trend over time." },
+  { id:"gut",      title:"Gut health", status:"preview",
+    blurb:"Log how things looked with a few taps, and keep a one-page summary for your vet." },
   { id:"places",   title:"Share a place", status:"soon",
     blurb:"Tell other Poddy users about a dog park or a store you love." },
   { id:"sewer",    title:"Verify your Sewer Service", status:"soon",
@@ -462,8 +581,12 @@ function go(name){
   if(name === "soon") renderSoon();
   if(name === "impact"){ logNote = ""; renderImpact(); loadImpactLive(); }
   if(name === "log"){ logNote = ""; renderLog(); loadImpactLive(); }
+  if(name === "gut") renderGut();
+  if(name === "gutlog") startGutLog();
+  if(name === "gutDone") renderGutDone();
+  if(name === "gutsum") renderGutSum();
 }
-var tabScreens = { log:"log", checkin:"checkin", ciDone:"checkin", report:"report", rDone:"report", manual:"manual", mdetail:"manual", soon:"soon", impact:"soon" };
+var tabScreens = { log:"log", checkin:"checkin", ciDone:"checkin", report:"report", rDone:"report", manual:"manual", mdetail:"manual", soon:"soon", impact:"soon", gut:"soon", gutlog:"soon", gutDone:"soon", gutsum:"soon" };
 function renderTabs(){
   var nav = $("tabs");
   var inApp = state.role && tabScreens[current];
@@ -976,6 +1099,293 @@ function renderManual(){
     box.appendChild(b);
   });
 }
+
+/* ---------- gut health: stool log ----------
+   Entries are saved on this phone only (localStorage). Nothing is sent to the server.
+   Firmness buttons map to the Purina 7-point fecal scale. Score 0 (no stool) is Go Poddy's
+   own addition and is not part of that chart. "Soft pile" covers Purina 5 and 6 and is
+   logged as 5. The wording for 4 to 6 and the color and extras lists come from general
+   understanding and still need a vet's review. */
+var STOOL_KEY = "gopoddy_stool", DOG_KEY = "gopoddy_dogname";
+/* PLACEHOLDER, not a medical threshold: how many days in a row with no stool before the
+   "Time to call your vet" notice shows. A vet has not set this yet. Change it here. */
+var NO_STOOL_DAYS_NOTICE = 2;
+var FIRM = [
+  { k:"hard",  t:"Very hard and dry",       s:"Small pellets, crumbly",        score:1 },
+  { k:"firm",  t:"Firm and formed",         s:"Easy to pick up",               score:2 },
+  { k:"saus",  t:"Smooth, sausage-shaped",  s:"Not too hard, not too soft",    score:3 },
+  { k:"softs", t:"Soft but holding shape",  s:"Still keeps its form",          score:4 },
+  { k:"pile",  t:"Soft pile, no shape",     s:"Leaves residue when picked up", score:5 },
+  { k:"water", t:"Watery",                  s:"A puddle, no solid piece",      score:7 }
+];
+var COLORS = [
+  { k:"brown",  t:"Brown" }, { k:"tan", t:"Tan or gray" }, { k:"yellow", t:"Yellow or orange" },
+  { k:"green",  t:"Green" }, { k:"black", t:"Black or tarry" }, { k:"red", t:"Red or red-streaked" }
+];
+var EXTRAS = [
+  { k:"nothing", t:"Nothing unusual" }, { k:"mucus", t:"Mucus or slime" }, { k:"blood", t:"Blood" },
+  { k:"worms", t:"Worms or rice-like bits" }, { k:"food", t:"Undigested food" },
+  { k:"object", t:"Foreign object" }, { k:"other", t:"Something else" }
+];
+function byKey(list, k){ for(var i=0;i<list.length;i++) if(list[i].k === k) return list[i]; return null; }
+function loadStool(){
+  try{ var v = JSON.parse(localStorage.getItem(STOOL_KEY) || "[]"); return Array.isArray(v) ? v : []; }
+  catch(x){ return []; }
+}
+function saveStool(l){
+  try{ localStorage.setItem(STOOL_KEY, JSON.stringify(l.slice(-500))); return true; }
+  catch(x){ return false; }
+}
+function addStool(e){
+  var l = loadStool();
+  e.id = rid(); e.day = todayStr(); e.t = new Date().toISOString();
+  l.push(e);
+  return saveStool(l);
+}
+function dayStr(d){ function z(n){ return (n<10?"0":"")+n; } return d.getFullYear()+"-"+z(d.getMonth()+1)+"-"+z(d.getDate()); }
+function shortDate(s){
+  var p = s.split("-");
+  return new Date(+p[0], +p[1]-1, +p[2]).toLocaleDateString("en-US", { month:"short", day:"numeric" });
+}
+function pl(n, w){ return n + " " + w + (n === 1 ? "" : "s"); }
+function entryText(e){
+  if(e.kind === "none") return "No poop";
+  if(e.kind === "strain") return "Straining, nothing came out";
+  var bits = [], f = byKey(FIRM, e.firm);
+  bits.push(f ? f.t : "Logged");
+  var c = byKey(COLORS, e.color); if(c) bits.push(c.t);
+  (e.extras || []).forEach(function(x){ var o = byKey(EXTRAS, x); if(o) bits.push(o.t); });
+  return bits.join(" · ");
+}
+
+/* notice: calm, not a diagnosis */
+function noStoolStreak(list){
+  var by = {}; list.forEach(function(e){ (by[e.day] = by[e.day] || []).push(e); });
+  var n = 0;
+  for(var i=0;i<60;i++){
+    var d = new Date(); d.setDate(d.getDate() - i);
+    var es = by[dayStr(d)] || [];
+    if(es.some(function(e){ return e.kind === "stool"; })) break;
+    if(es.some(function(e){ return e.kind === "none"; })){ n++; continue; }
+    if(i === 0) continue; /* today not logged yet: neither counts nor breaks the run */
+    break;
+  }
+  return n;
+}
+function recentStrain(list){
+  var a = todayStr(), d = new Date(); d.setDate(d.getDate() - 1); var b = dayStr(d);
+  return list.some(function(e){ return e.kind === "strain" && (e.day === a || e.day === b); });
+}
+function gutNotice(list){
+  var n = noStoolStreak(list);
+  if(n >= NO_STOOL_DAYS_NOTICE) return "No stool has been logged for " + pl(n, "day") + " in a row.";
+  if(recentStrain(list)) return "Straining with nothing coming out was logged in the last couple of days.";
+  return "";
+}
+function renderGutAlert(id){
+  var box = $(id), t = gutNotice(loadStool());
+  if(!t){ box.style.display = "none"; box.innerHTML = ""; return; }
+  box.style.display = "block";
+  box.innerHTML = '<h2>Time to call your vet</h2><p>' + esc(t) + ' We can’t tell you why, but your vet can.</p>'
+    + '<button class="btn" data-go="gutsum">Show vet summary</button>'
+    + '<p class="hint" style="margin-top:8px">Go Poddy doesn’t diagnose and isn’t a substitute for veterinary care.</p>';
+}
+
+/* hub */
+function renderGut(){
+  $("gutErr").textContent = "";
+  renderGutAlert("gutAlert");
+  var box = $("gutRecent"), list = loadStool().slice().reverse().slice(0, 6);
+  box.innerHTML = "";
+  if(!list.length){ box.innerHTML = '<p class="hint">Nothing logged yet.</p>'; return; }
+  list.forEach(function(e){
+    var row = document.createElement("div"); row.className = "grow";
+    row.innerHTML = '<span class="d">' + esc(e.day === todayStr() ? "Today" : shortDate(e.day)) + '</span><span class="x">' + esc(entryText(e)) + '</span>';
+    var del = document.createElement("button"); del.textContent = "Delete";
+    del.setAttribute("aria-label", "Delete the entry from " + e.day);
+    del.onclick = function(){
+      if(!window.confirm("Delete this entry?")) return;
+      saveStool(loadStool().filter(function(x){ return x.id !== e.id; }));
+      renderGut();
+    };
+    row.appendChild(del); box.appendChild(row);
+  });
+}
+$("gutLogBtn").onclick = function(){ go("gutlog"); };
+var gutLastKind = "stool";
+function gutQuickLog(kind){
+  var today = todayStr(), list = loadStool();
+  var has = function(k){ return list.some(function(e){ return e.day === today && e.kind === k; }); };
+  if(kind === "none" && has("stool")){ $("gutErr").textContent = "You already logged a poop today."; return; }
+  if(has(kind)){ $("gutErr").textContent = "That’s already logged for today."; return; }
+  if(!addStool({ kind:kind, score: kind === "none" ? 0 : null })){
+    $("gutErr").textContent = "We couldn’t save that on this phone. Check that your browser allows storage."; return;
+  }
+  gutLastKind = kind; go("gutDone");
+}
+$("gutNoneBtn").onclick = function(){ gutQuickLog("none"); };
+$("gutStrainBtn").onclick = function(){ gutQuickLog("strain"); };
+
+/* log a poop: three steps, only the first is required */
+var gStep = 1, g = { firm:null, color:null, extras:[] };
+function buildGutOpts(){
+  var f = $("gFirm"); f.innerHTML = "";
+  FIRM.forEach(function(o){
+    var b = document.createElement("button"); b.className = "opt"; b.setAttribute("data-k", o.k);
+    b.innerHTML = '<span><b>' + o.t + '</b><span class="s">' + o.s + '</span></span><span class="ck" aria-hidden="true">✓</span>';
+    b.onclick = function(){ g.firm = o.k; renderGutLog(); };
+    f.appendChild(b);
+  });
+  var sp = $("gSpec"); sp.innerHTML = "";
+  var bar = document.createElement("div"); bar.className = "specbar";
+  var dot = document.createElement("div"); dot.className = "specdot"; dot.id = "specDot";
+  bar.appendChild(dot); sp.appendChild(bar);
+  var rows = document.createElement("div"); rows.className = "specrows";
+  COLORS.forEach(function(o){
+    var b = document.createElement("button"); b.setAttribute("data-k", o.k);
+    b.innerHTML = '<span>' + o.t + '</span><span class="ck" aria-hidden="true">✓</span>';
+    b.onclick = function(){ g.color = (g.color === o.k) ? null : o.k; renderGutLog(); };
+    rows.appendChild(b);
+  });
+  sp.appendChild(rows);
+  var ex = $("gExtras"); ex.innerHTML = "";
+  EXTRAS.forEach(function(o){
+    var b = document.createElement("button"); b.className = "chip"; b.setAttribute("data-k", o.k); b.textContent = o.t;
+    b.onclick = function(){
+      if(o.k === "nothing"){ g.extras = (g.extras.indexOf("nothing") > -1) ? [] : ["nothing"]; }
+      else {
+        g.extras = g.extras.filter(function(x){ return x !== "nothing"; });
+        var i = g.extras.indexOf(o.k);
+        if(i > -1) g.extras.splice(i, 1); else g.extras.push(o.k);
+      }
+      renderGutLog();
+    };
+    ex.appendChild(b);
+  });
+}
+buildGutOpts();
+function startGutLog(){ gStep = 1; g = { firm:null, color:null, extras:[] }; renderGutLog(); }
+function renderGutLog(){
+  $("gErr").textContent = "";
+  [1,2,3].forEach(function(n){ $("g"+n).style.display = (n === gStep) ? "block" : "none"; });
+  var bar = $("gBar"); bar.innerHTML = "";
+  [1,2,3].forEach(function(n){ var d = document.createElement("i"); if(n <= gStep) d.className = "done"; bar.appendChild(d); });
+  $("gStepN").textContent = "Step " + gStep + " of 3";
+  var kids = $("gFirm").children;
+  for(var i=0;i<kids.length;i++) kids[i].classList.toggle("on", kids[i].getAttribute("data-k") === g.firm);
+  var rows = $("gSpec").querySelector(".specrows").children, dot = $("specDot"), ci = -1;
+  for(var j=0;j<rows.length;j++){
+    var on = rows[j].getAttribute("data-k") === g.color;
+    rows[j].classList.toggle("on", on); if(on) ci = j;
+  }
+  dot.style.display = ci > -1 ? "block" : "none"; if(ci > -1) dot.style.top = (ci*62 + 16) + "px";
+  var chips = $("gExtras").children;
+  for(var m=0;m<chips.length;m++) chips[m].classList.toggle("on", g.extras.indexOf(chips[m].getAttribute("data-k")) > -1);
+  $("gNext").textContent = gStep === 3 ? "Save log" : "Next";
+  $("gNext").disabled = (gStep === 1 && !g.firm);
+  $("gSkip").style.display = gStep > 1 ? "block" : "none";
+  $("gSkip").textContent = gStep === 3 ? "Skip and save" : "Skip";
+  $("gBack").style.display = gStep > 1 ? "block" : "none";
+}
+function saveGutLog(){
+  var f = byKey(FIRM, g.firm);
+  var ex = g.extras.filter(function(x){ return x !== "nothing"; });
+  if(!f){ gStep = 1; renderGutLog(); return; }
+  if(!addStool({ kind:"stool", firm:f.k, score:f.score, color:g.color, extras:ex })){
+    $("gErr").textContent = "We couldn’t save that on this phone. Check that your browser allows storage."; return;
+  }
+  gutLastKind = "stool"; go("gutDone");
+}
+$("gNext").onclick = function(){ if(gStep === 3){ saveGutLog(); return; } gStep++; renderGutLog(); window.scrollTo(0,0); };
+$("gSkip").onclick = function(){
+  if(gStep === 2){ g.color = null; gStep = 3; renderGutLog(); window.scrollTo(0,0); }
+  else { g.extras = []; saveGutLog(); }
+};
+$("gBack").onclick = function(){ if(gStep > 1){ gStep--; renderGutLog(); } };
+function renderGutDone(){
+  $("gDoneT").textContent = "Saved";
+  $("gDoneS").textContent = gutLastKind === "none" ? "Logged: no poop today."
+    : gutLastKind === "strain" ? "Logged: straining, nothing came out." : "Your entry is on the log.";
+  renderGutAlert("gutAlert2");
+}
+
+/* one-page vet summary: last 14 days */
+function gutDogName(){ try{ return (localStorage.getItem(DOG_KEY) || "").trim(); }catch(x){ return ""; } }
+function gutChart(days, list){
+  var W = 340, H = 210, L = 24, R = 6, T = 10, B = 24, pw = W - L - R, ph = H - T - B, step = pw / days.length;
+  function y(s){ return T + ph * (1 - s/7); }
+  var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Stool score by day for the last 14 days, on a scale from 0 to 7">';
+  out += '<rect x="' + L + '" y="' + y(3.5) + '" width="' + pw + '" height="' + (y(1.5) - y(3.5)) + '" rx="4" fill="#E7EAD3"/>';
+  for(var s=0;s<=7;s++){
+    out += '<line x1="' + L + '" x2="' + (W-R) + '" y1="' + y(s) + '" y2="' + y(s) + '" stroke="#dcd9cb" stroke-width="1"/>';
+    out += '<text x="' + (L-6) + '" y="' + (y(s)+3.5) + '" font-size="10" fill="#576B7B" text-anchor="end">' + s + '</text>';
+  }
+  days.forEach(function(d, i){
+    var es = list.filter(function(e){ return e.day === d.str && (e.kind === "stool" || e.kind === "none"); });
+    es.forEach(function(e, k){
+      var cx = L + (i + 0.5) * step + (k - (es.length - 1) / 2) * 7, cy = y(e.score);
+      if(e.score === 0) out += '<circle cx="' + cx + '" cy="' + cy + '" r="5" fill="#fff" stroke="#1f2a14" stroke-width="2.2"/>';
+      else {
+        var col = (e.score === 2 || e.score === 3) ? "#445134" : (e.score >= 5 ? "#C15C53" : "#576B7B");
+        out += '<circle cx="' + cx + '" cy="' + cy + '" r="5" fill="' + col + '" stroke="#fff" stroke-width="1.5"/>';
+      }
+    });
+    out += '<text x="' + (L + (i + 0.5) * step) + '" y="' + (H-8) + '" font-size="9.5" fill="#576B7B" text-anchor="middle">' + d.d.getDate() + '</text>';
+  });
+  return out + '</svg>';
+}
+function renderGutSum(){
+  var N = 14, days = [];
+  for(var i=N-1;i>=0;i--){ var d = new Date(); d.setDate(d.getDate() - i); days.push({ str:dayStr(d), d:d }); }
+  var first = days[0].str, last = days[N-1].str;
+  var all = loadStool(), list = all.filter(function(e){ return e.day >= first && e.day <= last; });
+  $("gutDog").value = gutDogName();
+  var dog = gutDogName() || "Your dog";
+  var by = {}; list.forEach(function(e){ (by[e.day] = by[e.day] || []).push(e); });
+  var logged = 0, loose = 0, none = 0;
+  days.forEach(function(d){
+    var es = by[d.str] || []; if(!es.length) return; logged++;
+    var stool = es.filter(function(e){ return e.kind === "stool"; });
+    if(stool.some(function(e){ return e.score >= 5; })) loose++;
+    if(!stool.length && es.some(function(e){ return e.kind === "none"; })) none++;
+  });
+  var h = '<div class="sumk">GO PODDY · GUT HEALTH LOG</div><h2>Stool log summary</h2>'
+    + '<div class="hint">' + esc(dog) + ' · ' + esc(shortDate(first)) + ' to ' + esc(shortDate(last)) + ' (last 14 days)</div>';
+  if(!list.length){
+    h += '<div class="sumrecap"><b>Nothing logged yet</b><p style="margin:0">Entries from the last 14 days will show here.</p></div>';
+  } else {
+    h += '<div class="sumrecap"><b>At a glance</b><p style="margin:0">Entries on ' + pl(logged, "day") + ' of the last 14. '
+      + 'Loose stool (soft pile or watery) on ' + pl(loose, "day") + '. No stool logged on ' + pl(none, "day") + '.</p></div>';
+    h += '<div class="sumsec"><b>Stool score by day</b>' + gutChart(days, list)
+      + '<div class="sumleg"><span><i style="background:#E7EAD3;border:1px solid #bfc59f;border-radius:3px"></i>Shaded: healthy range (2 to 3)</span>'
+      + '<span><i style="background:#445134"></i>Score 2 or 3</span>'
+      + '<span><i style="background:#576B7B"></i>Harder or softer (1, 4)</span>'
+      + '<span><i style="background:#C15C53"></i>Loose (5 to 7)</span>'
+      + '<span><i style="background:#fff;border:2px solid #1f2a14;width:7px;height:7px"></i>No stool (0)</span></div></div>';
+    var flags = list.filter(function(e){
+      if(e.kind === "strain" || e.kind === "none") return true;
+      return (e.color && e.color !== "brown") || (e.extras && e.extras.length);
+    }).slice().reverse();
+    h += '<div class="sumsec"><b>Flagged entries</b>';
+    if(!flags.length) h += '<p class="hint" style="margin:0">None.</p>';
+    flags.slice(0, 8).forEach(function(e){
+      h += '<div class="grow"><span class="d">' + esc(shortDate(e.day)) + '</span><span class="x">' + esc(entryText(e)) + '</span></div>';
+    });
+    if(flags.length > 8) h += '<p class="hint" style="margin:6px 0 0">And ' + (flags.length - 8) + ' more not shown.</p>';
+    h += '</div>';
+  }
+  h += '<div class="sumfoot"><div>Scores follow the Purina 7-point fecal scale, from 1 (very hard and dry) to 7 (watery). '
+    + 'Soft pile covers scores 5 and 6 and is shown at 5. 0 means the owner reported no stool that day. '
+    + 'It is Go Poddy’s own addition and is not part of the Purina chart.</div>'
+    + '<div style="margin-top:4px">One dot per entry. Entries are reported by the owner by tapping. '
+    + 'This is a record to discuss with a vet, not a diagnosis.</div></div>';
+  $("sumPage").innerHTML = h;
+}
+$("gutDog").oninput = function(){
+  try{ localStorage.setItem(DOG_KEY, $("gutDog").value.trim()); }catch(x){}
+  var keep = $("gutDog").value; renderGutSum(); $("gutDog").value = keep;
+};
+$("sumPrint").onclick = function(){ window.print(); };
 
 /* On a returning phone, quietly re-check the agent and refresh the name. If the
    server can't be reached, keep what is saved and carry on. */
