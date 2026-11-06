@@ -193,17 +193,16 @@ nav.tabs button svg .ac{stroke:var(--accent)}
 .opt .ck{visibility:hidden;font-weight:800;font-size:22px;color:var(--primary)}
 .opt.on{border:2px solid var(--primary);background:var(--soft);padding:11.5px 15.5px}
 .opt.on .ck{visibility:visible}
-.spec{display:flex;gap:14px;align-items:stretch;margin:12px 0}
-.specbar{position:relative;width:60px;height:372px;border-radius:30px;flex-shrink:0;
-  background:linear-gradient(180deg,#7A5230 0%,#7A5230 8.33%,#B79F7C 25%,#D9A23A 41.67%,#6E8F3E 58.33%,#2B2522 75%,#B8352F 91.67%,#B8352F 100%)}
-.specdot{position:absolute;left:15px;width:30px;height:30px;border-radius:50%;border:4px solid #fff;
-  box-shadow:0 0 0 2px var(--ink);display:none}
-.specrows{flex:1;display:flex;flex-direction:column}
-.specrows button{height:62px;text-align:left;padding:0 14px;border-radius:14px;font:700 17px var(--body);
-  border:2px solid transparent;display:flex;align-items:center;justify-content:space-between}
-.specrows button.on{border-color:var(--primary);background:var(--soft)}
-.specrows button .ck{visibility:hidden;font-weight:800;color:var(--primary)}
-.specrows button.on .ck{visibility:visible}
+.cspec{display:flex;align-items:stretch;width:100%;gap:12px;text-align:left;padding:4px;margin-bottom:6px;
+  min-height:64px;border-radius:14px;border:2px solid transparent;background:transparent}
+.cspec .sw{width:88px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  border:1px solid rgba(0,0,0,.18)}
+.cspec .ck{visibility:hidden;font-weight:800;font-size:28px}
+.cspec .nm{flex:1;display:flex;align-items:center;font:700 17px var(--body)}
+.cspec.on{border-color:var(--primary);background:var(--soft)}
+.cspec.on .ck{visibility:visible}
+.picked{display:flex;align-items:center;gap:10px;margin:10px 0 4px;font-weight:700;min-height:36px}
+.picked i{display:inline-block;width:36px;height:36px;border-radius:50%;border:2px solid var(--ink)}
 .grow{display:flex;gap:10px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
 .grow .d{font-weight:700;min-width:64px}
 .grow .x{flex:1}
@@ -434,7 +433,8 @@ h1{font-family:var(--title);font-synthesis:none}
       <div id="g2" style="display:none">
         <h2>What color was it?</h2>
         <p class="hint">Tap the closest shade. You can skip this one.</p>
-        <div class="spec" id="gSpec"></div>
+        <div id="gSpec" style="margin-top:12px"></div>
+        <div class="picked" id="gPicked"></div>
         <p class="hint">Screens show color a little differently, so the names matter more than the shade you see.</p>
       </div>
       <div id="g3" style="display:none">
@@ -1119,8 +1119,12 @@ var FIRM = [
   { k:"water", t:"Watery",                  s:"A puddle, no solid piece",      score:7 }
 ];
 var COLORS = [
-  { k:"brown",  t:"Brown" }, { k:"tan", t:"Tan or gray" }, { k:"yellow", t:"Yellow or orange" },
-  { k:"green",  t:"Green" }, { k:"black", t:"Black or tarry" }, { k:"red", t:"Red or red-streaked" }
+  { k:"brown",  t:"Brown",              hex:"#7A5230", ink:"#fff" },
+  { k:"tan",    t:"Tan or gray",         hex:"#B79F7C", ink:"#1f2a14" },
+  { k:"yellow", t:"Yellow or orange",    hex:"#D9A23A", ink:"#1f2a14" },
+  { k:"green",  t:"Green",               hex:"#6E8F3E", ink:"#fff" },
+  { k:"black",  t:"Black or tarry",      hex:"#2B2522", ink:"#fff" },
+  { k:"red",    t:"Red or red-streaked", hex:"#B8352F", ink:"#fff" }
 ];
 var EXTRAS = [
   { k:"nothing", t:"Nothing unusual" }, { k:"mucus", t:"Mucus or slime" }, { k:"blood", t:"Blood" },
@@ -1237,17 +1241,12 @@ function buildGutOpts(){
     f.appendChild(b);
   });
   var sp = $("gSpec"); sp.innerHTML = "";
-  var bar = document.createElement("div"); bar.className = "specbar";
-  var dot = document.createElement("div"); dot.className = "specdot"; dot.id = "specDot";
-  bar.appendChild(dot); sp.appendChild(bar);
-  var rows = document.createElement("div"); rows.className = "specrows";
   COLORS.forEach(function(o){
-    var b = document.createElement("button"); b.setAttribute("data-k", o.k);
-    b.innerHTML = '<span>' + o.t + '</span><span class="ck" aria-hidden="true">✓</span>';
+    var b = document.createElement("button"); b.className = "cspec"; b.setAttribute("data-k", o.k);
+    b.innerHTML = '<span class="sw" style="background:' + o.hex + '"><span class="ck" style="color:' + o.ink + '" aria-hidden="true">\u2713</span></span><span class="nm">' + o.t + '</span>';
     b.onclick = function(){ g.color = (g.color === o.k) ? null : o.k; renderGutLog(); };
-    rows.appendChild(b);
+    sp.appendChild(b);
   });
-  sp.appendChild(rows);
   var ex = $("gExtras"); ex.innerHTML = "";
   EXTRAS.forEach(function(o){
     var b = document.createElement("button"); b.className = "chip"; b.setAttribute("data-k", o.k); b.textContent = o.t;
@@ -1273,12 +1272,10 @@ function renderGutLog(){
   $("gStepN").textContent = "Step " + gStep + " of 3";
   var kids = $("gFirm").children;
   for(var i=0;i<kids.length;i++) kids[i].classList.toggle("on", kids[i].getAttribute("data-k") === g.firm);
-  var rows = $("gSpec").querySelector(".specrows").children, dot = $("specDot"), ci = -1;
-  for(var j=0;j<rows.length;j++){
-    var on = rows[j].getAttribute("data-k") === g.color;
-    rows[j].classList.toggle("on", on); if(on) ci = j;
-  }
-  dot.style.display = ci > -1 ? "block" : "none"; if(ci > -1) dot.style.top = (ci*62 + 16) + "px";
+  var rows = $("gSpec").children;
+  for(var j2=0;j2<rows.length;j2++) rows[j2].classList.toggle("on", rows[j2].getAttribute("data-k") === g.color);
+  var pc = byKey(COLORS, g.color);
+  $("gPicked").innerHTML = pc ? '<i style="background:' + pc.hex + '"></i><span>You picked: ' + pc.t + '</span>' : '<span class="hint">Nothing picked yet. You can skip this one.</span>';
   var chips = $("gExtras").children;
   for(var m=0;m<chips.length;m++) chips[m].classList.toggle("on", g.extras.indexOf(chips[m].getAttribute("data-k")) > -1);
   $("gNext").textContent = gStep === 3 ? "Save log" : "Next";
