@@ -242,6 +242,9 @@ nav.tabs button svg .ac{stroke:var(--accent)}
 #s-dogs input[type=date]{width:100%;padding:14px;border:1.5px solid var(--line);border-radius:12px;
   background:var(--surface);-webkit-appearance:none;appearance:none;min-height:50px}
 #s-dogs input[type=date]:focus{border-color:var(--primary);outline:none}
+#dpPick{width:100%;padding:14px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);
+  min-height:50px;font:inherit;font-weight:600;margin-bottom:6px}
+#dpPick:focus{border-color:var(--primary);outline:none}
 .dp-q{display:block;font-weight:700;font-size:15px;margin:18px 0 6px}
 .dp-optl{font-weight:500;color:var(--muted)}
 .dp-row{display:flex;gap:10px;align-items:stretch}
@@ -260,6 +263,7 @@ nav.tabs button svg .ac{stroke:var(--accent)}
 .dp-picked{display:inline-flex;align-items:center;gap:8px;margin-top:8px;background:var(--primary);
   color:var(--on-primary);border-radius:999px;padding:8px 14px;font-weight:700}
 .dp-picked button{color:var(--on-primary);font-size:18px;line-height:1}
+.dp-del{color:var(--danger,#C15C53);margin-top:6px}
 .dp-rule{border-top:1.5px solid var(--line);margin-top:8px}
 .dp-small{font-size:13.5px;color:var(--muted)}
 .gutsel{flex:1;min-width:0;padding:14px 38px 14px 14px;border:1.5px solid var(--line);border-radius:12px;background-color:var(--surface);
@@ -573,6 +577,10 @@ h1{font-family:var(--title);font-synthesis:none}
       <div class="dp-step" id="dpForm">
         <h1 id="dpTitle">Tell us about your dog</h1>
         <p class="sub">Everything here is optional. Skip anything you like, or save and finish later.</p>
+        <div id="dpPickWrap" hidden>
+          <label class="f" for="dpPick">Which dog?</label>
+          <select id="dpPick" aria-label="Choose a dog to edit, or add a new dog"></select>
+        </div>
 
         <h2>About your dog</h2>
         <label class="f" for="dpName">Name <span class="dp-optl">(optional)</span></label>
@@ -636,6 +644,16 @@ h1{font-family:var(--title);font-synthesis:none}
         <button class="btn" type="button" id="dpSave">Save</button>
         <button class="btn alt" type="button" id="dpLater">Save and finish later</button>
         <button class="link" type="button" id="dpSkip">Skip for now</button>
+        <button class="link dp-del" type="button" id="dpDelete" hidden>Delete this dog’s profile</button>
+      </div>
+
+      <div class="dp-step" id="dpConfirm">
+        <h1 id="dpConfTitle">Delete this profile?</h1>
+        <p class="sub" id="dpConfText"></p>
+        <div class="err" id="dpErrDel" role="alert"></div>
+        <button class="btn" type="button" id="dpDelProfile">Delete the profile</button>
+        <button class="btn alt" type="button" id="dpDelBoth">Delete the profile and its Gut Health entries</button>
+        <button class="link" type="button" id="dpDelKeep">Keep it</button>
       </div>
 
       <div class="dp-step" id="dpDone">
@@ -707,7 +725,7 @@ var FEATURES = [
   { id:"gut",      title:"Gut health", status:"preview",
     blurb:"Log how things looked with a few taps, and keep a one-page summary for your vet." },
   { id:"dogs",     title:"Tell us about your dog", status:"preview",
-    blurb:"A one-minute page about your dog and your walks. Every question is optional." },
+    blurb:"A one-minute page about your dog and your walks. Every question is optional. Come back any time to update a dog or add another." },
   { id:"places",   title:"Share a place", status:"soon",
     blurb:"Tell other Poddy users about a dog park or a store you love." },
   { id:"sewer",    title:"Verify your Sewer Service", status:"soon",
@@ -916,7 +934,7 @@ function renderCi(){
 }
 function ciErrText(r){
   return (r.data && r.data.limit)
-    ? "You\u2019ve logged " + CHECKIN_CAP + " uses today, see you tomorrow."
+    ? ((r.data.error) || ("You\u2019ve logged " + logCap() + " uses today, see you tomorrow."))
     : ((r.data && r.data.error) || "We couldn\u2019t send that. Check your connection and try again.");
 }
 /* One tap for a person who used the Poddy as usual: the same check-in as answering
@@ -1055,7 +1073,13 @@ var VIEWER_HASH = {
   "65eb9c5ec871137358b12ea2f543287d343659317701e308967c95a456435c47":"paul",
   "a3225be0c7046684855c32fc436224ccb707a78ffdde3f6b9098fa09f80596a7":"jeff"
 };
-var CHECKIN_CAP = 2, LOG_CAP = 3;
+var LOG_PER_DOG = 3, MAX_DOGS_CAP = 10;   /* Poddy uses a day, for Field Agents and everyone else: 3 per dog profiled */
+/* Poddy-use logs a day: 3 for each dog profiled (at least 3). The server's number wins; until it answers, count the dogs saved on this phone. */
+function logCap(){
+  if(impLive && impLive.cap > 0) return impLive.cap;
+  var n = 0; try{ n = Object.keys(JSON.parse(localStorage.getItem("gopoddy_dog_saved") || "{}") || {}).length; }catch(x){}
+  return LOG_PER_DOG * Math.max(1, Math.min(n, MAX_DOGS_CAP));
+}
 var impViewer = null; /* null = not checked yet, "none" = neither founder */
 function resolveViewer(){
   if(impViewer !== null) return;
@@ -1158,23 +1182,25 @@ function loggedToday(){ return Math.max((impLive && impLive.today) || 0, 0) + pe
 function renderLog(){
   $("impLog").style.display = isAgent() ? "none" : "block";
   if(isAgent()) return;
-  var n = Math.min(loggedToday(), LOG_CAP);
-  setLogMsg((logNote ? logNote + " " : "") + "Logged today: " + n + " of " + LOG_CAP);
-  setLogDisabled(n >= LOG_CAP);
+  var cap = logCap(), n = Math.min(loggedToday(), cap);
+  setLogMsg((logNote ? logNote + " " : "") + "Logged today: " + n + " of " + cap);
+  setLogDisabled(n >= cap);
 }
 function logUse(){
-  if(loggedToday() >= LOG_CAP){ logNote = "You’ve logged " + LOG_CAP + " today, see you tomorrow."; renderLog(); return; }
+  if(loggedToday() >= logCap()){ logNote = "You’ve logged " + logCap() + " today, see you tomorrow."; renderLog(); return; }
   setLogDisabled(true);
   var id = rid(), day = todayStr();
   api({ action:"log_use", who:deviceId(), day:day, client_id:id }).then(function(r){
     if(r.status === 200 && r.data.ok){
       if(impLive) impLive.today = r.data.today; else impLive = { ok:true, all:{uses:0,daily:[]}, you:{uses:0,daily:[]}, today:r.data.today };
+      if(r.data.cap > 0) impLive.cap = r.data.cap;
       logNote = "Logged. Thank you!";
       refreshView(); loadImpactLive(); GoPoddyDog.maybeInvite("log"); return;
     }
     if(r.data && r.data.limit){
-      if(impLive) impLive.today = LOG_CAP;
-      logNote = "You’ve logged " + LOG_CAP + " today, see you tomorrow.";
+      if(r.data.cap > 0){ if(!impLive) impLive = { ok:true, all:{uses:0,daily:[]}, you:{uses:0,daily:[]}, today:0 }; impLive.cap = r.data.cap; }
+      if(impLive) impLive.today = logCap();
+      logNote = "You’ve logged " + logCap() + " today, see you tomorrow.";
     } else if(r.status === 0){
       var l = loadPending(); l.push({ day:day, id:id }); savePending(l);
       logNote = "Saved on this phone; it will count when you’re back online.";
@@ -1920,6 +1946,15 @@ var GoPoddyDog = (function(){
     ["dpErrName","dpErrBirthday","dpErrWeight","dpErrOwner","dpErrSave"].forEach(function(id){ $(id).textContent = ""; });
     var name = cleanText($("dpName").value, 40);
     if(name === null){ $("dpErrName").textContent = "Just a name, without links or symbols."; ok = false; }
+    else {
+      var svn = readJson(SAVED_KEY, {});
+      if(!name && svn[S.dogIndex] && svn[S.dogIndex].name){ $("dpErrName").textContent = "Keep a name here so your Gut Health entries stay with this dog."; ok = false; }
+      Object.keys(svn).forEach(function(k){
+        if(name && Number(k) !== S.dogIndex && svn[k] && svn[k].name && String(svn[k].name).toLowerCase() === name.toLowerCase()){
+          $("dpErrName").textContent = "You already have a dog with that name."; ok = false;
+        }
+      });
+    }
     var bday = $("dpBirthday").value;
     if(bday && (bday > todayStr() || bday < "1990-01-01")){ $("dpErrBirthday").textContent = "That date doesn’t look right."; ok = false; }
     var w = weightInPounds();
@@ -1952,12 +1987,68 @@ var GoPoddyDog = (function(){
   function endScreen(title, text, more){
     $("dpDoneTitle").textContent = title; $("dpDoneText").textContent = text; $("dpAdd").hidden = !more; step("dpDone");
   }
-  function hasMore(){ return (S.count === "2" && S.dogIndex < 2) || (S.count === "3+" && S.dogIndex < 3); }
+  /* the dogs saved on this phone, and the pull-down for editing them or adding another */
+  var MAX_DOGS = 10;
+  function savedIdx(){ return Object.keys(readJson(SAVED_KEY, {})).map(Number).filter(function(n){ return n >= 1 && n <= MAX_DOGS; }).sort(function(a, b){ return a - b; }); }
+  function nextFree(){ var have = savedIdx(); for(var i = 1; i <= MAX_DOGS; i++) if(have.indexOf(i) < 0) return i; return null; }
+  function dogLabel(i, sv){ var n = sv[i] && sv[i].name ? String(sv[i].name).trim() : ""; return n || "Dog #" + i; }
+  function hasMore(){
+    var n = savedIdx().length;
+    return (S.count === "2" && n < 2) || (S.count === "3+" && n < MAX_DOGS);
+  }
+  function bumpCount(){
+    if(S.dogIndex >= 3) S.count = "3+";
+    else if(S.dogIndex === 2 && S.count !== "3+") S.count = "2";
+  }
+  function renderPick(){
+    var sv = readJson(SAVED_KEY, {}), have = savedIdx(), sel = $("dpPick");
+    $("dpPickWrap").hidden = !have.length;
+    sel.innerHTML = "";
+    have.forEach(function(i){
+      var o = document.createElement("option"); o.value = String(i); o.textContent = dogLabel(i, sv); sel.appendChild(o);
+    });
+    var isNew = have.indexOf(S.dogIndex) < 0;
+    if(isNew && have.length){
+      var cur = document.createElement("option"); cur.value = "new"; cur.textContent = "New dog (not saved yet)"; sel.appendChild(cur);
+    } else if(nextFree() !== null){
+      var add = document.createElement("option"); add.value = "new"; add.textContent = "+ Add a new dog"; sel.appendChild(add);
+    }
+    sel.value = isNew ? "new" : String(S.dogIndex);
+  }
+  function pickChanged(){
+    var v = $("dpPick").value, idx;
+    if(v === "new"){
+      if(have(S.dogIndex)) idx = nextFree(); else idx = S.dogIndex;   /* already on a new dog: stay */
+    } else idx = parseInt(v, 10);
+    if(!idx || idx === S.dogIndex){ renderPick(); return; }
+    var keep = S.count;
+    loadDog(idx); if(keep) S.count = keep; bumpCount(); openForm();
+  }
+  function have(i){ return savedIdx().indexOf(i) >= 0; }
 
   function openForm(){
-    $("dpTitle").textContent = S.dogIndex > 1 ? "Tell us about dog #" + S.dogIndex : "Tell us about your dog";
+    var sv = readJson(SAVED_KEY, {});
+    $("dpTitle").textContent = sv[S.dogIndex] ? "Update " + dogLabel(S.dogIndex, sv)
+      : S.dogIndex > 1 ? "Tell us about dog #" + S.dogIndex : "Tell us about your dog";
     $("dpYou").hidden = isAgent() || S.dogIndex > 1;
+    renderPick();
+    $("dpDelete").hidden = !sv[S.dogIndex];
     repaint(); step("dpForm");
+  }
+
+  /* a renamed dog keeps its Gut Health entries */
+  function renameEverywhere(oldN, newN){
+    if(!oldN || !newN || oldN.toLowerCase() === newN.toLowerCase()) return;
+    var o = oldN.toLowerCase();
+    var l = loadStool(), changed = false;
+    l.forEach(function(e){ if((e.dog || "").toLowerCase() === o){ e.dog = newN; changed = true; } });
+    if(changed) saveStool(l);
+    var names = readJson(DOGS_KEY, []);
+    if(Array.isArray(names)){
+      names = names.map(function(v){ return String(v).toLowerCase() === o ? newN : v; });
+      lsSet(DOGS_KEY, JSON.stringify(names.slice(-10)));
+    }
+    if(gutDogName().toLowerCase() === o) setGutDog(newN);
   }
 
   function save(){
@@ -1966,7 +2057,11 @@ var GoPoddyDog = (function(){
     api({ action:"save_dog_profile", who:whoId(), day:todayStr(), profile:data }).then(function(r){
       btn.disabled = false;
       if(r.status === 200 && r.data && r.data.ok){
-        var saved = readJson(SAVED_KEY, {}); saved[S.dogIndex] = snapshot(); lsSet(SAVED_KEY, JSON.stringify(saved));
+        var saved = readJson(SAVED_KEY, {});
+        var oldName = saved[S.dogIndex] && saved[S.dogIndex].name ? String(saved[S.dogIndex].name).trim() : "";
+        saved[S.dogIndex] = snapshot(); lsSet(SAVED_KEY, JSON.stringify(saved));
+        renameEverywhere(oldName, data.name || "");
+        if(impLive) delete impLive.cap;   /* one more dog can mean more logs a day: ask the server again */
         lsDel(DRAFT_KEY); lsSet(INVITE_KEY, JSON.stringify({ done:true }));
         var more = hasMore();
         endScreen("Thank you", more ? "Saved. Want to tell us about your next dog now, or later?" : "Your answers are saved.", more);
@@ -1976,6 +2071,40 @@ var GoPoddyDog = (function(){
           (r.status === 0 ? "No connection right now. Your answers are kept on this phone. Please try again."
                           : "We couldn’t save that just now. Your answers are kept on this phone. Please try again.");
       }
+    });
+  }
+
+  /* delete a saved dog: its profile on the server and on this phone, and (if asked) its Gut Health entries */
+  function askDelete(){
+    var sv = readJson(SAVED_KEY, {}); if(!sv[S.dogIndex]) return;
+    var nm = dogLabel(S.dogIndex, sv);
+    $("dpConfTitle").textContent = "Delete " + nm + "?";
+    $("dpConfText").textContent = "This removes " + nm + "’s profile. Gut Health entries logged for " + nm + " stay unless you choose to delete them too. Deleting can’t be undone.";
+    $("dpDelBoth").hidden = !(sv[S.dogIndex].name);
+    $("dpErrDel").textContent = ""; step("dpConfirm");
+  }
+  function doDelete(withGut){
+    var idx = S.dogIndex, sv = readJson(SAVED_KEY, {}), nm = sv[idx] && sv[idx].name ? String(sv[idx].name).trim() : "";
+    $("dpDelProfile").disabled = $("dpDelBoth").disabled = true;
+    api({ action:"delete_dog_profile", who:whoId(), day:todayStr(), dog_index:idx }).then(function(r){
+      $("dpDelProfile").disabled = $("dpDelBoth").disabled = false;
+      if(!(r.status === 200 && r.data && r.data.ok)){
+        $("dpErrDel").textContent = (r.data && r.data.error) ||
+          (r.status === 0 ? "No connection right now. Nothing was deleted. Please try again." : "We couldn’t delete that just now. Nothing was deleted. Please try again.");
+        return;
+      }
+      delete sv[idx]; lsSet(SAVED_KEY, JSON.stringify(sv)); lsDel(DRAFT_KEY);
+      if(impLive) delete impLive.cap;
+      if(nm){
+        var o = nm.toLowerCase();
+        if(withGut){ var l = loadStool().filter(function(e){ return (e.dog || "").toLowerCase() !== o; }); saveStool(l); }
+        var names = readJson(DOGS_KEY, []);
+        if(Array.isArray(names)) lsSet(DOGS_KEY, JSON.stringify(names.filter(function(v){ return String(v).toLowerCase() !== o; })));
+        if(gutDogName().toLowerCase() === o){ lsDel(DOG_KEY); var rest = dogNamesKnown(); if(rest.length) setGutDog(rest[0]); }
+      }
+      var left = savedIdx();
+      if(left.length){ S.dogIndex = left[0]; endScreen("Deleted", (nm || "That dog") + "’s profile is deleted.", false); }
+      else { S.count = ""; endScreen("Deleted", (nm || "That dog") + "’s profile is deleted.", false); }
     });
   }
 
@@ -1991,10 +2120,15 @@ var GoPoddyDog = (function(){
     if(!built) build();
     if(!ret){ ret = "soon"; manual = true; direct = false; afterLog = false; }
     var draft = readJson(DRAFT_KEY, null), saved = readJson(SAVED_KEY, {});
-    S.count = (draft && draft.state && draft.state.count) || (saved[1] && saved[1].state && saved[1].state.count) || "";
+    var have0 = savedIdx(), first0 = have0.length ? saved[have0[0]] : null;
+    S.count = (draft && draft.state && draft.state.count) || (first0 && first0.state && first0.state.count) || "";
     $("dpMulti").hidden = !S.count || S.count === "1";
     if(draft && draft.state && draft.state.count){ loadDog(draft.state.dogIndex || 1); openForm(); return; }
-    if(manual && saved[1]){ loadDog(1); openForm(); return; }
+    if(manual && have0.length){
+      var gn = (typeof gutDogName === "function" ? gutDogName() : "").toLowerCase(), pick = have0[0];
+      have0.forEach(function(i){ if(gn && saved[i] && String(saved[i].name || "").toLowerCase() === gn) pick = i; });
+      var keepC = S.count; loadDog(pick); if(keepC) S.count = keepC; openForm(); return;
+    }
     S.dogIndex = 1; step("dpCount");
   }
   function begin(returnTo){ ret = returnTo; manual = false; direct = false; afterLog = true; go("dogs"); }
@@ -2022,7 +2156,15 @@ var GoPoddyDog = (function(){
     $("dpSave").onclick = save;
     $("dpLater").onclick = function(){ saveDraft(); markDecline(); endScreen("Saved for later", "Your answers are kept on this phone. You’ll find this page under Coming soon whenever you’re ready.", false); };
     $("dpSkip").onclick = function(){ markDecline(); endScreen("No problem", "You can come back to this any time. You’ll find it under Coming soon.", false); };
-    $("dpAdd").onclick = function(){ lsDel(DRAFT_KEY); loadDog(S.dogIndex + 1); openForm(); };
+    $("dpAdd").onclick = function(){
+      var n = nextFree(); if(n === null) return;
+      lsDel(DRAFT_KEY); var keepC = S.count; loadDog(n); if(keepC) S.count = keepC; bumpCount(); openForm();
+    };
+    $("dpPick").onchange = pickChanged;
+    $("dpDelete").onclick = askDelete;
+    $("dpDelProfile").onclick = function(){ doDelete(false); };
+    $("dpDelBoth").onclick = function(){ doDelete(true); };
+    $("dpDelKeep").onclick = function(){ openForm(); };
     $("dpDoneBtn").onclick = exit;
     ["dpName","dpBirthday","dpWeight","dpOwner"].forEach(function(id){ $(id).addEventListener("input", saveDraft); });
   }
