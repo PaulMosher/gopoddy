@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="light only">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#445134">
+<title>Tell us about your dog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Palette and fonts copied from the flow prototype. "Briston" is embedded in the main app file;
+   on its own this page falls back to Georgia for the big title. */
+:root{
+  --hunter:#445134; --harbor:#576B7B; --clay:#C15C53; --blush:#E9C2AE; --sage:#C1C7A1;
+  --bg:#F7F6F0; --surface:#ffffff; --ink:#1f2a14; --muted:#576B7B; --line:#dcd9cb;
+  --primary:#445134; --on-primary:#F7F6F0; --accent:#C15C53; --soft:#E7EAD3;
+  --title:"Briston",Georgia,"Times New Roman",serif;
+  --head:"Bricolage Grotesque","Avenir Next","Trebuchet MS",sans-serif;
+  --body:"Bricolage Grotesque","Avenir Next","Trebuchet MS",sans-serif;
+  color-scheme:only light;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 var(--body)}
+body{min-height:100vh;display:flex;justify-content:center}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+#dogapp{width:100%;max-width:480px;min-height:100vh;padding:calc(env(safe-area-inset-top,0px) + 8px) 18px calc(env(safe-area-inset-bottom,0px) + 40px)}
+@media (min-width:520px){#dogapp{border-left:1.5px solid var(--line);border-right:1.5px solid var(--line)}}
+.screen{display:none}
+.screen.on{display:block}
+h1{font:800 34px/1.08 var(--title);font-synthesis:none;letter-spacing:-.8px;margin:18px 0 10px}
+h2{font:700 24px/1.15 var(--head);letter-spacing:-.4px;margin:28px 0 4px}
+p{margin:0 0 12px}
+.sub{color:var(--muted)}
+.hint{font-size:14px;color:var(--muted);margin:4px 0 0}
+.btn{display:block;width:100%;padding:16px;border-radius:14px;font-weight:700;font-size:17px;text-align:center;
+  background:var(--primary);color:var(--on-primary);margin-top:12px}
+.btn.alt{background:transparent;color:var(--primary);border:2px solid var(--primary)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.link{color:var(--primary);font-weight:700;text-decoration:underline;padding:10px 0;display:inline-block}
+label.f,.q{display:block;font-weight:700;font-size:15px;margin:18px 0 6px}
+.opt{font-weight:500;color:var(--muted)}
+input[type=text],input[type=date]{width:100%;padding:14px;border:1.5px solid var(--line);border-radius:12px;
+  background:var(--surface);-webkit-appearance:none;appearance:none;min-height:50px}
+input:focus{border-color:var(--primary);outline:none}
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:12px 18px;font-weight:600}
+.chip.on{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.err{color:var(--accent);font-size:14px;font-weight:600;margin-top:6px;min-height:1px}
+.note{background:var(--soft);border-radius:12px;padding:12px 14px;font-size:14.5px;margin:12px 0}
+.bigchoice{display:grid;gap:12px;margin-top:22px}
+.bigchoice button{padding:22px 18px;border-radius:18px;text-align:left;border:2px solid var(--primary);background:var(--surface)}
+.bigchoice button b{display:block;font:800 22px/1.15 var(--head);color:var(--primary);margin-bottom:4px}
+.bigchoice button span{color:var(--muted);font-size:15px}
+.bigchoice button.fill{background:var(--primary)}
+.bigchoice button.fill b,.bigchoice button.fill span{color:var(--on-primary)}
+.row{display:flex;gap:10px;align-items:stretch}
+.row input{flex:1}
+.seg{display:flex;border:1.5px solid var(--primary);border-radius:12px;overflow:hidden;flex:none}
+.seg button{padding:0 16px;font-weight:700;color:var(--primary);background:var(--surface)}
+.seg button.on{background:var(--primary);color:var(--on-primary)}
+.combo{position:relative}
+.combo ul{list-style:none;margin:6px 0 0;padding:0;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);
+  max-height:240px;overflow:auto;display:none}
+.combo ul.open{display:block}
+.combo li{padding:13px 14px;border-bottom:1px solid var(--line);font-weight:600}
+.combo li:last-child{border-bottom:0}
+.combo li.top{color:var(--primary);background:var(--soft)}
+.combo li[aria-selected=true]{background:var(--soft)}
+.combo li.none{color:var(--muted);font-weight:500}
+.picked{display:inline-flex;align-items:center;gap:8px;margin-top:8px;background:var(--primary);color:var(--on-primary);
+  border-radius:999px;padding:8px 14px;font-weight:700}
+.picked button{color:var(--on-primary);font-size:18px;line-height:1}
+.section{border-top:1.5px solid var(--line);margin-top:8px}
+.confirm{text-align:center;padding-top:36px}
+.confirm .tick{width:74px;height:74px;border-radius:50%;background:var(--primary);color:var(--on-primary);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:38px;font-weight:800}
+.small{font-size:13.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="dogapp">
+
+  <!-- 1. How many dogs -->
+  <section class="screen on" id="s-count">
+    <h1>Quick question</h1>
+    <p class="sub">How many dogs do you have?</p>
+    <div class="chips" id="countChips" role="group" aria-label="How many dogs do you have">
+      <button class="chip" type="button" data-v="1">One</button>
+      <button class="chip" type="button" data-v="2">Two</button>
+      <button class="chip" type="button" data-v="3+">Three or more</button>
+    </div>
+  </section>
+
+  <!-- 2. The invitation -->
+  <section class="screen" id="s-invite">
+    <h1>You mind taking a minute?</h1>
+    <p class="sub">It takes about a minute to tell us about your dog. Every question is optional, and you can skip any of them.</p>
+    <p class="note" id="multiNote" hidden>You have more than one dog, so we'll start with one. You can add the others any time.</p>
+    <div class="bigchoice">
+      <button class="fill" type="button" id="inviteYes"><b>Sure</b><span>Show me the page</span></button>
+      <button type="button" id="inviteNo"><b>Not now</b><span>We'll ask once more in a few days, then leave it to you</span></button>
+    </div>
+  </section>
+
+  <!-- 3. The page -->
+  <section class="screen" id="s-form">
+    <h1 id="formTitle">Tell us about your dog</h1>
+    <p class="sub">Everything here is optional. Skip anything you like, or save and finish later.</p>
+
+    <h2>About your dog</h2>
+
+    <label class="f" for="dogName">Name <span class="opt">(optional)</span></label>
+    <input type="text" id="dogName" maxlength="40" autocomplete="off" autocapitalize="words">
+    <div class="err" id="errName"></div>
+
+    <div class="q" id="breedQ">Breed <span class="opt">(optional)</span></div>
+    <div class="combo" id="breedCombo"></div>
+    <div id="mostlyWrap" hidden>
+      <div class="q">Mostly what? <span class="opt">(optional)</span></div>
+      <div class="combo" id="mostlyCombo"></div>
+    </div>
+
+    <label class="f" for="dogBirthday">Birthday <span class="opt">(optional)</span></label>
+    <input type="date" id="dogBirthday">
+    <p class="hint">Tell us the day and we can send something special around it.</p>
+    <div class="err" id="errBirthday"></div>
+
+    <label class="f" for="dogWeight">Weight <span class="opt">(optional)</span></label>
+    <div class="row">
+      <input type="text" id="dogWeight" inputmode="decimal" autocomplete="off" aria-describedby="weightUnitLabel">
+      <div class="seg" role="group" aria-label="Weight unit" id="unitSeg">
+        <button type="button" data-u="lb" class="on">lb</button>
+        <button type="button" data-u="kg">kg</button>
+      </div>
+    </div>
+    <p class="hint" id="weightUnitLabel">Pounds</p>
+    <div class="err" id="errWeight"></div>
+
+    <div class="section"></div>
+    <h2>About your walks</h2>
+
+    <div class="q">Where do you live? <span class="opt">(pick the one that feels like home)</span></div>
+    <div class="chips" id="regionChips" role="group" aria-label="Region"></div>
+
+    <div class="q">Which of the following describes the setting for your dog walking? <span class="opt">(choose all that apply)</span></div>
+    <div class="chips" id="settingChips" role="group" aria-label="Walking setting"></div>
+
+    <div class="q">How many walks a day?</div>
+    <div class="chips" id="perDayChips" role="group" aria-label="Walks a day"></div>
+
+    <div class="q">On leash or off leash?</div>
+    <div class="chips" id="leashChips" role="group" aria-label="Leash"></div>
+
+    <div class="q">Who do you usually walk with?</div>
+    <div class="chips" id="companyChips" role="group" aria-label="Walking company"></div>
+
+    <div class="q">How long is a usual walk?</div>
+    <div class="chips" id="lengthChips" role="group" aria-label="Walk length"></div>
+
+    <div id="youWrap">
+      <div class="section" style="margin-top:24px"></div>
+      <h2>About you</h2>
+      <label class="f" for="ownerFirst">First name <span class="opt">(optional)</span></label>
+      <input type="text" id="ownerFirst" maxlength="60" autocomplete="given-name" autocapitalize="words">
+      <div class="err" id="errOwner"></div>
+    </div>
+
+    <p class="small" style="margin-top:22px">We keep what you share here to tailor tips for you and your dog and to understand how the Poddy is used. We never ask for photos of waste.</p>
+    <div class="err" id="errSave" role="alert"></div>
+    <button class="btn" type="button" id="saveBtn">Save</button>
+    <button class="btn alt" type="button" id="laterBtn">Save and finish later</button>
+    <button class="link" type="button" id="skipBtn">Skip for now</button>
+  </section>
+
+  <!-- 4. Done -->
+  <section class="screen" id="s-done">
+    <div class="confirm">
+      <div class="tick" aria-hidden="true">&#10003;</div>
+      <h1 id="doneTitle">Thank you</h1>
+      <p class="sub" id="doneText">Your answers are saved.</p>
+    </div>
+    <button class="btn" type="button" id="addAnother" hidden>Add another dog</button>
+    <button class="btn alt" type="button" id="doneBtn">Done</button>
+  </section>
+
+</div>
+
+<script>
+/* =====================================================================
+   HOST HOOKS: the only parts that depend on the rest of the Companion app.
+   Wire these to however the app already stores sign-in and its device id.
+   ===================================================================== */
+var FUNCTION_URL = "https://bqzrlgiaqpxuuaymxpyv.supabase.co/functions/v1/companion-api";
+
+/* Return { email, isAgent, firstName, deviceId }.
+   email + isAgent: set when a verified Field Agent is signed in (the server re-checks the tag).
+   firstName: whatever first name the app already knows, or "".
+   deviceId: the SAME device id the app sends with "log_use" (8-64 chars: letters, digits, _ or -). */
+function getIdentity(){
+  if (window.GP_IDENTITY) return window.GP_IDENTITY;
+  var id = "";
+  try { id = localStorage.getItem("gp_dog_device") || ""; } catch (e) {}
+  if (!id) {
+    id = "d" + Math.random().toString(36).slice(2, 12) + Date.now().toString(36);
+    try { localStorage.setItem("gp_dog_device", id); } catch (e) {}
+  }
+  return { email: "", isAgent: false, firstName: "", deviceId: id };
+}
+
+/* =====================================================================
+   OPTION LISTS. These words must match the allowlists in save_dog_profile.ts.
+   ===================================================================== */
+var COUNTS = ["1", "2", "3+"];
+var REGIONS = ["Northeast","Southeast","Midwest","Southwest","Mountain West","California","Pacific Northwest",
+  "Alaska","Hawaii / Pacific Islands","East Coast","Appalachia","Texas / Gulf Coast","Great Plains","Outside the US"];
+var SETTINGS = ["Urban","Suburban","Rural","Dog park","Trails / parks"];
+var PER_DAY = ["1","2","3","4 or more"];
+var LEASH = ["On leash","Off leash"];
+var COMPANY = ["Just me and my dog","With family","With friends or neighbors","With a walking group"];
+var LENGTH = ["Around the block","About 20 minutes","A real hike"];
+var MIXED = "Mixed or not sure";
+var NOTSURE = "Not sure";
+var BREEDS = ["Affenpinscher","Afghan Hound","Airedale Terrier","Akita","Alaskan Malamute","American Bulldog",
+  "American Eskimo Dog","American Staffordshire Terrier","Australian Cattle Dog","Australian Shepherd","Basenji",
+  "Basset Hound","Beagle","Bearded Collie","Belgian Malinois","Bernese Mountain Dog","Bichon Frise","Bloodhound",
+  "Border Collie","Border Terrier","Borzoi","Boston Terrier","Boxer","Brittany","Brussels Griffon","Bulldog",
+  "Bullmastiff","Cairn Terrier","Cane Corso","Cavalier King Charles Spaniel","Chesapeake Bay Retriever",
+  "Chihuahua","Chinese Crested","Chow Chow","Cocker Spaniel","Collie","Dachshund","Dalmatian","Doberman Pinscher",
+  "English Setter","English Springer Spaniel","French Bulldog","German Shepherd","German Shorthaired Pointer",
+  "Giant Schnauzer","Golden Retriever","Goldendoodle","Great Dane","Great Pyrenees","Greyhound","Havanese",
+  "Irish Setter","Irish Wolfhound","Italian Greyhound","Jack Russell Terrier","Labradoodle","Labrador Retriever",
+  "Lhasa Apso","Maltese","Mastiff","Miniature Pinscher","Miniature Schnauzer","Newfoundland","Norwegian Elkhound",
+  "Papillon","Pekingese","Pembroke Welsh Corgi","Pit Bull Terrier","Pointer","Pomeranian","Poodle (Miniature)",
+  "Poodle (Standard)","Poodle (Toy)","Portuguese Water Dog","Pug","Rhodesian Ridgeback","Rottweiler",
+  "Saint Bernard","Samoyed","Shetland Sheepdog","Shiba Inu","Shih Tzu","Siberian Husky","Soft Coated Wheaten Terrier",
+  "Staffordshire Bull Terrier","Standard Schnauzer","Vizsla","Weimaraner","West Highland White Terrier",
+  "Whippet","Yorkshire Terrier"];
+
+/* =====================================================================
+   STATE, DRAFT, SMALL HELPERS
+   ===================================================================== */
+var DRAFT_KEY = "gp_dog_draft_v1", INVITE_KEY = "gp_dog_invite_v1", UNIT_KEY = "gp_weight_unit";
+var state = { count: "", dogIndex: 1, breed: "", mostly: "", region: "", settings: [], perDay: "",
+              leash: "", company: "", length: "", unit: "lb" };
+var $ = function (id) { return document.getElementById(id); };
+
+function lsGet(k){ try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v){ try { localStorage.setItem(k, v); } catch (e) {} }
+function lsDel(k){ try { localStorage.removeItem(k); } catch (e) {} }
+function today(){ var d = new Date(); var m = d.getMonth() + 1, day = d.getDate();
+  return d.getFullYear() + "-" + (m < 10 ? "0" : "") + m + "-" + (day < 10 ? "0" : "") + day; }
+
+function show(id){
+  Array.prototype.forEach.call(document.querySelectorAll(".screen"), function (s) { s.classList.remove("on"); });
+  $(id).classList.add("on");
+  window.scrollTo(0, 0);
+}
+
+/* A row of chips. multi = several allowed; tapping a chosen single chip again clears it. */
+function buildChips(rootId, options, multi, get, set){
+  var root = $(rootId); root.innerHTML = "";
+  options.forEach(function (o) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.textContent = o;
+    b.setAttribute("aria-pressed", "false");
+    b.addEventListener("click", function () {
+      var cur = get();
+      if (multi) { var i = cur.indexOf(o); if (i >= 0) cur.splice(i, 1); else cur.push(o); set(cur); }
+      else { set(cur === o ? "" : o); }
+      paintChips(rootId, multi, get);
+      saveDraft();
+    });
+    root.appendChild(b);
+  });
+  paintChips(rootId, multi, get);
+}
+function paintChips(rootId, multi, get){
+  var cur = get();
+  Array.prototype.forEach.call($(rootId).children, function (b) {
+    var on = multi ? cur.indexOf(b.textContent) >= 0 : cur === b.textContent;
+    b.classList.toggle("on", on); b.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+}
+
+/* A search-as-you-type list. Tap a match to choose it. topLabel is always first. */
+function buildCombo(rootId, items, topLabel, getVal, setVal, onChange){
+  var root = $(rootId); root.innerHTML = "";
+  var input = document.createElement("input");
+  input.type = "text"; input.autocomplete = "off"; input.autocapitalize = "words";
+  input.setAttribute("role", "combobox"); input.setAttribute("aria-expanded", "false");
+  input.placeholder = "Start typing, like “lab”";
+  var list = document.createElement("ul"); list.setAttribute("role", "listbox");
+  var picked = document.createElement("div");
+  root.appendChild(input); root.appendChild(list); root.appendChild(picked);
+
+  function close(){ list.classList.remove("open"); input.setAttribute("aria-expanded", "false"); }
+  function paintPicked(){
+    picked.innerHTML = "";
+    var v = getVal(); if (!v) { input.style.display = ""; return; }
+    input.style.display = "none"; close();
+    var chip = document.createElement("span"); chip.className = "picked"; chip.textContent = v + " ";
+    var x = document.createElement("button"); x.type = "button"; x.textContent = "×";
+    x.setAttribute("aria-label", "Clear " + v);
+    x.addEventListener("click", function () { setVal(""); paintPicked(); if (onChange) onChange(); saveDraft(); input.focus(); });
+    chip.appendChild(x); picked.appendChild(chip);
+  }
+  function choose(v){ setVal(v); input.value = ""; paintPicked(); if (onChange) onChange(); saveDraft(); }
+  function render(){
+    var q = input.value.trim().toLowerCase(); list.innerHTML = "";
+    var top = document.createElement("li"); top.className = "top"; top.setAttribute("role", "option");
+    top.textContent = topLabel; top.addEventListener("click", function () { choose(topLabel); });
+    list.appendChild(top);
+    var hits = q ? items.filter(function (b) { return b.toLowerCase().indexOf(q) >= 0; }).slice(0, 30) : [];
+    hits.forEach(function (b) {
+      var li = document.createElement("li"); li.setAttribute("role", "option"); li.textContent = b;
+      li.addEventListener("click", function () { choose(b); }); list.appendChild(li);
+    });
+    if (q && !hits.length) {
+      var none = document.createElement("li"); none.className = "none"; none.textContent = "No match. Try “" + topLabel + "” above.";
+      list.appendChild(none);
+    }
+    list.classList.add("open"); input.setAttribute("aria-expanded", "true");
+  }
+  input.addEventListener("focus", render);
+  input.addEventListener("input", render);
+  document.addEventListener("click", function (e) { if (!root.contains(e.target)) close(); });
+  paintPicked();
+  return { refresh: paintPicked };
+}
+
+/* =====================================================================
+   DRAFT (so "Save and finish later" and a lost connection keep the answers)
+   ===================================================================== */
+function readFields(){
+  return { name: $("dogName").value, birthday: $("dogBirthday").value, weight: $("dogWeight").value,
+           owner: $("ownerFirst").value };
+}
+function saveDraft(){
+  var d = readFields();
+  d.state = { count: state.count, dogIndex: state.dogIndex, breed: state.breed, mostly: state.mostly,
+    region: state.region, settings: state.settings, perDay: state.perDay, leash: state.leash,
+    company: state.company, length: state.length };
+  lsSet(DRAFT_KEY, JSON.stringify(d));
+}
+function loadDraft(){
+  var raw = lsGet(DRAFT_KEY); if (!raw) return false;
+  try {
+    var d = JSON.parse(raw), s = d.state || {};
+    ["count","dogIndex","breed","mostly","region","perDay","leash","company","length"].forEach(function (k) { if (s[k] !== undefined) state[k] = s[k]; });
+    state.settings = Array.isArray(s.settings) ? s.settings : [];
+    $("dogName").value = d.name || ""; $("dogBirthday").value = d.birthday || "";
+    $("dogWeight").value = d.weight || ""; $("ownerFirst").value = d.owner || "";
+    return true;
+  } catch (e) { return false; }
+}
+
+/* =====================================================================
+   BUILD THE PAGE
+   ===================================================================== */
+var breedCombo, mostlyCombo;
+function mixedCheck(){ $("mostlyWrap").hidden = state.breed !== MIXED; if (state.breed !== MIXED) state.mostly = ""; mostlyCombo.refresh(); }
+
+function buildForm(){
+  breedCombo = buildCombo("breedCombo", BREEDS, MIXED,
+    function () { return state.breed; }, function (v) { state.breed = v; }, mixedCheck);
+  mostlyCombo = buildCombo("mostlyCombo", BREEDS, NOTSURE,
+    function () { return state.mostly; }, function (v) { state.mostly = v; });
+  buildChips("regionChips", REGIONS, false, function () { return state.region; }, function (v) { state.region = v; });
+  buildChips("settingChips", SETTINGS, true, function () { return state.settings; }, function (v) { state.settings = v; });
+  buildChips("perDayChips", PER_DAY, false, function () { return state.perDay; }, function (v) { state.perDay = v; });
+  buildChips("leashChips", LEASH, false, function () { return state.leash; }, function (v) { state.leash = v; });
+  buildChips("companyChips", COMPANY, false, function () { return state.company; }, function (v) { state.company = v; });
+  buildChips("lengthChips", LENGTH, false, function () { return state.length; }, function (v) { state.length = v; });
+  $("dogBirthday").max = today();
+  mixedCheck();
+}
+
+/* Weight: typed number, pounds by default, remembers the choice. Sent to the server in pounds. */
+function setUnit(u){
+  state.unit = u; lsSet(UNIT_KEY, u);
+  Array.prototype.forEach.call($("unitSeg").children, function (b) { b.classList.toggle("on", b.getAttribute("data-u") === u); });
+  $("weightUnitLabel").textContent = u === "lb" ? "Pounds" : "Kilograms";
+  $("dogWeight").placeholder = u === "lb" ? "e.g. 45" : "e.g. 20";
+}
+function weightInPounds(){
+  var raw = $("dogWeight").value.trim().replace(",", "."); if (!raw) return { ok: true, lb: null };
+  if (!/^\d{1,3}(\.\d{1,2})?$/.test(raw)) return { ok: false };
+  var n = parseFloat(raw); var lb = state.unit === "kg" ? n * 2.20462 : n;
+  lb = Math.round(lb * 10) / 10;
+  if (lb < 0.5 || lb > 300) return { ok: false };
+  return { ok: true, lb: lb };
+}
+
+/* =====================================================================
+   VALIDATE AND SAVE
+   ===================================================================== */
+function cleanName(v, max){
+  v = (v || "").replace(/\s+/g, " ").trim(); if (!v) return "";
+  if (/[<>]/.test(v) || /https?:|@/i.test(v)) return null;
+  return v.slice(0, max);
+}
+function collect(){
+  var ok = true;
+  ["errName","errBirthday","errWeight","errOwner","errSave"].forEach(function (id) { $(id).textContent = ""; });
+  var name = cleanName($("dogName").value, 40);
+  if (name === null) { $("errName").textContent = "Just a name, without links or symbols."; ok = false; }
+  var bday = $("dogBirthday").value;
+  if (bday && (bday > today() || bday < "1990-01-01")) { $("errBirthday").textContent = "That date doesn't look right."; ok = false; }
+  var w = weightInPounds();
+  if (!w.ok) { $("errWeight").textContent = "Enter a number, like 45."; ok = false; }
+  var owner = "";
+  if (!$("youWrap").hidden) {
+    owner = cleanName($("ownerFirst").value, 60);
+    if (owner === null) { $("errOwner").textContent = "Just a first name, without links or symbols."; ok = false; }
+  }
+  if (!ok) return null;
+  return {
+    dog_index: state.dogIndex, dog_count: state.count,
+    name: name || null, breed: state.breed || null, mostly_breed: state.breed === MIXED ? (state.mostly || null) : null,
+    birthday: bday || null, weight_lb: w.lb,
+    region: state.region || null, settings: state.settings.slice(), walks_per_day: state.perDay || null,
+    leash: state.leash || null, company: state.company || null, walk_length: state.length || null,
+    owner_first_name: owner || null
+  };
+}
+
+function save(finish){
+  var data = collect(); if (!data) return;
+  var id = getIdentity();
+  var who = id.isAgent && id.email ? id.email : id.deviceId;
+  var btn = finish ? $("saveBtn") : $("laterBtn"); btn.disabled = true;
+  fetch(FUNCTION_URL, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ action: "save_dog_profile", who: who, day: today(), profile: data })
+  }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { s: r.status, j: j }; }); })
+  .then(function (res) {
+    btn.disabled = false;
+    if (res.j && res.j.ok) {
+      lsDel(DRAFT_KEY); lsSet(INVITE_KEY, JSON.stringify({ done: true }));
+      finishScreen(finish);
+    } else {
+      saveDraft();
+      $("errSave").textContent = (res.j && res.j.error) || "We couldn't save that just now. Your answers are kept on this phone. Please try again.";
+    }
+  }).catch(function () {
+    btn.disabled = false; saveDraft();
+    $("errSave").textContent = "No connection right now. Your answers are kept on this phone. Please try again.";
+  });
+}
+
+function finishScreen(){
+  var more = (state.count === "2" && state.dogIndex < 2) || (state.count === "3+" && state.dogIndex < 3);
+  $("doneTitle").textContent = "Thank you";
+  $("doneText").textContent = more ? "Saved. Want to tell us about your next dog now, or later?" : "Your answers are saved.";
+  $("addAnother").hidden = !more;
+  show("s-done");
+}
+
+/* =====================================================================
+   FLOW: how many dogs, then the invitation, then the page
+   ===================================================================== */
+function resetForNextDog(){
+  state.breed = ""; state.mostly = ""; state.settings = []; state.region = ""; state.perDay = "";
+  state.leash = ""; state.company = ""; state.length = "";
+  ["dogName","dogBirthday","dogWeight"].forEach(function (id) { $(id).value = ""; });
+  buildForm();
+}
+function openForm(){
+  $("formTitle").textContent = state.dogIndex > 1 ? "Tell us about dog #" + state.dogIndex : "Tell us about your dog";
+  var id = getIdentity();
+  $("youWrap").hidden = !!(id.firstName) || state.dogIndex > 1;
+  show("s-form");
+}
+
+/* Not now: ask once more after 3 days, then never again on its own. */
+function inviteStatus(){
+  var raw = lsGet(INVITE_KEY); if (!raw) return { ask: true };
+  try {
+    var v = JSON.parse(raw);
+    if (v.done) return { ask: false };
+    if (v.declines >= 2) return { ask: false };
+    if (v.declines === 1 && Date.now() - v.at >= 3 * 86400000) return { ask: true };
+    return { ask: false };
+  } catch (e) { return { ask: true }; }
+}
+
+function start(){
+  var had = loadDraft();
+  buildForm();
+  $("multiNote").hidden = state.count === "1" || !state.count;
+  if (had && state.count) { openForm(); return; }
+  show("s-count");
+}
+/* Call this from "Log a Poddy use" or a check-in: it only opens the question when it is time to ask. */
+function maybeInvite(){ if (inviteStatus().ask) start(); return inviteStatus().ask; }
+
+document.addEventListener("DOMContentLoaded", function () {
+  var u = lsGet(UNIT_KEY); setUnit(u === "kg" ? "kg" : "lb");
+  Array.prototype.forEach.call($("unitSeg").children, function (b) {
+    b.addEventListener("click", function () { setUnit(b.getAttribute("data-u")); });
+  });
+  Array.prototype.forEach.call($("countChips").children, function (b) {
+    b.addEventListener("click", function () {
+      state.count = b.getAttribute("data-v"); state.dogIndex = 1;
+      $("multiNote").hidden = state.count === "1"; show("s-invite");
+    });
+  });
+  $("inviteYes").addEventListener("click", openForm);
+  $("inviteNo").addEventListener("click", function () {
+    var raw = lsGet(INVITE_KEY), v = {}; try { v = raw ? JSON.parse(raw) : {}; } catch (e) {}
+    lsSet(INVITE_KEY, JSON.stringify({ declines: (v.declines || 0) + 1, at: Date.now() }));
+    $("doneTitle").textContent = "No problem"; $("doneText").textContent = "You can come back to this any time.";
+    $("addAnother").hidden = true; show("s-done");
+  });
+  $("saveBtn").addEventListener("click", function () { save(true); });
+  $("laterBtn").addEventListener("click", function () { saveDraft(); $("doneTitle").textContent = "Saved for later";
+    $("doneText").textContent = "Your answers are kept on this phone, and the page will be here when you're ready.";
+    $("addAnother").hidden = true; show("s-done"); });
+  $("skipBtn").addEventListener("click", function () { $("doneTitle").textContent = "No problem";
+    $("doneText").textContent = "You can come back to this any time."; $("addAnother").hidden = true; show("s-done"); });
+  $("addAnother").addEventListener("click", function () { state.dogIndex += 1; resetForNextDog(); lsDel(DRAFT_KEY); openForm(); });
+  $("doneBtn").addEventListener("click", function () { if (window.GP_ON_DONE) window.GP_ON_DONE(); else show("s-count"); });
+  ["dogName","dogBirthday","dogWeight","ownerFirst"].forEach(function (id) { $(id).addEventListener("input", saveDraft); });
+  window.GoPoddyDog = { start: start, maybeInvite: maybeInvite };
+  start();
+});
+</script>
+</body>
+</html>
