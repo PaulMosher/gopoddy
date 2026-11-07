@@ -235,6 +235,33 @@ nav.tabs button svg .ac{stroke:var(--accent)}
   .sumsec{margin:10px 0}
   @page{margin:14mm}
 }
+/* tell us about your dog (dp- classes are new; buttons, chips, notes and errors reuse the app's own) */
+.dp-step{display:none}
+.dp-step.on{display:block}
+#s-dogs h2{margin:28px 0 4px}
+#s-dogs input[type=date]{width:100%;padding:14px;border:1.5px solid var(--line);border-radius:12px;
+  background:var(--surface);-webkit-appearance:none;appearance:none;min-height:50px}
+#s-dogs input[type=date]:focus{border-color:var(--primary);outline:none}
+.dp-q{display:block;font-weight:700;font-size:15px;margin:18px 0 6px}
+.dp-optl{font-weight:500;color:var(--muted)}
+.dp-row{display:flex;gap:10px;align-items:stretch}
+.dp-row input{flex:1;min-width:0}
+.dp-seg{display:flex;border:1.5px solid var(--primary);border-radius:12px;overflow:hidden;flex:none}
+.dp-seg button{padding:0 16px;font-weight:700;color:var(--primary);background:var(--surface)}
+.dp-seg button.on{background:var(--primary);color:var(--on-primary)}
+.dp-combo{position:relative}
+.dp-combo ul{list-style:none;margin:6px 0 0;padding:0;border:1.5px solid var(--line);border-radius:12px;
+  background:var(--surface);max-height:240px;overflow:auto;display:none}
+.dp-combo ul.open{display:block}
+.dp-combo li{padding:13px 14px;border-bottom:1px solid var(--line);font-weight:600;cursor:pointer}
+.dp-combo li:last-child{border-bottom:0}
+.dp-combo li.top{color:var(--primary);background:var(--soft)}
+.dp-combo li.none{color:var(--muted);font-weight:500;cursor:default}
+.dp-picked{display:inline-flex;align-items:center;gap:8px;margin-top:8px;background:var(--primary);
+  color:var(--on-primary);border-radius:999px;padding:8px 14px;font-weight:700}
+.dp-picked button{color:var(--on-primary);font-size:18px;line-height:1}
+.dp-rule{border-top:1.5px solid var(--line);margin-top:8px}
+.dp-small{font-size:13.5px;color:var(--muted)}
 h1{font-family:var(--title);font-synthesis:none}
 @media (prefers-reduced-motion:no-preference){
   .screen.on{animation:in .18s ease-out}
@@ -499,6 +526,109 @@ h1{font-family:var(--title);font-synthesis:none}
       <details class="imp-how"><summary>How we calculate this</summary>
         <div id="impHow"></div></details>
     </section>
+      <!-- TELL US ABOUT YOUR DOG -->
+    <section class="screen" id="s-dogs">
+
+      <div class="dp-step on" id="dpCount">
+        <h1>Quick question</h1>
+        <p class="sub">How many dogs do you have?</p>
+        <div class="chips" id="dpCountChips" role="group" aria-label="How many dogs do you have">
+          <button class="chip" type="button" data-v="1">One</button>
+          <button class="chip" type="button" data-v="2">Two</button>
+          <button class="chip" type="button" data-v="3+">Three or more</button>
+        </div>
+      </div>
+
+      <div class="dp-step" id="dpInvite">
+        <h1>You mind taking a minute?</h1>
+        <p class="sub">It takes about a minute to tell us about your dog. Every question is optional, and you can skip any of them.</p>
+        <p class="note" id="dpMulti" hidden>You have more than one dog, so we&rsquo;ll start with one. You can add the others any time.</p>
+        <div class="bigchoice">
+          <button class="fill" type="button" id="dpYes"><b>Sure</b><span>Show me the page</span></button>
+          <button type="button" id="dpNo"><b>Not now</b><span>We&rsquo;ll ask once more in a few days, then leave it to you</span></button>
+        </div>
+      </div>
+
+      <div class="dp-step" id="dpForm">
+        <h1 id="dpTitle">Tell us about your dog</h1>
+        <p class="sub">Everything here is optional. Skip anything you like, or save and finish later.</p>
+
+        <h2>About your dog</h2>
+        <label class="f" for="dpName">Name <span class="dp-optl">(optional)</span></label>
+        <input type="text" id="dpName" maxlength="40" autocomplete="off" autocapitalize="words">
+        <div class="err" id="dpErrName"></div>
+
+        <div class="dp-q">Breed <span class="dp-optl">(optional)</span></div>
+        <div class="dp-combo" id="dpBreed"></div>
+        <div id="dpMostlyWrap" hidden>
+          <div class="dp-q">Mostly what? <span class="dp-optl">(optional)</span></div>
+          <div class="dp-combo" id="dpMostly"></div>
+        </div>
+
+        <label class="f" for="dpBirthday">Birthday <span class="dp-optl">(optional)</span></label>
+        <input type="date" id="dpBirthday">
+        <p class="hint">Tell us the day and we can send something special around it.</p>
+        <div class="err" id="dpErrBirthday"></div>
+
+        <label class="f" for="dpWeight">Weight <span class="dp-optl">(optional)</span></label>
+        <div class="dp-row">
+          <input type="text" id="dpWeight" inputmode="decimal" autocomplete="off" aria-describedby="dpUnitLabel">
+          <div class="dp-seg" role="group" aria-label="Weight unit" id="dpUnit">
+            <button type="button" data-u="lb" class="on">lb</button>
+            <button type="button" data-u="kg">kg</button>
+          </div>
+        </div>
+        <p class="hint" id="dpUnitLabel">Pounds</p>
+        <div class="err" id="dpErrWeight"></div>
+
+        <div class="dp-rule"></div>
+        <h2>About your walks</h2>
+
+        <div class="dp-q">Where do you live? <span class="dp-optl">(pick the one that feels like home)</span></div>
+        <div class="chips" id="dpRegion" role="group" aria-label="Region"></div>
+
+        <div class="dp-q">Which of the following describes the setting for your dog walking? <span class="dp-optl">(choose all that apply)</span></div>
+        <div class="chips" id="dpSetting" role="group" aria-label="Walking setting"></div>
+
+        <div class="dp-q">How many walks a day?</div>
+        <div class="chips" id="dpPerDay" role="group" aria-label="Walks a day"></div>
+
+        <div class="dp-q">On leash or off leash?</div>
+        <div class="chips" id="dpLeash" role="group" aria-label="Leash"></div>
+
+        <div class="dp-q">Who do you usually walk with?</div>
+        <div class="chips" id="dpCompany" role="group" aria-label="Walking company"></div>
+
+        <div class="dp-q">How long is a usual walk?</div>
+        <div class="chips" id="dpLength" role="group" aria-label="Walk length"></div>
+
+        <div id="dpYou">
+          <div class="dp-rule" style="margin-top:24px"></div>
+          <h2>About you</h2>
+          <label class="f" for="dpOwner">First name <span class="dp-optl">(optional)</span></label>
+          <input type="text" id="dpOwner" maxlength="60" autocomplete="given-name" autocapitalize="words">
+          <div class="err" id="dpErrOwner"></div>
+        </div>
+
+        <p class="dp-small" style="margin-top:22px">We keep what you share here to tailor tips for you and your dog and to understand how the Poddy is used. We never ask for photos of waste.</p>
+        <div class="err" id="dpErrSave" role="alert"></div>
+        <button class="btn" type="button" id="dpSave">Save</button>
+        <button class="btn alt" type="button" id="dpLater">Save and finish later</button>
+        <button class="link" type="button" id="dpSkip">Skip for now</button>
+      </div>
+
+      <div class="dp-step" id="dpDone">
+        <div class="confirm">
+          <div class="tick" aria-hidden="true">&#10003;</div>
+          <h1 id="dpDoneTitle">Thank you</h1>
+          <p class="sub" id="dpDoneText">Your answers are saved.</p>
+        </div>
+        <button class="btn" type="button" id="dpAdd" hidden>Add another dog</button>
+        <button class="btn alt" type="button" id="dpDoneBtn">Done</button>
+      </div>
+
+    </section>
+
   </main>
 
   <nav class="tabs hide" id="tabs"></nav>
@@ -555,6 +685,8 @@ var FEATURES = [
     blurb:"Explore how your Poddy adds up for pups, people and the planet." },
   { id:"gut",      title:"Gut health", status:"preview",
     blurb:"Log how things looked with a few taps, and keep a one-page summary for your vet." },
+  { id:"dogs",     title:"Tell us about your dog", status:"preview",
+    blurb:"A one-minute page about your dog and your walks. Every question is optional." },
   { id:"places",   title:"Share a place", status:"soon",
     blurb:"Tell other Poddy users about a dog park or a store you love." },
   { id:"sewer",    title:"Verify your Sewer Service", status:"soon",
@@ -592,6 +724,7 @@ function go(name){
   if(name === "gut") renderGut();
   if(name === "gutlog") startGutLog();
   if(name === "gutDone") renderGutDone();
+  if(name === "dogs") GoPoddyDog.onShow();
   if(name === "gutsum") renderGutSum();
 }
 var tabScreens = { log:"log", checkin:"checkin", ciDone:"checkin", report:"report", rDone:"report", manual:"manual", mdetail:"manual", soon:"soon", impact:"soon", gut:"soon", gutlog:"soon", gutDone:"soon", gutsum:"soon" };
@@ -770,7 +903,7 @@ function quickCheckin(){
         used_poddy:true, cleanup_ease:"Easy",
         note:"Nothing to report", day:todayStr() }).then(function(r){
     btn.disabled = false; btn.firstChild.nodeValue = "Same as usual";
-    if(r.status === 200 && r.data.ok){ go("ciDone"); return; }
+    if(r.status === 200 && r.data.ok){ if(!GoPoddyDog.maybeInvite("ciDone")) go("ciDone"); return; }
     $("ciErr").textContent = ciErrText(r);
   });
 }
@@ -782,7 +915,7 @@ function sendCheckin(){
   api({ action:"checkin", email:state.email, name:state.name,
         used_poddy:used, cleanup_ease: used ? state.ease : null,
         note:$("ciFlag").value.trim(), day:todayStr() }).then(function(r){
-    if(r.status === 200 && r.data.ok){ go("ciDone"); return; }
+    if(r.status === 200 && r.data.ok){ if(!GoPoddyDog.maybeInvite("ciDone")) go("ciDone"); return; }
     renderCi();
     $("ciErr").textContent = ciErrText(r);
   });
@@ -1010,7 +1143,7 @@ function logUse(){
     if(r.status === 200 && r.data.ok){
       if(impLive) impLive.today = r.data.today; else impLive = { ok:true, all:{uses:0,daily:[]}, you:{uses:0,daily:[]}, today:r.data.today };
       logNote = "Logged. Thank you!";
-      refreshView(); loadImpactLive(); return;
+      refreshView(); loadImpactLive(); GoPoddyDog.maybeInvite("log"); return;
     }
     if(r.data && r.data.limit){
       if(impLive) impLive.today = LOG_CAP;
@@ -1474,6 +1607,303 @@ function refreshAgent(){
     }
   });
 }
+/* ---------- tell us about your dog ----------
+   Asked after a logged use or a check-in ("How many dogs?", then an invitation), and always
+   available from Coming soon. Everything is optional. Saved through the companion-api action
+   "save_dog_profile", for the same person the rest of the app uses (whoId). */
+var GoPoddyDog = (function(){
+  var COUNTS = ["1","2","3+"];
+  var REGIONS = ["Northeast","Southeast","Midwest","Southwest","Mountain West","California","Pacific Northwest",
+    "Alaska","Hawaii / Pacific Islands","East Coast","Appalachia","Texas / Gulf Coast","Great Plains","Outside the US"];
+  var SETTINGS = ["Urban","Suburban","Rural","Dog park","Trails / parks"];
+  var PER_DAY = ["1","2","3","4 or more"];
+  var LEASH = ["On leash","Off leash"];
+  var COMPANY = ["Just me and my dog","With family","With friends or neighbors","With a walking group"];
+  var LENGTH = ["Around the block","About 20 minutes","A real hike"];
+  var MIXED = "Mixed or not sure", NOTSURE = "Not sure";
+  var BREEDS = ["Affenpinscher","Afghan Hound","Airedale Terrier","Akita","Alaskan Malamute","American Bulldog",
+    "American Eskimo Dog","American Staffordshire Terrier","Australian Cattle Dog","Australian Shepherd","Basenji",
+    "Basset Hound","Beagle","Bearded Collie","Belgian Malinois","Bernese Mountain Dog","Bichon Frise","Bloodhound",
+    "Border Collie","Border Terrier","Borzoi","Boston Terrier","Boxer","Brittany","Brussels Griffon","Bulldog",
+    "Bullmastiff","Cairn Terrier","Cane Corso","Cavalier King Charles Spaniel","Chesapeake Bay Retriever",
+    "Chihuahua","Chinese Crested","Chow Chow","Cocker Spaniel","Collie","Dachshund","Dalmatian","Doberman Pinscher",
+    "English Setter","English Springer Spaniel","French Bulldog","German Shepherd","German Shorthaired Pointer",
+    "Giant Schnauzer","Golden Retriever","Goldendoodle","Great Dane","Great Pyrenees","Greyhound","Havanese",
+    "Irish Setter","Irish Wolfhound","Italian Greyhound","Jack Russell Terrier","Labradoodle","Labrador Retriever",
+    "Lhasa Apso","Maltese","Mastiff","Miniature Pinscher","Miniature Schnauzer","Newfoundland","Norwegian Elkhound",
+    "Papillon","Pekingese","Pembroke Welsh Corgi","Pit Bull Terrier","Pointer","Pomeranian","Poodle (Miniature)",
+    "Poodle (Standard)","Poodle (Toy)","Portuguese Water Dog","Pug","Rhodesian Ridgeback","Rottweiler",
+    "Saint Bernard","Samoyed","Shetland Sheepdog","Shiba Inu","Shih Tzu","Siberian Husky","Soft Coated Wheaten Terrier",
+    "Staffordshire Bull Terrier","Standard Schnauzer","Vizsla","Weimaraner","West Highland White Terrier",
+    "Whippet","Yorkshire Terrier"];
+
+  var DRAFT_KEY = "gopoddy_dog_draft", SAVED_KEY = "gopoddy_dog_saved", INVITE_KEY = "gopoddy_dog_invite", UNIT_KEY = "gopoddy_weight_unit";
+  var S = { count:"", dogIndex:1, breed:"", mostly:"", region:"", settings:[], perDay:"", leash:"", company:"", length:"", unit:"lb" };
+  var ret = null, manual = false, built = false, breedCombo, mostlyCombo;
+
+  function lsGet(k){ try{ return localStorage.getItem(k); }catch(x){ return null; } }
+  function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(x){} }
+  function lsDel(k){ try{ localStorage.removeItem(k); }catch(x){} }
+  function readJson(k, fallback){ try{ var v = JSON.parse(lsGet(k) || "null"); return v === null ? fallback : v; }catch(x){ return fallback; } }
+
+  function step(id){
+    var all = document.querySelectorAll("#s-dogs .dp-step");
+    for(var i = 0; i < all.length; i++) all[i].classList.toggle("on", all[i].id === id);
+    window.scrollTo(0, 0);
+  }
+
+  /* chips: one choice (tap again to clear) or several */
+  function buildChips(rootId, options, multi, get, set){
+    var root = $(rootId); root.innerHTML = "";
+    options.forEach(function(o){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = o; b.setAttribute("aria-pressed", "false");
+      b.onclick = function(){
+        var cur = get();
+        if(multi){ var i = cur.indexOf(o); if(i >= 0) cur.splice(i, 1); else cur.push(o); set(cur); }
+        else { set(cur === o ? "" : o); }
+        paintChips(rootId, multi, get); saveDraft();
+      };
+      root.appendChild(b);
+    });
+    paintChips(rootId, multi, get);
+  }
+  function paintChips(rootId, multi, get){
+    var cur = get(), kids = $(rootId).children;
+    for(var i = 0; i < kids.length; i++){
+      var on = multi ? cur.indexOf(kids[i].textContent) >= 0 : cur === kids[i].textContent;
+      kids[i].classList.toggle("on", on); kids[i].setAttribute("aria-pressed", on ? "true" : "false");
+    }
+  }
+
+  /* search-as-you-type list; topLabel is always the first choice */
+  function buildCombo(rootId, items, topLabel, getVal, setVal, onChange){
+    var root = $(rootId); root.innerHTML = "";
+    var input = document.createElement("input");
+    input.type = "text"; input.autocomplete = "off"; input.autocapitalize = "words";
+    input.setAttribute("role", "combobox"); input.setAttribute("aria-expanded", "false");
+    input.placeholder = "Start typing, like “lab”";
+    var list = document.createElement("ul"); list.setAttribute("role", "listbox");
+    var picked = document.createElement("div");
+    root.appendChild(input); root.appendChild(list); root.appendChild(picked);
+    function close(){ list.classList.remove("open"); input.setAttribute("aria-expanded", "false"); }
+    function paintPicked(){
+      picked.innerHTML = "";
+      var v = getVal();
+      if(!v){ input.style.display = ""; return; }
+      input.style.display = "none"; close();
+      var chip = document.createElement("span"); chip.className = "dp-picked"; chip.textContent = v + " ";
+      var x = document.createElement("button"); x.type = "button"; x.textContent = "×"; x.setAttribute("aria-label", "Clear " + v);
+      x.onclick = function(){ setVal(""); paintPicked(); if(onChange) onChange(); saveDraft(); input.focus(); };
+      chip.appendChild(x); picked.appendChild(chip);
+    }
+    function choose(v){ setVal(v); input.value = ""; paintPicked(); if(onChange) onChange(); saveDraft(); }
+    function render(){
+      var q = input.value.trim().toLowerCase(); list.innerHTML = "";
+      var top = document.createElement("li"); top.className = "top"; top.setAttribute("role", "option"); top.textContent = topLabel;
+      top.onclick = function(){ choose(topLabel); }; list.appendChild(top);
+      var hits = q ? items.filter(function(b){ return b.toLowerCase().indexOf(q) >= 0; }).slice(0, 30) : [];
+      hits.forEach(function(b){
+        var li = document.createElement("li"); li.setAttribute("role", "option"); li.textContent = b;
+        li.onclick = function(){ choose(b); }; list.appendChild(li);
+      });
+      if(q && !hits.length){
+        var none = document.createElement("li"); none.className = "none"; none.textContent = "No match. Try “" + topLabel + "” above."; list.appendChild(none);
+      }
+      list.classList.add("open"); input.setAttribute("aria-expanded", "true");
+    }
+    input.onfocus = render; input.oninput = render;
+    document.addEventListener("click", function(e){ if(!root.contains(e.target)) close(); });
+    paintPicked();
+    return { refresh:paintPicked };
+  }
+
+  /* answers kept on this phone: a draft while filling in, and the last saved copy of each dog */
+  function snapshot(){
+    return { name:$("dpName").value, birthday:$("dpBirthday").value, weight:$("dpWeight").value, owner:$("dpOwner").value,
+      state:{ count:S.count, dogIndex:S.dogIndex, breed:S.breed, mostly:S.mostly, region:S.region, settings:S.settings.slice(),
+        perDay:S.perDay, leash:S.leash, company:S.company, length:S.length } };
+  }
+  function saveDraft(){ lsSet(DRAFT_KEY, JSON.stringify(snapshot())); }
+  function applySnapshot(d){
+    var s = d.state || {};
+    ["count","dogIndex","breed","mostly","region","perDay","leash","company","length"].forEach(function(k){ if(s[k] !== undefined) S[k] = s[k]; });
+    S.settings = Array.isArray(s.settings) ? s.settings.slice() : [];
+    $("dpName").value = d.name || ""; $("dpBirthday").value = d.birthday || "";
+    $("dpWeight").value = d.weight || ""; $("dpOwner").value = d.owner || "";
+  }
+  function clearFields(){
+    S.breed = ""; S.mostly = ""; S.settings = []; S.region = ""; S.perDay = ""; S.leash = ""; S.company = ""; S.length = "";
+    ["dpName","dpBirthday","dpWeight","dpOwner"].forEach(function(id){ $(id).value = ""; });
+  }
+  /* fill the form for dog n: the draft if it is for this dog, else what was saved before, else empty */
+  function loadDog(n){
+    var count = S.count, draft = readJson(DRAFT_KEY, null), saved = readJson(SAVED_KEY, {});
+    clearFields(); S.dogIndex = n;
+    if(draft && draft.state && draft.state.dogIndex === n) applySnapshot(draft);
+    else if(saved[n]) applySnapshot(saved[n]);
+    S.dogIndex = n; if(count) S.count = count;
+    if(n === 1 && !$("dpName").value && typeof gutDogName === "function") $("dpName").value = gutDogName();
+  }
+
+  function mixedCheck(){
+    $("dpMostlyWrap").hidden = S.breed !== MIXED;
+    if(S.breed !== MIXED) S.mostly = "";
+    mostlyCombo.refresh();
+  }
+  function build(){
+    breedCombo = buildCombo("dpBreed", BREEDS, MIXED, function(){ return S.breed; }, function(v){ S.breed = v; }, mixedCheck);
+    mostlyCombo = buildCombo("dpMostly", BREEDS, NOTSURE, function(){ return S.mostly; }, function(v){ S.mostly = v; });
+    buildChips("dpRegion", REGIONS, false, function(){ return S.region; }, function(v){ S.region = v; });
+    buildChips("dpSetting", SETTINGS, true, function(){ return S.settings; }, function(v){ S.settings = v; });
+    buildChips("dpPerDay", PER_DAY, false, function(){ return S.perDay; }, function(v){ S.perDay = v; });
+    buildChips("dpLeash", LEASH, false, function(){ return S.leash; }, function(v){ S.leash = v; });
+    buildChips("dpCompany", COMPANY, false, function(){ return S.company; }, function(v){ S.company = v; });
+    buildChips("dpLength", LENGTH, false, function(){ return S.length; }, function(v){ S.length = v; });
+    $("dpBirthday").max = todayStr();
+    mixedCheck(); built = true;
+  }
+  function repaint(){
+    paintChips("dpRegion", false, function(){ return S.region; });
+    paintChips("dpSetting", true, function(){ return S.settings; });
+    paintChips("dpPerDay", false, function(){ return S.perDay; });
+    paintChips("dpLeash", false, function(){ return S.leash; });
+    paintChips("dpCompany", false, function(){ return S.company; });
+    paintChips("dpLength", false, function(){ return S.length; });
+    breedCombo.refresh(); mixedCheck();
+  }
+
+  /* weight: typed number, pounds by default, remembered; sent in pounds */
+  function setUnit(u){
+    S.unit = u; lsSet(UNIT_KEY, u);
+    var kids = $("dpUnit").children;
+    for(var i = 0; i < kids.length; i++) kids[i].classList.toggle("on", kids[i].getAttribute("data-u") === u);
+    $("dpUnitLabel").textContent = u === "lb" ? "Pounds" : "Kilograms";
+    $("dpWeight").placeholder = u === "lb" ? "e.g. 45" : "e.g. 20";
+  }
+  function weightInPounds(){
+    var raw = $("dpWeight").value.trim().replace(",", "."); if(!raw) return { ok:true, lb:null };
+    if(!/^\d{1,3}(\.\d{1,2})?$/.test(raw)) return { ok:false };
+    var n = parseFloat(raw), lb = Math.round((S.unit === "kg" ? n * 2.20462 : n) * 10) / 10;
+    if(lb < 0.5 || lb > 300) return { ok:false };
+    return { ok:true, lb:lb };
+  }
+  function cleanText(v, max){
+    v = (v || "").replace(/\s+/g, " ").trim(); if(!v) return "";
+    if(/[<>]/.test(v) || /https?:|@/i.test(v)) return null;
+    return v.slice(0, max);
+  }
+  function collect(){
+    var ok = true;
+    ["dpErrName","dpErrBirthday","dpErrWeight","dpErrOwner","dpErrSave"].forEach(function(id){ $(id).textContent = ""; });
+    var name = cleanText($("dpName").value, 40);
+    if(name === null){ $("dpErrName").textContent = "Just a name, without links or symbols."; ok = false; }
+    var bday = $("dpBirthday").value;
+    if(bday && (bday > todayStr() || bday < "1990-01-01")){ $("dpErrBirthday").textContent = "That date doesn’t look right."; ok = false; }
+    var w = weightInPounds();
+    if(!w.ok){ $("dpErrWeight").textContent = "Enter a number, like 45."; ok = false; }
+    var owner = "";
+    if(!$("dpYou").hidden){
+      owner = cleanText($("dpOwner").value, 60);
+      if(owner === null){ $("dpErrOwner").textContent = "Just a first name, without links or symbols."; ok = false; }
+    }
+    if(!ok) return null;
+    return { dog_index:S.dogIndex, dog_count:S.count || null, name:name || null, breed:S.breed || null,
+      mostly_breed:S.breed === MIXED ? (S.mostly || null) : null, birthday:bday || null, weight_lb:w.lb,
+      region:S.region || null, settings:S.settings.slice(), walks_per_day:S.perDay || null, leash:S.leash || null,
+      company:S.company || null, walk_length:S.length || null, owner_first_name:owner || null };
+  }
+
+  function inviteStatus(){
+    var v = readJson(INVITE_KEY, null);
+    if(!v) return { ask:true };
+    if(v.done) return { ask:false };
+    if(v.declines >= 2) return { ask:false };
+    if(v.declines === 1 && Date.now() - v.at >= 3 * 86400000) return { ask:true };
+    return { ask:false };
+  }
+  function markDecline(){
+    var v = readJson(INVITE_KEY, {});
+    if(v.done) return;
+    lsSet(INVITE_KEY, JSON.stringify({ declines:(v.declines || 0) + 1, at:Date.now() }));
+  }
+  function endScreen(title, text, more){
+    $("dpDoneTitle").textContent = title; $("dpDoneText").textContent = text; $("dpAdd").hidden = !more; step("dpDone");
+  }
+  function hasMore(){ return (S.count === "2" && S.dogIndex < 2) || (S.count === "3+" && S.dogIndex < 3); }
+
+  function openForm(){
+    $("dpTitle").textContent = S.dogIndex > 1 ? "Tell us about dog #" + S.dogIndex : "Tell us about your dog";
+    $("dpYou").hidden = isAgent() || S.dogIndex > 1;
+    repaint(); step("dpForm");
+  }
+
+  function save(){
+    var data = collect(); if(!data) return;
+    var btn = $("dpSave"); btn.disabled = true;
+    api({ action:"save_dog_profile", who:whoId(), day:todayStr(), profile:data }).then(function(r){
+      btn.disabled = false;
+      if(r.status === 200 && r.data && r.data.ok){
+        var saved = readJson(SAVED_KEY, {}); saved[S.dogIndex] = snapshot(); lsSet(SAVED_KEY, JSON.stringify(saved));
+        lsDel(DRAFT_KEY); lsSet(INVITE_KEY, JSON.stringify({ done:true }));
+        var more = hasMore();
+        endScreen("Thank you", more ? "Saved. Want to tell us about your next dog now, or later?" : "Your answers are saved.", more);
+      } else {
+        saveDraft();
+        $("dpErrSave").textContent = (r.data && r.data.error) ||
+          (r.status === 0 ? "No connection right now. Your answers are kept on this phone. Please try again."
+                          : "We couldn’t save that just now. Your answers are kept on this phone. Please try again.");
+      }
+    });
+  }
+
+  function exit(){
+    var r = ret || "soon"; ret = null; manual = false;
+    go(r);
+    if(r === "log"){ logNote = "Logged. Thank you!"; renderLog(); }
+  }
+
+  /* called by go("dogs"): choose the first thing to show */
+  function onShow(){
+    if(!built) build();
+    if(!ret){ ret = "soon"; manual = true; }
+    var draft = readJson(DRAFT_KEY, null), saved = readJson(SAVED_KEY, {});
+    S.count = (draft && draft.state && draft.state.count) || (saved[1] && saved[1].state && saved[1].state.count) || "";
+    $("dpMulti").hidden = !S.count || S.count === "1";
+    if(draft && draft.state && draft.state.count){ loadDog(draft.state.dogIndex || 1); openForm(); return; }
+    if(manual && saved[1]){ loadDog(1); openForm(); return; }
+    S.dogIndex = 1; step("dpCount");
+  }
+  function begin(returnTo){ ret = returnTo; manual = false; go("dogs"); }
+  /* called after a logged use or check-in; true means the question took over the screen */
+  function maybeInvite(returnTo){
+    if(!inviteStatus().ask) return false;
+    begin(returnTo); return true;
+  }
+
+  function wire(){
+    var uk = lsGet(UNIT_KEY); setUnit(uk === "kg" ? "kg" : "lb");
+    var u = $("dpUnit").children;
+    for(var i = 0; i < u.length; i++) u[i].onclick = function(){ setUnit(this.getAttribute("data-u")); };
+    var c = $("dpCountChips").children;
+    for(var j = 0; j < c.length; j++) c[j].onclick = function(){
+      S.count = this.getAttribute("data-v"); S.dogIndex = 1;
+      $("dpMulti").hidden = S.count === "1";
+      if(manual){ loadDog(1); openForm(); } else { step("dpInvite"); }
+    };
+    $("dpYes").onclick = function(){ loadDog(1); openForm(); };
+    $("dpNo").onclick = function(){ markDecline(); endScreen("No problem", "You can come back to this any time. You’ll find it under Coming soon.", false); };
+    $("dpSave").onclick = save;
+    $("dpLater").onclick = function(){ saveDraft(); markDecline(); endScreen("Saved for later", "Your answers are kept on this phone. You’ll find this page under Coming soon whenever you’re ready.", false); };
+    $("dpSkip").onclick = function(){ markDecline(); endScreen("No problem", "You can come back to this any time. You’ll find it under Coming soon.", false); };
+    $("dpAdd").onclick = function(){ lsDel(DRAFT_KEY); loadDog(S.dogIndex + 1); openForm(); };
+    $("dpDoneBtn").onclick = exit;
+    ["dpName","dpBirthday","dpWeight","dpOwner"].forEach(function(id){ $(id).addEventListener("input", saveDraft); });
+  }
+  wire();
+  return { onShow:onShow, maybeInvite:maybeInvite };
+})();
+
 var saved = loadAgent();
 if(saved){
   state.role = "agent"; state.name = saved.name || ""; state.email = saved.email;
