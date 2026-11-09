@@ -127,6 +127,7 @@ textarea{min-height:110px;resize:vertical}
   display:flex;align-items:center;justify-content:center}
 .video small{opacity:.85}
 .mnote{font-size:13px;line-height:1.4;color:var(--muted);margin:-4px 0 4px;text-align:center}
+.btn[hidden]{display:none}
 .mvideos{margin:12px 0 6px}
 .mvideo{margin:0 auto 18px;max-width:320px}
 .mvideo video{display:block;width:100%;height:auto;max-height:72vh;object-fit:contain;
@@ -567,6 +568,8 @@ h1{font-family:var(--title);font-synthesis:none}
           <button class="chip" type="button" data-v="1">One</button>
           <button class="chip" type="button" data-v="2">Two</button>
           <button class="chip" type="button" data-v="3+">Three or more</button>
+          <button class="chip" type="button" data-v="none">None</button>
+          <button class="chip" type="button" data-v="soon">Not yet, but thinking about it</button>
         </div>
       </div>
 
@@ -2168,7 +2171,16 @@ var GoPoddyDog = (function(){
     for(var i = 0; i < u.length; i++) u[i].onclick = function(){ setUnit(this.getAttribute("data-u")); };
     var c = $("dpCountChips").children;
     for(var j = 0; j < c.length; j++) c[j].onclick = function(){
-      S.count = this.getAttribute("data-v"); S.dogIndex = 1;
+      var pick = this.getAttribute("data-v");
+      if(pick === "none" || pick === "soon"){
+        /* no dog (yet): nothing is saved or sent, and we stop asking after logged uses */
+        lsSet(INVITE_KEY, JSON.stringify({ done:true, answer:pick }));
+        endScreen("No problem", pick === "none"
+          ? "You can still use everything else in the app. If that changes, you\u2019ll find this page under Coming soon."
+          : "Sounds good. When you\u2019re ready, you\u2019ll find this page under Coming soon.", false);
+        return;
+      }
+      S.count = pick; S.dogIndex = 1;
       $("dpMulti").hidden = S.count === "1";
       if(manual || direct){ loadDog(1); openForm(); } else { step("dpInvite"); }
     };
