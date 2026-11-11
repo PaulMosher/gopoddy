@@ -468,7 +468,6 @@ h1{font-family:var(--title);font-synthesis:none}
 
     <!-- GUT HEALTH: STOOL LOG (saved on this phone only) -->
     <section class="screen" id="s-gut">
-      <button class="back" data-go="soon">‹ Coming soon</button>
       <h1>Gut health</h1>
       <p class="sub">A few taps after a walk. When your vet asks how things have been, you’ll have the answer.</p>
       <label class="f" for="g1DogSel" style="margin-top:6px">Dog</label>
@@ -551,7 +550,6 @@ h1{font-family:var(--title);font-synthesis:none}
 
     <!-- SEE YOUR IMPACT -->
     <section class="screen" id="s-impact">
-      <button class="back" data-go="soon">‹ Coming soon</button>
       <h1>See Your Impact</h1>
       <p class="sub">Every Poddy use adds up for pups, people and the planet.</p>
       <div class="note" id="impNote"></div>
@@ -797,7 +795,7 @@ function go(name){
   if(name === "dogs") GoPoddyDog.onShow();
   if(name === "gutsum"){ resetTyping(); renderGutSum(); }
 }
-var tabScreens = { log:"log", checkin:"checkin", ciDone:"checkin", report:"report", rDone:"report", manual:"manual", mdetail:"manual", soon:"soon", impact:"soon", gut:"soon", gutlog:"soon", gutDone:"soon", gutsum:"soon", menu:"menu" };
+var tabScreens = { log:"log", checkin:"checkin", ciDone:"checkin", report:"report", rDone:"report", manual:"manual", mdetail:"manual", soon:"soon", impact:"menu", gut:"menu", gutlog:"menu", gutDone:"menu", gutsum:"menu", menu:"menu" };
 function renderTabs(){
   var nav = $("tabs");
   var inApp = state.role && tabScreens[current];
@@ -1057,7 +1055,7 @@ var MENU = [
   { go:"impact", title:"See Your Impact",        blurb:"Explore how your Poddy adds up for pups, people and the planet." },
   { go:"gut",    title:"Gut Health",             blurb:"Log how things looked with a few taps, and keep a one-page summary for your vet." },
   { go:"dogs",   title:"Tell Us About Your Dog", blurb:"A one-minute page about your dog and your walks. Every question is optional." },
-  { go:"report", title:"Report a Problem",       blurb:"Tell us which piece broke and what happened." }
+  { go:"report", title:"Report a Problem",       blurb:"Tell us what happened." }
 ];
 function renderMenu(){
   var box = $("menulist"); box.innerHTML = "";
@@ -1073,7 +1071,7 @@ function renderMenu(){
 function renderSoon(){
   var box = $("soonlist"); box.innerHTML = "";
   FEATURES.forEach(function(f){
-    if(f.status !== "soon" && f.status !== "preview") return;
+    if(f.status !== "soon") return;
     var d = document.createElement("div"); d.className = "scard";
     if(f.status === "preview"){
       d.className = "scard tap"; d.setAttribute("role","button"); d.tabIndex = 0;
@@ -2170,7 +2168,7 @@ var GoPoddyDog = (function(){
   }
 
   function exit(){
-    var r = ret || "soon", wasAfterLog = afterLog;
+    var r = ret || "menu", wasAfterLog = afterLog;
     ret = null; manual = false; direct = false; afterLog = false;
     go(r);
     if(r === "log" && wasAfterLog){ logNote = "Logged. Thank you!"; renderLog(); }
@@ -2179,7 +2177,7 @@ var GoPoddyDog = (function(){
   /* called by go("dogs"): choose the first thing to show */
   function onShow(){
     if(!built) build();
-    if(!ret){ ret = "soon"; manual = true; direct = false; afterLog = false; }
+    if(!ret){ ret = "menu"; manual = true; direct = false; afterLog = false; }
     var draft = readJson(DRAFT_KEY, null), saved = readJson(SAVED_KEY, {});
     var have0 = savedIdx(), first0 = have0.length ? saved[have0[0]] : null;
     S.count = (draft && draft.state && draft.state.count) || (first0 && first0.state && first0.state.count) || "";
@@ -2213,8 +2211,8 @@ var GoPoddyDog = (function(){
         /* no dog (yet): nothing is saved or sent, and we stop asking after logged uses */
         lsSet(INVITE_KEY, JSON.stringify({ done:true, answer:pick }));
         endScreen("No problem", pick === "none"
-          ? "You can still use everything else in the app. If that changes, you\u2019ll find this page under Coming soon."
-          : "Sounds good. When you\u2019re ready, you\u2019ll find this page under Coming soon.", false);
+          ? "You can still use everything else in the app. If that changes, you\u2019ll find this page on the menu."
+          : "Sounds good. When you\u2019re ready, you\u2019ll find this page on the menu.", false);
         return;
       }
       S.count = pick; S.dogIndex = 1;
@@ -2222,10 +2220,10 @@ var GoPoddyDog = (function(){
       if(manual || direct){ loadDog(1); openForm(); } else { step("dpInvite"); }
     };
     $("dpYes").onclick = function(){ loadDog(1); openForm(); };
-    $("dpNo").onclick = function(){ markDecline(); endScreen("No problem", "You can come back to this any time. You’ll find it under Coming soon.", false); };
+    $("dpNo").onclick = function(){ markDecline(); endScreen("No problem", "You can come back to this any time. You’ll find it on the menu.", false); };
     $("dpSave").onclick = save;
-    $("dpLater").onclick = function(){ saveDraft(); markDecline(); endScreen("Saved for later", "Your answers are kept on this phone. You’ll find this page under Coming soon whenever you’re ready.", false); };
-    $("dpSkip").onclick = function(){ markDecline(); endScreen("No problem", "You can come back to this any time. You’ll find it under Coming soon.", false); };
+    $("dpLater").onclick = function(){ saveDraft(); markDecline(); endScreen("Saved for later", "Your answers are kept on this phone. You’ll find this page on the menu whenever you’re ready.", false); };
+    $("dpSkip").onclick = function(){ markDecline(); endScreen("No problem", "You can come back to this any time. You’ll find it on the menu.", false); };
     $("dpAdd").onclick = function(){
       var n = nextFree(); if(n === null) return;
       lsDel(DRAFT_KEY); var keepC = S.count; loadDog(n); if(keepC) S.count = keepC; bumpCount(); openForm();
