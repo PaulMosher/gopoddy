@@ -815,7 +815,8 @@ var FEATURES = [
   { id:"tricks",   title:"Tricks and Treats", status:"soon",
     blurb:"Fun ideas to get more out of your walk, from toys to found objects to picking up litter along the way." },
   { id:"games",    title:"Go Puppy Game", status:"soon",
-    blurb:"A fun introduction to becoming Your Dog's Hero." }
+    blurb:"A fun introduction to becoming Your Dog's Hero." },
+  { id:"becomeagent", title:"Want to Become a Field Agent?", status:"soon" }
 ];
 
 var ICONS = {
@@ -1136,6 +1137,12 @@ function renderMenu(){
     b.onclick = function(){ if(m.go === "dogs") GoPoddyDog.beginManual("menu"); else go(m.go); };
     box.appendChild(b);
   });
+  if(state.role !== "agent"){
+    var si = document.createElement("button"); si.className = "mrow";
+    si.innerHTML = '<div><b>Field Agent Sign-in</b><span>Already a Field Agent? Sign in here.</span></div><div class="go">\u203a</div>';
+    si.onclick = function(){ go("entry"); };
+    box.appendChild(si);
+  }
   sizeMenu(); requestAnimationFrame(sizeMenu); setTimeout(sizeMenu, 250);
   box.scrollTop = 0;
 }
@@ -1150,7 +1157,7 @@ function renderSoon(){
       d.onclick = function(){ go(f.id); };
       d.onkeydown = function(e){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); go(f.id); } };
     } else {
-      d.innerHTML = '<b>'+f.title+'</b><span>'+f.blurb+'</span><span class="tag">Coming soon</span>';
+      d.innerHTML = '<b>'+f.title+'</b>'+(f.blurb ? '<span>'+f.blurb+'</span>' : '')+'<span class="tag">Coming soon</span>';
     }
     box.appendChild(d);
   });
