@@ -53,7 +53,14 @@ button{cursor:pointer;border:0;background:none}
   padding:6px 11px;border:1.5px solid var(--line);border-radius:999px;background:var(--surface)}
 .home svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 /* Poddy as a faded backdrop behind the menu rows */
-#s-menu{position:relative;min-height:calc(100vh - 150px)}
+#s-menu{position:relative;display:flex;flex-direction:column;height:calc(100vh - 330px);margin-bottom:-112px}
+#s-menu > h1{flex:0 0 auto}
+/* the rows scroll inside an invisible window; heading, backdrop and footer stay put */
+#s-menu > .mlist{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  align-content:start;margin:0 -18px;padding:14px 18px 26px;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 26px), transparent 100%);
+  mask-image:linear-gradient(to bottom, transparent 0, #000 14px, #000 calc(100% - 26px), transparent 100%)}
+#s-menu > .mlist::-webkit-scrollbar{display:none}
 #s-menu > h1,#s-menu > .mlist{position:relative;z-index:1}
 #s-menu .mrow{border:0;border-radius:24px;
   background:linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,.34));
@@ -1109,6 +1116,15 @@ var MENU = [
   { go:"dogs",   title:"Tell Us About Your Dog", blurb:"A one-minute page about your dog and your walks. Every question is optional." },
   { go:"report", title:"Report a Problem",       blurb:"Tell us what happened." }
 ];
+function sizeMenu(){
+  var s = $("s-menu"); if(!s || !s.classList.contains("on")) return;
+  var nav = $("tabs"), navH = (nav && !nav.classList.contains("hide")) ? nav.offsetHeight : 0;
+  var top = s.getBoundingClientRect().top + (window.pageYOffset || 0);
+  var h = window.innerHeight - top - navH - 8;
+  s.style.height = Math.max(240, h) + "px";
+}
+window.addEventListener("resize", function(){ sizeMenu(); });
+window.addEventListener("orientationchange", function(){ setTimeout(sizeMenu, 200); });
 function renderMenu(){
   var box = $("menulist"); box.innerHTML = "";
   MENU.map(function(m){
@@ -1119,6 +1135,8 @@ function renderMenu(){
     b.onclick = function(){ if(m.go === "dogs") GoPoddyDog.beginManual("menu"); else go(m.go); };
     box.appendChild(b);
   });
+  sizeMenu(); requestAnimationFrame(sizeMenu); setTimeout(sizeMenu, 250);
+  box.scrollTop = 0;
 }
 function renderSoon(){
   var box = $("soonlist"); box.innerHTML = "";
