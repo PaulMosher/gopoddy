@@ -351,6 +351,29 @@ nav.tabs button{background:var(--glass);border-radius:20px;box-shadow:var(--lift
 nav.tabs button:active{transform:translateY(2px);box-shadow:var(--press)}
 nav.tabs button.on{background:var(--glass-soft);box-shadow:var(--press)}
 nav.tabs button.on::before{top:5px;left:34%;right:34%;border-radius:3px}
+/* ===== tricks and treats (tt- classes; buttons, rows, notes and the video box reuse the app's own) ===== */
+.tt-today{display:block;width:100%;text-align:left;border-radius:24px;padding:16px 18px;margin-top:14px;
+  background:var(--glass-green);color:var(--on-primary);box-shadow:var(--lift-green)}
+.tt-today:active{transform:translateY(1px);box-shadow:inset 0 2px 5px rgba(0,0,0,.28), 0 2px 5px rgba(31,42,20,.2)}
+.tt-today .k{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--soft)}
+.tt-today b{display:block;font:700 24px/1.2 var(--head);margin:2px 0}
+.tt-today .t{display:block;font-size:15px;color:var(--soft)}
+.tt-today .q{display:block;font:700 19px/1.3 var(--head);margin:4px 0 2px}
+.tt-today .gt{display:block;margin-top:10px;font-weight:700;font-size:15px}
+.tt-ways{margin-top:12px}
+.tt-ways[hidden]{display:none}
+.tt-tags{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 14px}
+.tt-tags span{background:var(--blush);color:#4a2f23;border-radius:22px;padding:3px 12px;font-size:13px;font-weight:700}
+.mrow .tt-meta{display:block;font-size:13px;color:var(--primary);font-weight:600;margin-top:4px}
+.tt-steps{display:grid;gap:10px;margin:0 0 16px}
+.tt-step{display:flex;gap:12px;align-items:flex-start}
+.tt-step i{flex:none;width:30px;height:30px;border-radius:50%;background:var(--primary);color:var(--on-primary);
+  font-style:normal;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center}
+.tt-step span{font-size:16px;padding-top:2px}
+.tt-draft{text-align:center;font-size:13px;color:var(--muted);margin:12px 0 0}
+#ttReroll[hidden]{display:none}
+#s-tdone .tt-tags{justify-content:center}
+#s-tdone .note{text-align:left}
 </style>
 </head>
 <body>
@@ -749,6 +772,68 @@ nav.tabs button.on::before{top:5px;left:34%;right:34%;border-radius:3px}
 
     </section>
 
+    <!-- TRICKS AND TREATS (saved and done are kept on this phone only) -->
+    <section class="screen" id="s-tricks">
+      <div class="mkick">Field Manual extras</div>
+      <h1 style="margin-top:2px">Tricks and Treats</h1>
+      <p class="sub">Small ideas that turn a walk into time with your dog, your neighborhood and yourself.</p>
+      <button class="tt-today" type="button" id="ttToday"></button>
+      <div class="bigchoice tt-ways" id="ttWays" hidden>
+        <button type="button" id="ttChoose"><b>Choose a kind of walk</b><span>Pick a type of walk, then an activity</span></button>
+        <button type="button" class="fill" id="ttAssign"><b>Get an assigned mission</b><span>We pull one at random for today</span></button>
+      </div>
+      <button class="btn alt" type="button" id="ttChooseAlt" hidden>Choose a kind of walk instead</button>
+      <h2 style="margin-top:26px">Saved for later</h2>
+      <div class="mlist" id="ttSaved"></div>
+    </section>
+
+    <section class="screen" id="s-tkinds">
+      <button class="back" data-go="tricks">‹ Tricks and Treats</button>
+      <h2 style="margin-top:14px">Pick a kind of walk</h2>
+      <div class="mlist" id="ttKinds"></div>
+    </section>
+
+    <section class="screen" id="s-tlist">
+      <button class="back" data-go="tkinds">‹ Kinds of walk</button>
+      <div class="mkick" style="margin-top:14px">Kind of walk</div>
+      <h2 id="ttCatT" style="margin-top:2px"></h2>
+      <p class="sub" id="ttCatI"></p>
+      <div class="mlist" id="ttMissions"></div>
+    </section>
+
+    <section class="screen" id="s-tdetail">
+      <button class="back" id="ttBack"></button>
+      <div class="mkick" id="ttKick" style="margin-top:14px"></div>
+      <h2 id="ttTitle" style="margin-top:2px"></h2>
+      <p id="ttBlurb" style="font-size:16px"></p>
+      <div class="tt-tags" id="ttTags"></div>
+      <div class="video" aria-hidden="true">
+        <div class="play"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M5 3l10 6-10 6z" fill="#fff"/></svg></div>
+        <small>Short clip goes here (to be filmed)</small>
+      </div>
+      <p class="mnote">Same style as the Poddy how-to clips.</p>
+      <div class="note" style="font-size:15px"><b>What to bring:</b> <span id="ttBring"></span></div>
+      <h2 style="font-size:20px;margin-top:18px">How it goes</h2>
+      <div class="tt-steps" id="ttSteps"></div>
+      <div class="maside"><div class="k">Keep it safe</div><p id="ttSafe" style="margin-top:4px"></p></div>
+      <button class="btn" type="button" id="ttDid">We did it</button>
+      <button class="btn alt" type="button" id="ttSave"></button>
+      <button class="link" type="button" id="ttReroll" hidden>Assign a different mission</button>
+      <p class="tt-draft">Draft copy. Pending vet and trainer review.</p>
+    </section>
+
+    <section class="screen" id="s-tdone">
+      <div class="confirm" style="padding-top:20px">
+        <div class="tick" aria-hidden="true">&#10003;</div>
+        <h1 style="margin-top:0">Nice walk.</h1>
+        <p class="sub" id="ttDoneS"></p>
+        <div class="tt-tags" id="ttDoneTags"></div>
+      </div>
+      <div class="note" style="font-size:15px"><b>One thing to notice:</b> <span id="ttReflect"></span></div>
+      <button class="btn" type="button" id="ttNext"></button>
+      <button class="btn alt" type="button" data-go="tricks">Back to Tricks and Treats</button>
+    </section>
+
   </main>
 
   <nav class="tabs hide" id="tabs"></nav>
@@ -812,8 +897,6 @@ var FEATURES = [
     blurb:"Enter your wastewater treatment plant and confirm it accepts dog waste." },
   { id:"tips",     title:"Walking Tips", status:"soon",
     blurb:"Meeting other dogs and people, leash basics, and staying safe on the road." },
-  { id:"tricks",   title:"Tricks and Treats", status:"soon",
-    blurb:"Fun ideas to get more out of your walk, from toys to found objects to picking up litter along the way." },
   { id:"games",    title:"Go Puppy Game", status:"soon",
     blurb:"A fun introduction to becoming Your Dog's Hero." },
   { id:"becomeagent", title:"Want to Become a Field Agent?", status:"soon" }
@@ -856,8 +939,9 @@ function go(name){
   if(name === "gutDone") renderGutDone();
   if(name === "dogs") GoPoddyDog.onShow();
   if(name === "gutsum"){ resetTyping(); renderGutSum(); }
+  if(/^t(ricks|kinds|list|detail|done)$/.test(name)) GoPoddyTricks.onShow(name);
 }
-var tabScreens = { log:"log", checkin:"checkin", ciDone:"checkin", report:"report", rDone:"report", manual:"manual", mdetail:"manual", soon:"soon", impact:"menu", gut:"menu", gutlog:"menu", gutDone:"menu", gutsum:"menu", menu:"menu" };
+var tabScreens = { log:"log", checkin:"checkin", ciDone:"checkin", report:"report", rDone:"report", manual:"manual", mdetail:"manual", soon:"soon", impact:"menu", gut:"menu", gutlog:"menu", gutDone:"menu", gutsum:"menu", menu:"menu", tricks:"menu", tkinds:"menu", tlist:"menu", tdetail:"menu", tdone:"menu" };
 function renderTabs(){
   var nav = $("tabs");
   var inApp = state.role && tabScreens[current];
@@ -1115,6 +1199,7 @@ var MENU = [
   { go:"log",    title:"Log a Use",              blurb:"Used your Poddy? Tap once." },
   { go:"impact", title:"See Your Impact",        blurb:"Explore how your Poddy adds up for pups, people and the planet." },
   { go:"gut",    title:"Gut Health",             blurb:"Log how things looked with a few taps, and keep a one-page summary for your vet." },
+  { go:"tricks", title:"Tricks and Treats",      blurb:"Small ideas that turn a walk into time with your dog, your neighborhood and yourself." },
   { go:"dogs",   title:"Tell Us About Your Dog", blurb:"A one-minute page about your dog and your walks. Every question is optional." },
   { go:"report", title:"Report a Problem",       blurb:"Tell us what happened." }
 ];
@@ -2317,6 +2402,148 @@ var GoPoddyDog = (function(){
   wire();
   function beginManual(returnTo){ ret = returnTo; manual = true; direct = false; afterLog = false; go("dogs"); }
   return { onShow:onShow, maybeInvite:maybeInvite, isFirstTime:isFirstTime, beginFirst:beginFirst, beginManual:beginManual };
+})();
+
+/* ---------- tricks and treats ----------
+   Missions grouped by kind of walk. Saved-for-later, done marks and today's assigned
+   mission are kept on this phone only (localStorage), nothing is sent to the server.
+   Each mission has a "clip" slot for its video file in the companion folder (none filmed yet). */
+var GoPoddyTricks = (function(){
+  var KEY = "gopoddy_tricks";
+  function st(a, b, c){ return [a, b, c]; }
+  var CATS = [
+    { id:"scent", title:"Scent games", blurb:"Let the nose lead for a while.", intro:"Sniffing is how dogs read the neighborhood. These missions give them time to do it.", missions:[
+      { id:"sniffari", title:"Sniffari", blurb:"Your dog picks the path and the pace.", time:"10 min", tags:["Dog","Nature"], bring:"A comfortable leash. Treats are optional.", steps:st("Pick a safe, quiet stretch and loosen the leash.", "Follow your dog. Stop when they stop, go when they go.", "Name one thing they seemed to find interesting."), safety:"Watch for trash, other dogs and anything your dog should not eat. Steer away from plants you cannot identify.", reflect:"Where did your dog spend the longest?", clip:null },
+      { id:"findit", title:"Find It", blurb:"Toss a treat into the grass and say “find it.”", time:"5 min", tags:["Dog","Nature"], bring:"A few small treats.", steps:st("Show your dog a treat, then drop it in short grass.", "Say “find it” as they start to search.", "Make it a little harder: drop it farther away or in longer grass."), safety:"Pick grass you know is clean. Skip treated lawns and anywhere you cannot see the ground.", reflect:"How long did the searching last?", clip:null },
+      { id:"backsearch", title:"Back-Search", blurb:"Hide a treat on the trail, then walk back to it.", time:"10 min", tags:["Dog","Self"], bring:"Treats and a clear path to retrace.", steps:st("Quietly place a treat beside the trail while your dog is looking away.", "Walk on for a minute, then turn around.", "Let your dog lead you back to it."), safety:"Keep the leash on in open areas and pick up any treat your dog skips.", reflect:"Did your dog remember the spot?", clip:null }
+    ]},
+    { id:"cues", title:"Cues and leash skills", blurb:"Tiny training bursts as you walk.", intro:"Short and easy practice that fits between sniffs. Stop while it is still fun.", missions:[
+      { id:"wait", title:"Wait, Let’s cross, Say hi", blurb:"Three simple cues for curbs and greetings.", time:"10 min", tags:["Dog","Neighbors"], bring:"Treats your dog loves.", steps:st("At each curb, ask for a “wait,” then say “let’s cross” and go together.", "When you meet someone, ask your dog to wait, then say “say hi” only if it is okay with the other person.", "Reward calm behavior each time."), safety:"Always ask before letting a dog greet a person or another dog. Some dogs do not want to meet.", reflect:"Which cue felt easiest today?", clip:null },
+      { id:"name", title:"Name game", blurb:"Say their name, and reward the look back.", time:"3 min", tags:["Dog"], bring:"A few treats.", steps:st("Say your dog’s name once, in a happy voice.", "When they look at you, reward right away.", "Try it with a small distraction nearby."), safety:"If they cannot look away from a distraction, move farther away and try again.", reflect:"How quickly did they turn to you?", clip:null },
+      { id:"uturn", title:"U-turns", blurb:"Change direction and walk together.", time:"5 min", tags:["Dog","Self"], bring:"Nothing extra.", steps:st("Say “this way” and turn around.", "Reward when your dog follows.", "Mix in a few turns during the whole walk."), safety:"Turn away from traffic and give your dog room to follow.", reflect:"Did they start to guess the turns?", clip:null }
+    ]},
+    { id:"play", title:"Active play", blurb:"A little energy, a little fun.", intro:"Short games that use what is already on your route.", missions:[
+      { id:"rlgl", title:"Red Light Green Light", blurb:"Stop and go on your cue.", time:"5 min", tags:["Dog","Family"], bring:"Nothing extra.", steps:st("Say “green” and walk quickly together.", "Say “red” and stop. Reward a steady stop.", "Switch it up so your dog stays curious."), safety:"Keep to sidewalks or quiet paths and skip slick surfaces.", reflect:"Did they stop faster by the end?", clip:null },
+      { id:"tug", title:"Tug and toy break", blurb:"Stop at a safe spot for a quick game.", time:"5 min", tags:["Dog","Family"], bring:"A tug toy or ball.", steps:st("Find a flat, open spot away from the street.", "Play for a minute, then ask your dog to drop it.", "Reward the drop and end on a good note."), safety:"Keep the leash on near roads. Stop if your dog is breathing hard or the weather is hot.", reflect:"What kind of play did they like best?", clip:null }
+    ]},
+    { id:"people", title:"People and neighbors", blurb:"Make the walk a little more social.", intro:"Walks are one of the easiest ways to meet the people on your street.", missions:[
+      { id:"neighbor", title:"Neighbor moment", blurb:"Say a friendly hello to someone new.", time:"2 min", tags:["Neighbors","Self"], bring:"A smile.", steps:st("Pick someone nearby and say hello.", "If they like dogs, let them say hi from a calm distance.", "Learn one new name if you can."), safety:"Not everyone wants to chat. A wave is a fine place to stop.", reflect:"Who did you meet?", clip:null },
+      { id:"pass", title:"Pass the leash", blurb:"Let someone else in your family walk the dog.", time:"10 min", tags:["Family","Dog"], bring:"A family member.", steps:st("Hand the leash to someone who does not usually walk the dog.", "Walk alongside and let them lead.", "Swap stories about what they noticed."), safety:"Check that the leash grip is comfortable and the walker is ready for your dog.", reflect:"What did they notice that you had missed?", clip:null }
+    ]},
+    { id:"self", title:"For you", blurb:"A moment just for the walker.", intro:"The walk is for both of you. These missions are about you.", missions:[
+      { id:"phone", title:"Phone-away walk", blurb:"Pocket the phone and walk with your eyes up.", time:"15 min", tags:["Self","Nature"], bring:"A pocket.", steps:st("Put your phone away at the door.", "Name three things you see, three you hear and three you smell.", "Share what you noticed with your dog out loud."), safety:"Look where you are going, especially at curbs and driveways.", reflect:"What would you have missed with the phone out?", clip:null },
+      { id:"breathe", title:"Owner breathing reset", blurb:"Slow down your breathing as you walk.", time:"3 min", tags:["Self"], bring:"Nothing.", steps:st("Breathe in for four steps.", "Breathe out for four steps.", "Repeat for a few blocks."), safety:"Keep an eye on your dog. Stop if you feel dizzy.", reflect:"How did your shoulders feel?", clip:null }
+    ]}
+  ];
+
+  /* phone-only state */
+  function load(){
+    try{
+      var v = JSON.parse(localStorage.getItem(KEY) || "null");
+      if(v && typeof v === "object") return { saved:v.saved || {}, done:v.done || {}, today:v.today || null };
+    }catch(x){}
+    return { saved:{}, done:{}, today:null };
+  }
+  var S = load();
+  function persist(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(x){} }
+
+  var V = { catId:"scent", mId:"sniffari", from:"list", ways:false };
+
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]; }); }
+  function all(){ var l = []; CATS.forEach(function(c){ c.missions.forEach(function(m){ l.push({ c:c, m:m }); }); }); return l; }
+  function find(id){ var l = all(); for(var i = 0; i < l.length; i++) if(l[i].m.id === id) return l[i]; return null; }
+  function cat(){ for(var i = 0; i < CATS.length; i++) if(CATS[i].id === V.catId) return CATS[i]; return CATS[0]; }
+  function todayPick(){ return (S.today && S.today.day === todayStr()) ? find(S.today.id) : null; }
+
+  /* today's mission: one at random, preferring ones not done yet and never the one just shown */
+  function assign(){
+    var cur = todayPick(), pool = all().filter(function(x){ return !cur || x.m.id !== cur.m.id; });
+    var fresh = pool.filter(function(x){ return !S.done[x.m.id]; });
+    if(fresh.length) pool = fresh;
+    var p = pool[Math.floor(Math.random() * pool.length)];
+    S.today = { day:todayStr(), id:p.m.id }; persist();
+    return p;
+  }
+  function openMission(x, from){ V.catId = x.c.id; V.mId = x.m.id; V.from = from; go("tdetail"); }
+  function row(title, blurb, meta, onClick){
+    var b = document.createElement("button"); b.className = "mrow"; b.type = "button";
+    b.innerHTML = '<div><b>'+esc(title)+'</b><span>'+esc(blurb)+'</span>'+(meta ? '<span class="tt-meta">'+esc(meta)+'</span>' : '')+'</div><div class="go">›</div>';
+    b.onclick = onClick;
+    return b;
+  }
+  function meta(m){ return m.time + " · " + m.tags.join(" · ") + (S.done[m.id] ? " · Done" : ""); }
+  function tags(box, list){ $(box).innerHTML = list.map(function(t){ return "<span>"+esc(t)+"</span>"; }).join(""); }
+
+  function renderHub(){
+    var p = todayPick(), b = $("ttToday");
+    if(p){
+      b.innerHTML = '<span class="k">Today’s mission</span><b>'+esc(p.m.title)+'</b><span class="t">'+esc(p.m.blurb)+' About '+esc(p.m.time)+'.</span><span class="gt">Start ›</span>';
+      V.ways = false;
+    } else {
+      b.innerHTML = '<span class="k">Today’s mission</span><span class="q">Choose a type of walk and select an activity OR get an assigned mission.</span><span class="gt">'+(V.ways ? "Pick one below" : "Let’s go ›")+'</span>';
+    }
+    $("ttWays").hidden = !!p || !V.ways;
+    $("ttChooseAlt").hidden = !p;
+    var box = $("ttSaved"); box.innerHTML = "";
+    var saved = all().filter(function(x){ return S.saved[x.m.id]; });
+    if(!saved.length){ box.innerHTML = '<p class="hint" style="margin:0">Nothing saved yet.</p>'; return; }
+    saved.forEach(function(x){ box.appendChild(row(x.m.title, x.m.blurb, meta(x.m), function(){ openMission(x, "saved"); })); });
+  }
+  function renderKinds(){
+    var box = $("ttKinds"); box.innerHTML = "";
+    CATS.forEach(function(c){ box.appendChild(row(c.title, c.blurb, "", function(){ V.catId = c.id; go("tlist"); })); });
+  }
+  function renderList(){
+    var c = cat();
+    $("ttCatT").textContent = c.title; $("ttCatI").textContent = c.intro;
+    var box = $("ttMissions"); box.innerHTML = "";
+    c.missions.forEach(function(m){ box.appendChild(row(m.title, m.blurb, meta(m), function(){ openMission({ c:c, m:m }, "list"); })); });
+  }
+  function current(){ return find(V.mId) || all()[0]; }
+  function renderDetail(){
+    var x = current(), m = x.m, isToday = V.from === "today";
+    $("ttBack").textContent = "‹ " + (V.from === "list" ? x.c.title : "Tricks and Treats");
+    $("ttKick").textContent = (isToday ? "Today’s mission" : "Mission") + " · " + m.time;
+    $("ttTitle").textContent = m.title; $("ttBlurb").textContent = m.blurb;
+    tags("ttTags", m.tags);
+    $("ttBring").textContent = m.bring;
+    $("ttSteps").innerHTML = m.steps.map(function(s, i){ return '<div class="tt-step"><i>'+(i+1)+'</i><span>'+esc(s)+'</span></div>'; }).join("");
+    $("ttSafe").textContent = m.safety;
+    $("ttSave").textContent = S.saved[m.id] ? "Saved for later" : "Save for later";
+    $("ttReroll").hidden = !isToday;
+  }
+  function nextOf(x){ var ms = x.c.missions, i = ms.indexOf(x.m); return { c:x.c, m:ms[(i + 1) % ms.length] }; }
+  function renderDone(){
+    var x = current();
+    $("ttDoneS").textContent = x.m.title + " is done. This one was about:";
+    tags("ttDoneTags", x.m.tags);
+    $("ttReflect").textContent = x.m.reflect;
+    $("ttNext").textContent = "Next: " + nextOf(x).m.title;
+  }
+
+  /* wiring */
+  $("ttToday").onclick = function(){
+    var p = todayPick();
+    if(p){ openMission(p, "today"); return; }
+    V.ways = true; renderHub();
+  };
+  $("ttChoose").onclick = function(){ go("tkinds"); };
+  $("ttChooseAlt").onclick = function(){ go("tkinds"); };
+  $("ttAssign").onclick = function(){ openMission(assign(), "today"); };
+  $("ttReroll").onclick = function(){ openMission(assign(), "today"); };
+  $("ttBack").onclick = function(){ go(V.from === "list" ? "tlist" : "tricks"); };
+  $("ttSave").onclick = function(){ var id = V.mId; S.saved[id] = !S.saved[id]; if(!S.saved[id]) delete S.saved[id]; persist(); renderDetail(); };
+  $("ttDid").onclick = function(){ S.done[V.mId] = true; persist(); go("tdone"); };
+  $("ttNext").onclick = function(){ var n = nextOf(current()); openMission(n, "list"); };
+
+  function onShow(name){
+    if(name === "tricks"){ V.ways = false; renderHub(); }
+    if(name === "tkinds") renderKinds();
+    if(name === "tlist") renderList();
+    if(name === "tdetail") renderDetail();
+    if(name === "tdone") renderDone();
+  }
+  return { onShow:onShow };
 })();
 
 var saved = loadAgent();
